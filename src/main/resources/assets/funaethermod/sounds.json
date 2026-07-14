@@ -1,0 +1,13 @@
+{
+  "real_ambient": {
+    "sounds": [
+      "funaethermod:real_ambient"
+    ]
+  },
+
+  "real_glitch": {
+    "sounds": [
+      "funaethermod:real_glitch"
+    ]
+  }
+}

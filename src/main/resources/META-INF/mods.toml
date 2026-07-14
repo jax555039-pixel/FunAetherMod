@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="funaethermod"
+version="1.0.0"
+displayName="Fun Aether Mod"
+authors="BLLEEACH"
+
+description='''
+You're not alone.
+
+WARNING: This is a HORROR mod, not a normal Aether mod.
+Explore dimensions, uncover lore, and survive strange encounters.
+'''
+
+[[dependencies.funaethermod]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.funaethermod]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
