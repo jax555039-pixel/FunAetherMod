@@ -16,12 +16,21 @@ import net.minecraft.world.level.Level;
 
 public class RealObserveEntity extends PathfinderMob {
 
-    private int ambientTimer = 0;
-    private int stareTimer = 0;
+    private enum ObserverState {
+    WATCHING,
+    UNCOMFORTABLE,
+    BREAKING,
+    TRANSFORMING
+}
 
-    private boolean active = true;
-    private boolean transforming = false;
+private ObserverState state = ObserverState.WATCHING;
 
+private int ambientTimer = 0;
+private int stareTimer = 0;
+private int stateTimer = 0;
+
+private boolean active = true;
+private boolean transforming = false;
 
     public RealObserveEntity(
             EntityType<? extends PathfinderMob> type,
@@ -130,29 +139,97 @@ public class RealObserveEntity extends PathfinderMob {
 
 
 
-        // ================= STARE =================
-
-        if (player.hasLineOfSight(this)) {
-
-            stareTimer++;
-
-        } else {
-
-            stareTimer = 0;
-        }
+        
 
 
 
         // 10 seconds staring
 
-        if (stareTimer >= 200) {
+        if (player.hasLineOfSight(this)) {
 
+    stareTimer++;
 
-            if (this.level().getDayTime() >= 24000) {
+} else {
 
-                transformIntoReal(player);
-            }
+    stareTimer = 0;
+
+    state = ObserverState.WATCHING;
+    stateTimer = 0;
+}
+
+switch (state) {
+
+    case WATCHING:
+
+        if (stareTimer >= 120) {
+
+            state = ObserverState.UNCOMFORTABLE;
+            stateTimer = 0;
         }
+
+        break;
+
+    case UNCOMFORTABLE:
+
+        stateTimer++;
+
+        // tiny head twitch
+        if (random.nextInt(35) == 0) {
+
+            this.setYRot(this.getYRot() + random.nextInt(12) - 6);
+        }
+
+        if (stateTimer >= 80) {
+
+            state = ObserverState.BREAKING;
+            stateTimer = 0;
+        }
+
+        break;
+
+    case BREAKING:
+
+        stateTimer++;
+
+        // body jitter
+        if (random.nextInt(5) == 0) {
+
+            this.setDeltaMovement(
+                    (random.nextDouble() - 0.5D) * 0.08D,
+                    0,
+                    (random.nextDouble() - 0.5D) * 0.08D
+            );
+        }
+
+        if (stateTimer >= 40) {
+
+            state = ObserverState.TRANSFORMING;
+            stateTimer = 0;
+        }
+
+        break;
+
+    case TRANSFORMING:
+
+        stateTimer++;
+
+        if (stateTimer == 1) {
+
+            this.playSound(
+                    ModSounds.REAL_GLITCH.get(),
+                    1.0F,
+                    0.8F
+            );
+        }
+
+        if (stateTimer >= 20 &&
+                this.level().getDayTime() >= 24000) {
+
+            transformIntoReal(player);
+        }
+
+        break;
+}
 
 
 
@@ -193,29 +270,15 @@ public class RealObserveEntity extends PathfinderMob {
             if (real != null) {
 
 
-                double angle =
-                        Math.random()
-                        * Math.PI
-                        * 2;
+                double distance = 14.0D;
 
+double x =
+        player.getX()
+        - player.getLookAngle().x * distance;
 
-                double distance =
-                        10
-                        + Math.random()
-                        * 10;
-
-
-
-                double x =
-                        player.getX()
-                        + Math.cos(angle)
-                        * distance;
-
-
-                double z =
-                        player.getZ()
-                        + Math.sin(angle)
-                        * distance;
+double z =
+        player.getZ()
+        - player.getLookAngle().z * distance;
 
 
 
