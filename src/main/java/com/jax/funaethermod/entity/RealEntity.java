@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 
 public class RealEntity extends PathfinderMob {
 
-    private int screamTimer = 0;
+    private int screamTimer = 60;
     private int lifeTimer = 0;
 
     private int attackCount = 0;
@@ -42,7 +42,6 @@ public class RealEntity extends PathfinderMob {
 
         super(type, level);
 
-        this.setInvulnerable(true);
         this.setPersistenceRequired();
     }
 
@@ -51,7 +50,7 @@ public class RealEntity extends PathfinderMob {
     public static AttributeSupplier.Builder createAttributes() {
 
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0D)
+                .add(Attributes.MAX_HEALTH, 700.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.42D)
                 .add(Attributes.FOLLOW_RANGE, 160.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D);
@@ -192,7 +191,7 @@ switch (aggressionLevel) {
         if (player != null && this.hasLineOfSight(player)) {
 
             searchTimer = 0;
-            
+
             lastPlayerX = player.getX();
             lastPlayerY = player.getY();
             lastPlayerZ = player.getZ();
@@ -398,21 +397,21 @@ switch (aggressionLevel) {
 
 
     @Override
-    public boolean hurt(
-            DamageSource source,
-            float amount) {
+public boolean hurt(
+        DamageSource source,
+        float amount) {
 
-        return false;
-    }
+    float reducedDamage = amount * 0.25F;
+
+    return super.hurt(
+            source,
+            reducedDamage
+    );
+}
 
 
 
-    @Override
-    public boolean isInvulnerableTo(
-            DamageSource source) {
-
-        return true;
-    }
+    
 
 
 

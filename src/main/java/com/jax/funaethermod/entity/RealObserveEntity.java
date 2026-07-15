@@ -16,21 +16,34 @@ import net.minecraft.world.level.Level;
 
 public class RealObserveEntity extends PathfinderMob {
 
+
     private enum ObserverState {
-    WATCHING,
-    UNCOMFORTABLE,
-    BREAKING,
-    TRANSFORMING
-}
 
-private ObserverState state = ObserverState.WATCHING;
+        WATCHING,
+        DISTURBED,
+        PANICKING,
+        TRANSFORMING
+    }
 
-private int ambientTimer = 0;
-private int stareTimer = 0;
-private int stateTimer = 0;
 
-private boolean active = true;
-private boolean transforming = false;
+
+    private ObserverState state = ObserverState.WATCHING;
+
+
+
+    private int ambientTimer = 40;
+
+    private int stareTimer = 0;
+
+    private int stateTimer = 0;
+
+    private int transformTimer = 0;
+
+
+
+    private boolean transforming = false;
+
+
 
     public RealObserveEntity(
             EntityType<? extends PathfinderMob> type,
@@ -39,18 +52,26 @@ private boolean transforming = false;
         super(type, level);
 
         this.setInvulnerable(true);
+
         this.setPersistenceRequired();
     }
+
+
 
 
 
     public static AttributeSupplier.Builder createAttributes() {
 
         return Mob.createMobAttributes()
+
                 .add(Attributes.MAX_HEALTH, 40.0D)
+
                 .add(Attributes.MOVEMENT_SPEED, 0.0D)
+
                 .add(Attributes.FOLLOW_RANGE, 128.0D);
     }
+
+
 
 
 
@@ -69,13 +90,17 @@ private boolean transforming = false;
 
 
 
+
+
+
     @Override
     public void tick() {
 
         super.tick();
 
 
-        if (!active || this.level().isClientSide)
+
+        if (this.level().isClientSide)
             return;
 
 
@@ -87,51 +112,52 @@ private boolean transforming = false;
                 );
 
 
+
         if (player == null)
             return;
 
 
 
+
+
         // ================= LOOKING =================
 
-        this.getLookControl().setLookAt(
-                player,
-                180.0F,
-                180.0F
-        );
+
+        if (state != ObserverState.TRANSFORMING) {
 
 
-        this.setYRot(
-                this.getYHeadRot()
-        );
+            this.getLookControl().setLookAt(
+                    player,
+                    180.0F,
+                    180.0F
+            );
+
+
+            this.setYRot(
+                    this.getYHeadRot()
+            );
+        }
 
 
 
 
-        // ================= HUM =================
+
+
+        // ================= AMBIENT =================
+
 
         ambientTimer++;
 
 
-        if (ambientTimer >= 80) {
+        if (ambientTimer >= 120) {
+
 
             ambientTimer = 0;
 
 
-            double distance =
-                    this.distanceTo(player);
-
-
-            float volume =
-                    Math.max(
-                            0.05F,
-                            1.0F - ((float) distance / 80.0F)
-                    );
-
-
             this.playSound(
                     ModSounds.REAL_AMBIENT.get(),
-                    volume,
+                    1.0F,
                     1.0F
             );
         }
@@ -139,112 +165,236 @@ private boolean transforming = false;
 
 
 
-        
 
 
 
-        // 10 seconds staring
+        // ================= PLAYER LOOKING =================
 
-        if (player.hasLineOfSight(this)) {
 
-    stareTimer++;
+        double dot =
 
-} else {
+                player.getLookAngle()
 
-    stareTimer = 0;
+                .normalize()
 
-    state = ObserverState.WATCHING;
-    stateTimer = 0;
-}
+                .dot(
 
-switch (state) {
+                        this.position()
 
-    case WATCHING:
+                        .subtract(player.position())
 
-        if (stareTimer >= 120) {
+                        .normalize()
 
-            state = ObserverState.UNCOMFORTABLE;
-            stateTimer = 0;
+                );
+
+
+
+        boolean lookingAtObserver = dot > 0.95D;
+
+
+
+
+
+        if (lookingAtObserver) {
+
+
+            stareTimer++;
+
+
+        } else {
+
+
+            stareTimer = 0;
+
+
+
+            if (state != ObserverState.TRANSFORMING) {
+
+
+                state = ObserverState.WATCHING;
+
+                stateTimer = 0;
+            }
         }
 
-        break;
 
-    case UNCOMFORTABLE:
 
-        stateTimer++;
 
-        // tiny head twitch
-        if (random.nextInt(35) == 0) {
 
-            this.setYRot(this.getYRot() + random.nextInt(12) - 6);
+
+
+        // ================= STATES =================
+
+
+        switch(state) {
+
+
+
+            case WATCHING:
+
+
+
+                if (stareTimer >= 200) {
+
+
+                    state = ObserverState.DISTURBED;
+
+                    stateTimer = 0;
+                }
+
+
+                break;
+
+
+
+
+
+
+            case DISTURBED:
+
+
+
+                stateTimer++;
+
+
+
+                if (random.nextInt(30) == 0) {
+
+
+                    this.setYRot(
+
+                            this.getYRot()
+
+                            + random.nextInt(20)
+
+                            - 10
+                    );
+                }
+
+
+
+                
+
+
+
+                if (stateTimer >= 200) {
+
+
+                    state = ObserverState.PANICKING;
+
+                    stateTimer = 0;
+                }
+
+
+
+                break;
+
+
+
+
+
+
+
+
+            case PANICKING:
+
+
+
+                stateTimer++;
+
+
+
+                if (random.nextInt(8) == 0) {
+
+
+                    this.setDeltaMovement(
+
+                            (random.nextDouble() - 0.5D) * 0.12D,
+
+                            0,
+
+                            (random.nextDouble() - 0.5D) * 0.12D
+
+                    );
+                }
+
+
+
+
+
+                if (stateTimer >= 120) {
+
+
+                    state = ObserverState.TRANSFORMING;
+
+                    transformTimer = 0;
+
+                }
+
+
+
+                break;
+
+
+
+
+
+
+
+
+            case TRANSFORMING:
+
+
+
+                transformTimer++;
+
+
+
+
+
+                if (transformTimer == 1) {
+
+
+                    this.playSound(
+
+                            ModSounds.REAL_TRANSFORM.get(),
+
+                            1.0F,
+
+                            1.0F
+                    );
+                }
+
+
+
+
+
+
+
+                if (transformTimer >= 80) {
+
+
+                    transformIntoReal(player);
+                }
+
+
+
+                break;
         }
+    
 
-        if (stateTimer >= 80) {
+            // ================= CLOSE PROXIMITY =================
 
-            state = ObserverState.BREAKING;
-            stateTimer = 0;
-        }
+        if (this.distanceTo(player) <= 3.0F
+                && state != ObserverState.TRANSFORMING) {
 
-        break;
-
-    case BREAKING:
-
-        stateTimer++;
-
-        // body jitter
-        if (random.nextInt(5) == 0) {
-
-            this.setDeltaMovement(
-                    (random.nextDouble() - 0.5D) * 0.08D,
-                    0,
-                    (random.nextDouble() - 0.5D) * 0.08D
-            );
-        }
-
-        if (stateTimer >= 40) {
 
             state = ObserverState.TRANSFORMING;
-            stateTimer = 0;
+
+            transformTimer = 0;
         }
 
-        break;
-
-    case TRANSFORMING:
-
-        stateTimer++;
-
-        if (stateTimer == 1) {
-
-            this.playSound(
-                    ModSounds.REAL_GLITCH.get(),
-                    1.0F,
-                    0.8F
-            );
-        }
-
-        if (stateTimer >= 20 &&
-                this.level().getDayTime() >= 24000) {
-
-            transformIntoReal(player);
-        }
-
-        break;
-}
-
-
-
-
-
-        // ================= CLOSE =================
-
-        if (this.distanceTo(player) <= 12.0F) {
-
-            active = false;
-
-            this.discard();
-        }
     }
-
 
 
 
@@ -255,38 +405,67 @@ switch (state) {
             return;
 
 
+
         transforming = true;
+
+
+
 
 
         if (level() instanceof ServerLevel serverLevel) {
 
 
+
             var real =
+
                     ModEntities.REAL.get()
-                            .create(serverLevel);
+
+                    .create(serverLevel);
+
 
 
 
             if (real != null) {
 
 
+
                 double distance = 14.0D;
 
-double x =
-        player.getX()
-        - player.getLookAngle().x * distance;
 
-double z =
-        player.getZ()
-        - player.getLookAngle().z * distance;
+
+                double x =
+
+                        player.getX()
+
+                        - player.getLookAngle().x
+
+                        * distance;
+
+
+
+                double z =
+
+                        player.getZ()
+
+                        - player.getLookAngle().z
+
+                        * distance;
+
+
 
 
 
                 real.moveTo(
+
                         x,
+
                         player.getY(),
+
                         z
+
                 );
+
+
 
 
                 serverLevel.addFreshEntity(real);
@@ -294,15 +473,14 @@ double z =
         }
 
 
-        this.playSound(
-                ModSounds.REAL_GLITCH.get(),
-                1.0F,
-                0.8F
-        );
+
 
 
         this.discard();
     }
+
+
+
 
 
 
@@ -317,12 +495,16 @@ double z =
 
 
 
+
+
     @Override
     public boolean isInvulnerableTo(
             DamageSource source) {
 
         return true;
     }
+
+
 
 
 

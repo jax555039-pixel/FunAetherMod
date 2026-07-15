@@ -11,35 +11,51 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModSounds {
 
+
     public static final DeferredRegister<SoundEvent> SOUNDS =
             DeferredRegister.create(
                     ForgeRegistries.SOUND_EVENTS,
                     FunAetherMod.MODID
             );
 
+
+
     public static final RegistryObject<SoundEvent> REAL_AMBIENT =
-            SOUNDS.register(
-                    "real_ambient",
-                    () -> SoundEvent.createVariableRangeEvent(
-                            new ResourceLocation(
-                                    FunAetherMod.MODID,
-                                    "real_ambient"
-                            )
-                    )
-            );
+            registerSound("real_ambient");
+
+
 
     public static final RegistryObject<SoundEvent> REAL_GLITCH =
-            SOUNDS.register(
-                    "real_glitch",
-                    () -> SoundEvent.createVariableRangeEvent(
-                            new ResourceLocation(
-                                    FunAetherMod.MODID,
-                                    "real_glitch"
-                            )
-                    )
-            );
+            registerSound("real_glitch");
+
+
+
+    public static final RegistryObject<SoundEvent> REAL_TRANSFORM =
+            registerSound("real_transform");
+
+
+
+
+
+    private static RegistryObject<SoundEvent> registerSound(String name) {
+
+        return SOUNDS.register(
+                name,
+                () -> SoundEvent.createVariableRangeEvent(
+                        new ResourceLocation(
+                                FunAetherMod.MODID,
+                                name
+                        )
+                )
+        );
+    }
+
+
+
+
 
     public static void register(IEventBus eventBus) {
+
         SOUNDS.register(eventBus);
     }
 }
