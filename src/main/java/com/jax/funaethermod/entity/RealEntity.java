@@ -108,7 +108,22 @@ public class RealEntity extends PathfinderMob {
 
 
         lifeTimer++;
+        // ================= EVOLUTION =================
 
+// 30 seconds
+if (lifeTimer >= 600) {
+    aggressionLevel = Math.max(aggressionLevel, 1);
+}
+
+// 90 seconds
+if (lifeTimer >= 1200) {
+    aggressionLevel = Math.max(aggressionLevel, 2);
+}
+
+// 150 seconds
+if (lifeTimer >= 2000) {
+    aggressionLevel = Math.max(aggressionLevel, 3);
+}
 
         // ================= DESPAWN =================
 
@@ -148,17 +163,26 @@ public class RealEntity extends PathfinderMob {
 
 
 
-        double speed = 1.35D;
+       double speed = 1.30D;
 
+switch (aggressionLevel) {
 
-        if (aggressionLevel == 1) {
+    case 0:
+        speed = 1.30D;
+        break;
 
-            speed = 1.5D;
+    case 1:
+        speed = 1.45D;
+        break;
 
-        } else if (aggressionLevel >= 2) {
+    case 2:
+        speed = 1.60D;
+        break;
 
-            speed = 1.7D;
-        }
+    default:
+        speed = 1.80D;
+        break;
+}
 
 
 
@@ -167,7 +191,8 @@ public class RealEntity extends PathfinderMob {
 
         if (player != null && this.hasLineOfSight(player)) {
 
-
+            searchTimer = 0;
+            
             lastPlayerX = player.getX();
             lastPlayerY = player.getY();
             lastPlayerZ = player.getZ();
@@ -293,9 +318,7 @@ public class RealEntity extends PathfinderMob {
         screamTimer++;
 
 
-        int screamDelay =
-                180 - (aggressionLevel * 30);
-
+        int screamDelay = 400;
 
         if (screamTimer >= screamDelay) {
 
@@ -326,18 +349,7 @@ public class RealEntity extends PathfinderMob {
 
 
 
-            if (attackCount == 2) {
-
-                aggressionLevel = 1;
-
-            }
-
-
-            if (attackCount >= 4) {
-
-                aggressionLevel = 2;
-            }
-
+           
 
 
 
