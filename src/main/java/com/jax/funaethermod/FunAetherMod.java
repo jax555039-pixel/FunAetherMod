@@ -1,5 +1,6 @@
 package com.jax.funaethermod;
 
+import com.jax.funaethermod.registry.ModBlocks;
 import com.jax.funaethermod.registry.ModEntities;
 import com.jax.funaethermod.registry.ModSounds;
 import com.mojang.logging.LogUtils;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import org.slf4j.Logger;
 
+import com.jax.funaethermod.registry.ModItems;
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
 
@@ -27,24 +29,31 @@ public class FunAetherMod {
                 FMLJavaModLoadingContext.get()
                         .getModEventBus();
 
-        modEventBus.addListener(this::commonSetup);
-
+        // Register blocks
+        ModBlocks.register(modEventBus);
+        ModItems.register(modEventBus);
+        // Register entities
         ModEntities.register(modEventBus);
+
+        // Register sounds
         ModSounds.register(modEventBus);
+
+        modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
 
         LOGGER.info("Fun Aether Mod loaded!");
     }
 
+
     private void commonSetup(final FMLCommonSetupEvent event) {
 
         LOGGER.info("Common setup complete!");
     }
 
+
     @SubscribeEvent
-    public void onServerStarting(
-            ServerStartingEvent event) {
+    public void onServerStarting(ServerStartingEvent event) {
 
         LOGGER.info("Server starting!");
     }
