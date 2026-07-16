@@ -1,11 +1,11 @@
 {
-  "type": "minecraft:overworld",
+  "type": "funaethermod:aether",
   "generator": {
     "type": "minecraft:noise",
-    "settings": "minecraft:overworld",
+    "settings": "funaethermod:aether",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "minecraft:plains"
+      "biome": "funaethermod:aether"
     }
   }
 }
