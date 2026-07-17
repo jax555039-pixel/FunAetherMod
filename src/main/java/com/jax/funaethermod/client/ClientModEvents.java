@@ -1,9 +1,10 @@
 package com.jax.funaethermod.client;
 
 import com.jax.funaethermod.FunAetherMod;
+import com.jax.funaethermod.client.model.Entity2020Model;
 import com.jax.funaethermod.client.model.RealEntityModel;
-import com.jax.funaethermod.entity.RealObserveEntity;
 import com.jax.funaethermod.registry.ModEntities;
+import com.jax.funaethermod.renderer.Entity2020Renderer;
 import com.jax.funaethermod.renderer.RealEntityRenderer;
 import com.jax.funaethermod.renderer.RealObserveEntityRenderer;
 
@@ -31,7 +32,13 @@ public class ClientModEvents {
                 ModEntities.REAL_OBSERVE.get(),
                 RealObserveEntityRenderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.ENTITY2020.get(),
+                Entity2020Renderer::new
+        );
     }
+
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -39,6 +46,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 RealEntityModel.LAYER_LOCATION,
                 RealEntityModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                Entity2020Model.LAYER_LOCATION,
+                Entity2020Model::createBodyLayer
         );
     }
 }
