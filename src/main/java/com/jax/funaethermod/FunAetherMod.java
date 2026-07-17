@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 import com.jax.funaethermod.registry.ModItems;
+
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
 
@@ -32,6 +33,7 @@ public class FunAetherMod {
         // Register blocks
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
+        
         // Register entities
         ModEntities.register(modEventBus);
 

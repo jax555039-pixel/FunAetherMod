@@ -18,6 +18,14 @@ public class ModItems {
                     FunAetherMod.MODID
             );
 
+    public static final RegistryObject<Item> AETHER_PORTAL_FRAME =
+            ITEMS.register(
+                    "aether_portal_frame",
+                    () -> new BlockItem(
+                            ModBlocks.AETHER_PORTAL_FRAME.get(),
+                            new Item.Properties()
+                    )
+            );
 
     public static final RegistryObject<Item> AETHER_PORTAL =
             ITEMS.register(
@@ -27,7 +35,6 @@ public class ModItems {
                             new Item.Properties()
                     )
             );
-
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
