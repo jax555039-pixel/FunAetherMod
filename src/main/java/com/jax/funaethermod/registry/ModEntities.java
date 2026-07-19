@@ -4,6 +4,7 @@ import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.entity.RealEntity;
 import com.jax.funaethermod.entity.RealObserveEntity;
 import com.jax.funaethermod.entity.Entity2020Entity;
+import com.jax.funaethermod.entity.FakeEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -50,6 +51,16 @@ public class ModEntities {
                             .build("entity2020")
             );
 
+            
+            public static final RegistryObject<EntityType<FakeEntity>> FAKE =
+        ENTITY_TYPES.register(
+                "fake",
+                () -> EntityType.Builder
+                        .of(FakeEntity::new, MobCategory.CREATURE)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("fake")
+        );
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

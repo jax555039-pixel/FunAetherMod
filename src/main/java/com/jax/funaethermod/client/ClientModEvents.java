@@ -13,6 +13,9 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import com.jax.funaethermod.client.model.FakeEntityModel;
+import com.jax.funaethermod.renderer.FakeEntityRenderer;
+
 @Mod.EventBusSubscriber(
         modid = FunAetherMod.MODID,
         bus = Mod.EventBusSubscriber.Bus.MOD,
@@ -37,6 +40,11 @@ public class ClientModEvents {
                 ModEntities.ENTITY2020.get(),
                 Entity2020Renderer::new
         );
+
+        event.registerEntityRenderer(
+        ModEntities.FAKE.get(),
+        FakeEntityRenderer::new
+);
     }
 
 
@@ -51,6 +59,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 Entity2020Model.LAYER_LOCATION,
                 Entity2020Model::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                FakeEntityModel.LAYER_LOCATION,
+                FakeEntityModel::createBodyLayer
         );
     }
 }

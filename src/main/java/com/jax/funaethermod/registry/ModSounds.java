@@ -34,7 +34,8 @@ public class ModSounds {
             registerSound("real_transform");
 
 
-
+public static final RegistryObject<SoundEvent> FAKE_AMBIENT =
+        registerSound("fake_ambient");
 
 
     private static RegistryObject<SoundEvent> registerSound(String name) {

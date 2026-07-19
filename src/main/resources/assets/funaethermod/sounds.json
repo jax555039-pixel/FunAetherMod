@@ -15,5 +15,11 @@
     "sounds": [
       "funaethermod:real_transform"
     ]
+  },
+
+  "fake_ambient": {
+    "sounds": [
+      "funaethermod:fake_ambient"
+    ]
   }
 }
