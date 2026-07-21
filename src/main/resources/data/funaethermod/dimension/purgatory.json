@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:overworld",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "funaethermod:purgatory",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "funaethermod:purgatory"
+    }
+  }
+}

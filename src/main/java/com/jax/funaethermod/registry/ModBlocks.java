@@ -3,6 +3,7 @@ package com.jax.funaethermod.registry;
 import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.block.AetherPortalBlock;
 import com.jax.funaethermod.block.AetherPortalFrameBlock;
+import com.jax.funaethermod.block.PurgatoryGrassBlock;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,6 +42,12 @@ public class ModBlocks {
                     )
             );
 
+            public static final RegistryObject<Block> PURGATORY_GRASS =
+        BLOCKS.register(
+                "purgatory_grass",
+                PurgatoryGrassBlock::new
+        );
+        
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }
