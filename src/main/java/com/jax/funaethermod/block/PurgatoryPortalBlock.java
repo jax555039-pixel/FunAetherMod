@@ -29,7 +29,7 @@ import net.minecraftforge.common.util.ITeleporter;
 import java.util.function.Function;
 
 
-public class AetherPortalBlock extends Block {
+public class PurgatoryPortalBlock extends Block {
 
 
     public static final EnumProperty<Direction.Axis> AXIS =
@@ -47,7 +47,7 @@ public class AetherPortalBlock extends Block {
             );
 
 
-    public AetherPortalBlock(Properties properties) {
+    public PurgatoryPortalBlock(Properties properties) {
         super(properties);
 
 
@@ -102,12 +102,12 @@ public class AetherPortalBlock extends Block {
         if (!(level instanceof ServerLevel serverLevel)) {
             return;
         }
-        ResourceKey<Level> AETHER =
+        ResourceKey<Level> PURGATORY =
                 ResourceKey.create(
                         Registries.DIMENSION,
                         new ResourceLocation(
                                 "funaethermod",
-                                "aether"
+                                "purgatory"
                         )
                 );
 
@@ -115,7 +115,7 @@ public class AetherPortalBlock extends Block {
         ServerLevel destination =
                 serverLevel
                         .getServer()
-                        .getLevel(AETHER);
+                        .getLevel(PURGATORY);
 
 
         if (destination == null) {
@@ -148,7 +148,7 @@ public class AetherPortalBlock extends Block {
 
 
                             BlockPos safeSpawn =
-                                    findSafeAetherSpawn(
+                                    findSafepurgatorySpawn(
                                             destinationLevel
                                     );
 
@@ -182,7 +182,7 @@ public class AetherPortalBlock extends Block {
 
 
 
-    private BlockPos findSafeAetherSpawn(
+    private BlockPos findSafepurgatorySpawn(
             ServerLevel level
     ) {
 
@@ -190,7 +190,7 @@ public class AetherPortalBlock extends Block {
         BlockPos center =
                 new BlockPos(
                         0,
-                        120,
+                        100,
                         0
                 );
 

@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.jax.funaethermod.entity.RealObserveEntity;
+import com.jax.funaethermod.entity.FakeEntity;
 
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
@@ -58,6 +60,18 @@ public class FunAetherMod {
 
     private static final Map<ServerPlayer, Integer> encounterTimers =
             new HashMap<>();
+// ==========================
+// PURGATORY ENCOUNTER SETTINGS
+// ==========================
+
+// 400 ticks = 20 seconds
+// 1200 ticks = 1 minute
+// 2400 ticks = 2 minutes
+//12000 ticks = 10 minutes
+private static final int PURGATORY_ENCOUNTER_TIME = 12000;
+
+private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
+        new HashMap<>();
 
 
     // prevents duplicate portals
@@ -129,11 +143,11 @@ public class FunAetherMod {
 
 
 
+// ==========================
+// AETHER ENCOUNTER SYSTEM
+// ==========================
 
-
-    // ==========================
-    // ENTITY ENCOUNTERS
-    // ==========================
+   
 
 
     @SubscribeEvent
@@ -305,13 +319,134 @@ public class FunAetherMod {
     }
 
 
+// ==========================
+// PURGATORY ENCOUNTER SYSTEM
+// ==========================
 
+@SubscribeEvent
+public void purgatoryEncounterTick(
+        TickEvent.PlayerTickEvent event
+) {
+
+    if(event.phase != TickEvent.Phase.END)
+        return;
+
+    if(!(event.player instanceof ServerPlayer player))
+        return;
+
+    if(player.level().isClientSide)
+        return;
+
+    if(!player.level()
+            .dimension()
+            .location()
+            .equals(
+                    new ResourceLocation(
+                            MODID,
+                            "purgatory"
+                    )
+            )) {
+        return;
+    }
+
+    int timer =
+            purgatoryEncounterTimers.getOrDefault(
+                    player,
+                    0
+            );
+
+    timer++;
+
+    if(timer >= PURGATORY_ENCOUNTER_TIME) {
+
+        spawnPurgatoryEncounter(player);
+
+        timer = 0;
+    }
+
+    purgatoryEncounterTimers.put(
+            player,
+            timer
+    );
+}
+
+private void spawnPurgatoryEncounter(
+        ServerPlayer player
+) {
+
+    ServerLevel level =
+            player.serverLevel();
+
+    Vec3 look =
+            player.getLookAngle();
+
+    BlockPos pos =
+            BlockPos.containing(
+                    player.position()
+                            .add(
+                                    look.x * 50,
+                                    0,
+                                    look.z * 50
+                            )
+            );
+
+    pos =
+            level.getHeightmapPos(
+                    Heightmap.Types.MOTION_BLOCKING,
+                    pos
+            );
+
+    if(RANDOM.nextBoolean()) {
+
+        RealObserveEntity entity =
+                ModEntities.REAL_OBSERVE.get()
+                        .create(level);
+
+        if(entity != null) {
+
+            entity.moveTo(
+                    pos,
+                    player.getYRot(),
+                    0
+            );
+
+            level.addFreshEntity(entity);
+
+            LOGGER.info(
+                    "RealObserve spawned near {}",
+                    player.getName().getString()
+            );
+        }
+
+    } else {
+
+        FakeEntity entity =
+                ModEntities.FAKE.get()
+                        .create(level);
+
+        if(entity != null) {
+
+            entity.moveTo(
+                    pos,
+                    player.getYRot(),
+                    0
+            );
+
+            level.addFreshEntity(entity);
+
+            LOGGER.info(
+                    "Fake spawned near {}",
+                    player.getName().getString()
+            );
+        }
+    }
+}
 
 
 
 
     // ==========================
-    // NATURAL PORTALS
+    // NATURAL AETHER PORTALS
     // ==========================
 
 
@@ -359,8 +494,8 @@ public class FunAetherMod {
         // TESTING:
         // 1 = every chunk
         // 10 = every 10 chunks
-        // 1000 = default
-        if(RANDOM.nextInt(1000) != 0)
+        // 250 = default
+        if(RANDOM.nextInt(250) != 0)
             return;
 
 

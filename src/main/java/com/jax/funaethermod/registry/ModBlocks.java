@@ -4,6 +4,7 @@ import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.block.AetherPortalBlock;
 import com.jax.funaethermod.block.AetherPortalFrameBlock;
 import com.jax.funaethermod.block.PurgatoryGrassBlock;
+import com.jax.funaethermod.block.PurgatoryPortalBlock;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,12 +42,21 @@ public class ModBlocks {
                                     .lightLevel(state -> 12)
                     )
             );
-
+//purgatory grass block
             public static final RegistryObject<Block> PURGATORY_GRASS =
         BLOCKS.register(
                 "purgatory_grass",
                 PurgatoryGrassBlock::new
         );
+        
+            // Purgatory portal block
+            public static final RegistryObject<Block> PURGATORY_PORTAL =
+                BLOCKS.register(
+                        "purgatory_portal",
+                        () -> new PurgatoryPortalBlock(
+                                BlockBehaviour.Properties.copy(Blocks.GRAY_CONCRETE)
+                        )
+                );
         
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
