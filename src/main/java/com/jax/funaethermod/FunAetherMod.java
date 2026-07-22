@@ -2,10 +2,14 @@ package com.jax.funaethermod;
 
 import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.RealEntity;
+import com.jax.funaethermod.entity.RealObserveEntity;
+import com.jax.funaethermod.entity.FakeEntity;
+
 import com.jax.funaethermod.registry.ModBlocks;
 import com.jax.funaethermod.registry.ModEntities;
 import com.jax.funaethermod.registry.ModItems;
 import com.jax.funaethermod.registry.ModSounds;
+
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.BlockPos;
@@ -13,17 +17,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 
 import net.minecraftforge.common.MinecraftForge;
+
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -36,14 +44,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.jax.funaethermod.entity.RealObserveEntity;
-import com.jax.funaethermod.entity.FakeEntity;
 
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
 
 
-    public static final String MODID = "funaethermod";
+    public static final String MODID =
+            "funaethermod";
 
 
     private static final Logger LOGGER =
@@ -55,29 +62,42 @@ public class FunAetherMod {
 
 
 
-    private static final int ENCOUNTER_TIME = 12000;
+    // ==========================
+    // AETHER ENCOUNTER SETTINGS
+    // ==========================
+
+    private static final int ENCOUNTER_TIME =
+            12000;
 
 
     private static final Map<ServerPlayer, Integer> encounterTimers =
             new HashMap<>();
-// ==========================
-// PURGATORY ENCOUNTER SETTINGS
-// ==========================
-
-// 400 ticks = 20 seconds
-// 1200 ticks = 1 minute
-// 2400 ticks = 2 minutes
-//12000 ticks = 10 minutes
-private static final int PURGATORY_ENCOUNTER_TIME = 12000;
-
-private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
-        new HashMap<>();
 
 
-    // prevents duplicate portals
+
+    // ==========================
+    // PURGATORY ENCOUNTER SETTINGS
+    // ==========================
+
+    private static final int PURGATORY_ENCOUNTER_TIME =
+            12000;
+
+
+    private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
+            new HashMap<>();
+
+
+
+    // ==========================
+    // NATURAL PORTAL SETTINGS
+    // ==========================
+
     private static final Set<String> generatedChunks =
             new HashSet<>();
 
+
+    private static final int PORTAL_CHANCE =
+            250;
 
 
 
@@ -91,8 +111,11 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
 
 
         ModBlocks.register(modEventBus);
+
         ModItems.register(modEventBus);
+
         ModEntities.register(modEventBus);
+
         ModSounds.register(modEventBus);
 
 
@@ -100,6 +123,7 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
         modEventBus.addListener(
                 this::commonSetup
         );
+
 
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -111,8 +135,6 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
         );
 
     }
-
-
 
 
 
@@ -128,8 +150,6 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
 
 
 
-
-
     @SubscribeEvent
     public void onServerStarting(
             ServerStartingEvent event
@@ -142,12 +162,9 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
     }
 
 
-
-// ==========================
-// AETHER ENCOUNTER SYSTEM
-// ==========================
-
-   
+        // ==========================
+    // AETHER ENCOUNTER SYSTEM
+    // ==========================
 
 
     @SubscribeEvent
@@ -218,8 +235,193 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
 
 
 
-
     private void spawnEncounter(
+            ServerPlayer player
+    ) {
+
+
+        ServerLevel level =
+                player.serverLevel();
+
+
+
+        Vec3 look =
+                player.getLookAngle();
+
+
+
+        BlockPos pos =
+                BlockPos.containing(
+                        player.position()
+                                .add(
+                                        look.x * 50,
+                                        0,
+                                        look.z * 50
+                                )
+                );
+
+
+
+        pos =
+                level.getHeightmapPos(
+                        Heightmap.Types.MOTION_BLOCKING,
+                        pos
+                );
+
+
+
+
+
+        if(RANDOM.nextBoolean()) {
+
+
+            Entity2020Entity entity =
+                    ModEntities.ENTITY2020.get()
+                            .create(level);
+
+
+
+            if(entity != null) {
+
+
+                entity.moveTo(
+                        pos,
+                        player.getYRot(),
+                        0
+                );
+
+
+
+                level.addFreshEntity(entity);
+
+
+
+                LOGGER.info(
+                        "Entity2020 spawned near {}",
+                        player.getName().getString()
+                );
+
+            }
+
+
+
+        } else {
+
+
+
+            RealEntity entity =
+                    ModEntities.REAL.get()
+                            .create(level);
+
+
+
+
+            if(entity != null) {
+
+
+                entity.moveTo(
+                        pos,
+                        player.getYRot(),
+                        0
+                );
+
+
+
+                level.addFreshEntity(entity);
+
+
+
+                LOGGER.info(
+                        "Real spawned near {}",
+                        player.getName().getString()
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // ==========================
+    // PURGATORY ENCOUNTER SYSTEM
+    // ==========================
+
+
+    @SubscribeEvent
+    public void purgatoryEncounterTick(
+            TickEvent.PlayerTickEvent event
+    ) {
+
+
+        if(event.phase != TickEvent.Phase.END)
+            return;
+
+
+
+        if(!(event.player instanceof ServerPlayer player))
+            return;
+
+
+
+        if(player.level().isClientSide)
+            return;
+
+
+
+        if(!player.level()
+                .dimension()
+                .location()
+                .equals(
+                        new ResourceLocation(
+                                MODID,
+                                "purgatory"
+                        )
+                )) {
+
+            return;
+
+        }
+
+
+
+
+        int timer =
+                purgatoryEncounterTimers.getOrDefault(
+                        player,
+                        0
+                );
+
+
+
+        timer++;
+
+
+
+        if(timer >= PURGATORY_ENCOUNTER_TIME) {
+
+
+            spawnPurgatoryEncounter(player);
+
+
+            timer = 0;
+
+        }
+
+
+
+        purgatoryEncounterTimers.put(
+                player,
+                timer
+        );
+
+    }
+
+
+
+
+
+    private void spawnPurgatoryEncounter(
             ServerPlayer player
     ) {
 
@@ -258,38 +460,44 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
         if(RANDOM.nextBoolean()) {
 
 
-            Entity2020Entity entity =
-                    ModEntities.ENTITY2020.get()
+
+            RealObserveEntity entity =
+                    ModEntities.REAL_OBSERVE.get()
                             .create(level);
 
 
 
-            if(entity != null) {
 
-                entity.moveTo(
-                        pos,
-                        player.getYRot(),
-                        0
-                );
+        if(entity != null) {
 
 
-                level.addFreshEntity(entity);
+            entity.moveTo(
+                    pos,
+                    player.getYRot(),
+                    0
+            );
 
 
-                LOGGER.info(
-                        "Entity2020 spawned near {}",
-                        player.getName().getString()
-                );
 
-            }
+            level.addFreshEntity(entity);
+
+
+
+            LOGGER.info(
+                    "RealObserve spawned near {}",
+                    player.getName().getString()
+            );
+
+        }
 
 
 
         } else {
 
 
-            RealEntity entity =
-                    ModEntities.REAL.get()
+
+            FakeEntity entity =
+                    ModEntities.FAKE.get()
                             .create(level);
 
 
@@ -307,8 +515,9 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
                 level.addFreshEntity(entity);
 
 
+
                 LOGGER.info(
-                        "Real spawned near {}",
+                        "Fake spawned near {}",
                         player.getName().getString()
                 );
 
@@ -318,135 +527,8 @@ private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
 
     }
 
-
-// ==========================
-// PURGATORY ENCOUNTER SYSTEM
-// ==========================
-
-@SubscribeEvent
-public void purgatoryEncounterTick(
-        TickEvent.PlayerTickEvent event
-) {
-
-    if(event.phase != TickEvent.Phase.END)
-        return;
-
-    if(!(event.player instanceof ServerPlayer player))
-        return;
-
-    if(player.level().isClientSide)
-        return;
-
-    if(!player.level()
-            .dimension()
-            .location()
-            .equals(
-                    new ResourceLocation(
-                            MODID,
-                            "purgatory"
-                    )
-            )) {
-        return;
-    }
-
-    int timer =
-            purgatoryEncounterTimers.getOrDefault(
-                    player,
-                    0
-            );
-
-    timer++;
-
-    if(timer >= PURGATORY_ENCOUNTER_TIME) {
-
-        spawnPurgatoryEncounter(player);
-
-        timer = 0;
-    }
-
-    purgatoryEncounterTimers.put(
-            player,
-            timer
-    );
-}
-
-private void spawnPurgatoryEncounter(
-        ServerPlayer player
-) {
-
-    ServerLevel level =
-            player.serverLevel();
-
-    Vec3 look =
-            player.getLookAngle();
-
-    BlockPos pos =
-            BlockPos.containing(
-                    player.position()
-                            .add(
-                                    look.x * 50,
-                                    0,
-                                    look.z * 50
-                            )
-            );
-
-    pos =
-            level.getHeightmapPos(
-                    Heightmap.Types.MOTION_BLOCKING,
-                    pos
-            );
-
-    if(RANDOM.nextBoolean()) {
-
-        RealObserveEntity entity =
-                ModEntities.REAL_OBSERVE.get()
-                        .create(level);
-
-        if(entity != null) {
-
-            entity.moveTo(
-                    pos,
-                    player.getYRot(),
-                    0
-            );
-
-            level.addFreshEntity(entity);
-
-            LOGGER.info(
-                    "RealObserve spawned near {}",
-                    player.getName().getString()
-            );
-        }
-
-    } else {
-
-        FakeEntity entity =
-                ModEntities.FAKE.get()
-                        .create(level);
-
-        if(entity != null) {
-
-            entity.moveTo(
-                    pos,
-                    player.getYRot(),
-                    0
-            );
-
-            level.addFreshEntity(entity);
-
-            LOGGER.info(
-                    "Fake spawned near {}",
-                    player.getName().getString()
-            );
-        }
-    }
-}
-
-
-
-
-    // ==========================
-    // NATURAL AETHER PORTALS
+        // ==========================
+    // NATURAL PORTAL GENERATION
     // ==========================
 
 
@@ -461,6 +543,7 @@ private void spawnPurgatoryEncounter(
 
 
 
+        // only generate in overworld
         if(!level.dimension()
                 .equals(Level.OVERWORLD))
             return;
@@ -471,6 +554,7 @@ private void spawnPurgatoryEncounter(
                 event.getChunk()
                         .getPos()
                         .x;
+
 
 
         int chunkZ =
@@ -490,12 +574,7 @@ private void spawnPurgatoryEncounter(
 
 
 
-
-        // TESTING:
-        // 1 = every chunk
-        // 10 = every 10 chunks
-        // 250 = default
-        if(RANDOM.nextInt(250) != 0)
+        if(RANDOM.nextInt(PORTAL_CHANCE) != 0)
             return;
 
 
@@ -504,43 +583,62 @@ private void spawnPurgatoryEncounter(
 
 
 
-
-        // wait 1 tick before editing world
         level.getServer()
                 .tell(
                         new TickTask(
                                 1,
                                 () -> {
 
+
                                     BlockPos pos =
                                             new BlockPos(
-                                                    chunkX * 16
-                                                            + RANDOM.nextInt(16),
-                                                    70,
-                                                    chunkZ * 16
-                                                            + RANDOM.nextInt(16)
+                                                    chunkX * 16 + 8,
+                                                    0,
+                                                    chunkZ * 16 + 8
                                             );
+
 
 
                                     pos =
                                             level.getHeightmapPos(
-                                                    Heightmap.Types.MOTION_BLOCKING,
+                                                    Heightmap.Types.WORLD_SURFACE,
                                                     pos
                                             );
 
 
-                                    buildPortal(
-                                            level,
-                                            pos
-                                    );
+
+                                    // randomly choose portal type
+
+                                    if(RANDOM.nextBoolean()) {
 
 
-                                    LOGGER.info(
-                                            "Natural Aether portal generated at {} {} {}",
-                                            pos.getX(),
-                                            pos.getY(),
-                                            pos.getZ()
-                                    );
+                                        buildAetherPortal(
+                                                level,
+                                                pos
+                                        );
+
+
+                                        LOGGER.info(
+                                                "Natural Aether portal generated at {}",
+                                                pos
+                                        );
+
+
+                                    } else {
+
+
+                                        buildPurgatoryPortal(
+                                                level,
+                                                pos
+                                        );
+
+
+                                        LOGGER.info(
+                                                "Natural Purgatory portal generated at {}",
+                                                pos
+                                        );
+
+                                    }
 
                                 }
                         )
@@ -548,13 +646,7 @@ private void spawnPurgatoryEncounter(
 
     }
 
-
-
-
-
-
-
-    private void buildPortal(
+        private void buildAetherPortal(
             ServerLevel level,
             BlockPos pos
     ) {
@@ -571,7 +663,6 @@ private void spawnPurgatoryEncounter(
                 ModBlocks.AETHER_PORTAL
                         .get()
                         .defaultBlockState();
-
 
 
 
@@ -611,4 +702,34 @@ private void spawnPurgatoryEncounter(
 
     }
 
+
+
+
+
+    private void buildPurgatoryPortal(
+        ServerLevel level,
+        BlockPos pos
+) {
+
+    BlockState portal =
+            ModBlocks.PURGATORY_PORTAL
+                    .get()
+                    .defaultBlockState();
+
+
+    for(int y = 0; y < 50; y++) {
+
+        BlockPos place =
+                pos.above(y);
+
+
+        level.setBlock(
+                place,
+                portal,
+                3
+        );
+
+    }
+
+}
 }
