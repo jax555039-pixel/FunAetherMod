@@ -43,7 +43,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-
+import com.jax.funaethermod.world.DimensionPortalHandler;
 
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
@@ -103,38 +103,33 @@ public class FunAetherMod {
 
     public FunAetherMod() {
 
-
-        IEventBus modEventBus =
-                FMLJavaModLoadingContext.get()
-                        .getModEventBus();
-
+    IEventBus modEventBus =
+            FMLJavaModLoadingContext.get()
+                    .getModEventBus();
 
 
-        ModBlocks.register(modEventBus);
-
-        ModItems.register(modEventBus);
-
-        ModEntities.register(modEventBus);
-
-        ModSounds.register(modEventBus);
+    ModBlocks.register(modEventBus);
+    ModItems.register(modEventBus);
+    ModEntities.register(modEventBus);
+    ModSounds.register(modEventBus);
 
 
-
-        modEventBus.addListener(
-                this::commonSetup
-        );
-
+    modEventBus.addListener(
+            this::commonSetup
+    );
 
 
-        MinecraftForge.EVENT_BUS.register(this);
+    MinecraftForge.EVENT_BUS.register(this);
 
 
+    new DimensionPortalHandler();
 
-        LOGGER.info(
-                "Fun Aether Mod loaded!"
-        );
 
-    }
+    LOGGER.info(
+            "Fun Aether Mod loaded!"
+    );
+
+}
 
 
 
@@ -183,7 +178,6 @@ public class FunAetherMod {
 
         if(player.level().isClientSide)
             return;
-
 
 
         if(!player.level()
@@ -366,7 +360,6 @@ public class FunAetherMod {
 
         if(player.level().isClientSide)
             return;
-
 
 
         if(!player.level()
@@ -619,8 +612,10 @@ public class FunAetherMod {
 
 
                                         LOGGER.info(
-                                                "Natural Aether portal generated at {}",
-                                                pos
+                                                "Natural Aether portal generated at X:{} Y:{} Z:{}",
+                                                pos.getX(),
+                                                pos.getY(),
+                                                pos.getZ()
                                         );
 
 
@@ -635,7 +630,9 @@ public class FunAetherMod {
 
                                         LOGGER.info(
                                                 "Natural Purgatory portal generated at {}",
-                                                pos
+                                                pos.getX(),
+                                                pos.getY(),
+                                                pos.getZ()
                                         );
 
                                     }

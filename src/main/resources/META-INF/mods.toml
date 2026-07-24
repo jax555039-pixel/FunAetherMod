@@ -4,15 +4,12 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="funaethermod"
-version="1.0.0"
+version="0.0.2-beta"
 displayName="Fun Aether Mod"
 authors="BLLEEACH"
 
 description='''
-You're not alone.
-
-WARNING: This is a HORROR mod, not a normal Aether mod.
-Explore dimensions, uncover lore, and survive strange encounters.
+d2UgYXJlIHN0aWxsIGhlcmU=
 '''
 
 [[dependencies.funaethermod]]
