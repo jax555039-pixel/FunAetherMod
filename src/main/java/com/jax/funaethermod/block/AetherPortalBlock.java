@@ -28,6 +28,8 @@ import net.minecraftforge.common.util.ITeleporter;
 
 import java.util.function.Function;
 
+import com.jax.funaethermod.world.DimensionPortalHandler;
+
 
 public class AetherPortalBlock extends Block {
 
@@ -120,9 +122,8 @@ public class AetherPortalBlock extends Block {
 
         if (destination == null) {
             return;
-        }
-
-
+        } 
+        
 
         player.changeDimension(
                 destination,

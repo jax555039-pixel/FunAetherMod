@@ -3,6 +3,7 @@ package com.jax.funaethermod.registry;
 import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.entity.Entity2020Entity;
 
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;

@@ -21,5 +21,14 @@
     "sounds": [
       "funaethermod:fake_ambient"
     ]
+  },
+
+  "poorboy_cry": {
+    "sounds": [
+      {
+        "name": "funaethermod:poorboy_cry",
+        "stream": false
+      }
+    ]
   }
 }

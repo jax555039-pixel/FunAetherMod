@@ -1,38 +1,37 @@
 # FunAetherMod - TODO
 
-## Beta 1.0.1
+## Beta 0.0.2
+
+## x=done []=not done ?=waiting for playtester to play it
 
 ### High Priority (Must Fix)
 
-* [ ] Fix natural Portal spawn rates their should never be one in at minimum 20 chunks from spawn
-* [ ] Add return portals in:
+* [x] Fix natural Portal spawn rates their should never be one in at minimum 20 chunks from spawn
+* [x] Add return portals in:
 
-  * [ ] Aether
-  * [ ] Purgatory
-* [ ] Verify teleportation works both directions
-* [ ] Lower Fake spawn rate
+  * [x] Aether
+  * [x] Purgatory
+  * [x] Verify teleportation works both directions
+* [x] Lower Fake spawn rate
 
-  * [ ] Only one Fake can spawn at once
-  * [ ] Increase time between Fake encounters
-* [ ] Balance encounter timers
-
-  * [ ] Aether
-  * [ ] Purgatory
-* [ ] Fix missing 2020 texture on other installations
-* [ ] Test fresh world generation
-* [ ] make purgatory portals spawn in aether
+  * [x] Only one Fake can spawn at once
+* [x] Fix missing 2020 texture on other installations
+* [x] make purgatory portals spawn in aether
 * [ ] make purgatory have portals to every dimension including future ones
+* [?] make entites spawn natrualy in the overworld
+ * [?] realobserve
+ * [?] fake
 ---
 
 ## New Features
 
 ### Poorboy
 
-* [ ] Create Poorboy entity
-* [ ] Model
-* [ ] Texture
-* [ ] Sounds
-* [ ] AI
+* [x] Create Poorboy entity
+* [x] Model
+* [x] Texture
+* [x] Sounds
+* [x] AI
 * [ ] Spawn logic
 
 ### coolboy_2012 Story
@@ -129,8 +128,8 @@ Example messages:
 
 ## Ideas (Future)
 
-* [ ] More fake players
-* [ ] More dimensions
+* [ ] 12+ More entites
+* [ ] 7+ More dimensions
 * [ ] Secret endings
 * [ ] Rare structures
 * [ ] Hidden achievements
@@ -138,18 +137,3 @@ Example messages:
 * [ ] More horror events
 * [ ] Story progression
 * [ ] Additional entities
-
-
-## Known Bugs
-
-- [ ] Portal generation can overlap terrain
-- [ ] Fake AI occasionally freezes
-- [ ] Need better encounter balancing
-
-## Beta 1.0.2
-
-- [ ] More fake player names
-- [ ] Better structures
-- [ ] More dialogue
-- [ ] more dimensions
-- [ ] more entites

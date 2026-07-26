@@ -15,6 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 
 import com.jax.funaethermod.client.model.FakeEntityModel;
 import com.jax.funaethermod.renderer.FakeEntityRenderer;
+import com.jax.funaethermod.client.model.PoorBoyModel;
+import com.jax.funaethermod.renderer.PoorBoyRenderer;
 
 @Mod.EventBusSubscriber(
         modid = FunAetherMod.MODID,
@@ -45,6 +47,11 @@ public class ClientModEvents {
         ModEntities.FAKE.get(),
         FakeEntityRenderer::new
 );
+
+        event.registerEntityRenderer(
+        ModEntities.POORBOY.get(),
+        PoorBoyRenderer::new
+);
     }
 
 
@@ -64,6 +71,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 FakeEntityModel.LAYER_LOCATION,
                 FakeEntityModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                PoorBoyModel.LAYER_LOCATION,
+                PoorBoyModel::createBodyLayer
         );
     }
 }

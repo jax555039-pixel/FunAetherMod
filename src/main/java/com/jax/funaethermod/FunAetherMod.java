@@ -4,6 +4,7 @@ import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.RealEntity;
 import com.jax.funaethermod.entity.RealObserveEntity;
 import com.jax.funaethermod.entity.FakeEntity;
+import com.jax.funaethermod.entity.PoorBoyEntity;
 
 import com.jax.funaethermod.registry.ModBlocks;
 import com.jax.funaethermod.registry.ModEntities;
@@ -17,7 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -44,6 +47,16 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import com.jax.funaethermod.world.DimensionPortalHandler;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraft.server.TickTask;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.PathfinderMob;
 
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
@@ -60,7 +73,45 @@ public class FunAetherMod {
     private static final Random RANDOM =
             new Random();
 
+            private long getWorldDay(ServerLevel level) {
 
+    return level.getDayTime() / 24000L;
+
+}
+
+            
+@SubscribeEvent
+public void fakeDeath(
+        LivingDeathEvent event
+) {
+
+    if(event.getEntity() instanceof FakeEntity) {
+
+        fakeActive = false;
+
+        LOGGER.info(
+                "Fake removed, new Fake encounters allowed"
+        );
+
+    }
+
+}
+
+private void spawnOverworldEncounter(
+        ServerPlayer player
+) {
+
+    // use the exact same behavior as Purgatory
+
+    spawnPurgatoryEncounter(player);
+
+}
+
+//=============================
+//POORBOY ENCOUNTER SETTINGS
+//=============================
+
+private static final int POORBOY_ENCOUNTER_TIME = 1200;
 
     // ==========================
     // AETHER ENCOUNTER SETTINGS
@@ -71,7 +122,9 @@ public class FunAetherMod {
 
 
     private static final Map<ServerPlayer, Integer> encounterTimers =
-            new HashMap<>();
+        new HashMap<>();
+
+
 
 
 
@@ -86,6 +139,7 @@ public class FunAetherMod {
     private static final Map<ServerPlayer, Integer> purgatoryEncounterTimers =
             new HashMap<>();
 
+            private static boolean fakeActive = false;
 
 
     // ==========================
@@ -136,6 +190,24 @@ public class FunAetherMod {
     private void commonSetup(
             final FMLCommonSetupEvent event
     ) {
+
+        event.enqueueWork(() -> {
+
+    SpawnPlacements.register(
+            ModEntities.REAL_OBSERVE.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+            PathfinderMob::checkMobSpawnRules
+    );
+
+    SpawnPlacements.register(
+            ModEntities.FAKE.get(),
+            SpawnPlacements.Type.ON_GROUND,
+            Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+            PathfinderMob::checkMobSpawnRules
+    );
+
+});
 
         LOGGER.info(
                 "Common setup complete!"
@@ -415,49 +487,56 @@ public class FunAetherMod {
 
 
     private void spawnPurgatoryEncounter(
-            ServerPlayer player
-    ) {
+        ServerPlayer player
+) {
+
+    ServerLevel level =
+            player.serverLevel();
 
 
-        ServerLevel level =
-                player.serverLevel();
+    Vec3 look =
+            player.getLookAngle();
 
 
-
-        Vec3 look =
-                player.getLookAngle();
-
-
-
-        BlockPos pos =
-                BlockPos.containing(
-                        player.position()
-                                .add(
-                                        look.x * 50,
-                                        0,
-                                        look.z * 50
-                                )
-                );
+    BlockPos pos =
+            BlockPos.containing(
+                    player.position()
+                            .add(
+                                    look.x * 50,
+                                    0,
+                                    look.z * 50
+                            )
+            );
 
 
-
-        pos =
-                level.getHeightmapPos(
-                        Heightmap.Types.MOTION_BLOCKING,
-                        pos
-                );
-
+    pos =
+            level.getHeightmapPos(
+                    Heightmap.Types.MOTION_BLOCKING,
+                    pos
+            );
 
 
-
-        if(RANDOM.nextBoolean()) {
+    long day =
+            getWorldDay(level);
 
 
 
-            RealObserveEntity entity =
-                    ModEntities.REAL_OBSERVE.get()
-                            .create(level);
+    // ==========================
+    // REAL OBSERVE
+    // Day 2+
+    // ==========================
 
+    if(RANDOM.nextInt(5) != 0) {
+
+
+        if(day <= 1)
+            return;
+
+
+
+        RealObserveEntity entity =
+                ModEntities.REAL_OBSERVE.get()
+                        .create(level);
 
 
 
@@ -471,9 +550,7 @@ public class FunAetherMod {
             );
 
 
-
             level.addFreshEntity(entity);
-
 
 
             LOGGER.info(
@@ -484,41 +561,113 @@ public class FunAetherMod {
         }
 
 
+        return;
+
+    }
+
+
+
+
+    // ==========================
+    // FAKE
+    // Day 1: rare, lasts 10 seconds
+    // Day 2+: more common, lasts 1.5 minutes
+    // ==========================
+
+
+    if(fakeActive)
+        return;
+
+
+
+    if(day <= 1) {
+
+
+        // Day 1 Fake chance
+        if(RANDOM.nextInt(100) != 0)
+            return;
+
+
+    } else {
+
+
+        // Day 2+ Fake chance
+        if(RANDOM.nextInt(25) != 0)
+            return;
+
+    }
+
+
+
+    FakeEntity entity =
+            ModEntities.FAKE.get()
+                    .create(level);
+
+
+
+    if(entity != null) {
+
+
+        entity.moveTo(
+                pos,
+                player.getYRot(),
+                0
+        );
+
+
+        level.addFreshEntity(entity);
+
+
+        fakeActive = true;
+
+
+        int lifeTicks;
+
+
+        if(day <= 1) {
+
+            lifeTicks = 20 * 10; // 10 seconds
 
         } else {
 
-
-
-            FakeEntity entity =
-                    ModEntities.FAKE.get()
-                            .create(level);
-
-
-
-            if(entity != null) {
-
-
-                entity.moveTo(
-                        pos,
-                        player.getYRot(),
-                        0
-                );
-
-
-                level.addFreshEntity(entity);
-
-
-
-                LOGGER.info(
-                        "Fake spawned near {}",
-                        player.getName().getString()
-                );
-
-            }
+            lifeTicks = 20 * 90; // 1.5 minutes
 
         }
 
+
+
+        entity.setPersistenceRequired();
+
+
+
+        level.getServer().tell(
+                new TickTask(
+                        level.getServer().getTickCount() + lifeTicks,
+                        () -> {
+
+                            if(entity.isAlive()) {
+
+                                entity.discard();
+
+                            }
+
+
+                            fakeActive = false;
+
+                        }
+                )
+        );
+
+
+
+        LOGGER.info(
+                "Fake spawned near {}",
+                player.getName().getString()
+        );
+
     }
+
+}
 
         // ==========================
     // NATURAL PORTAL GENERATION
@@ -555,7 +704,16 @@ public class FunAetherMod {
                         .getPos()
                         .z;
 
+        // Don't generate portals within 20 chunks of world spawn
+BlockPos spawn = level.getSharedSpawnPos();
 
+int spawnChunkX = spawn.getX() >> 4;
+int spawnChunkZ = spawn.getZ() >> 4;
+
+if (Math.abs(chunkX - spawnChunkX) <= 20 &&
+    Math.abs(chunkZ - spawnChunkZ) <= 20) {
+    return;
+}
 
         String id =
                 chunkX + "," + chunkZ;
@@ -728,5 +886,189 @@ public class FunAetherMod {
 
     }
 
+}
+
+// ==========================
+// AETHER NATURAL PURGATORY PORTAL GENERATION
+// ==========================
+
+@SubscribeEvent
+public void onAetherChunkLoad(
+        ChunkEvent.Load event
+) {
+
+    if(!(event.getLevel() instanceof ServerLevel level))
+        return;
+
+
+    ResourceKey<Level> AETHER =
+            ResourceKey.create(
+                    Registries.DIMENSION,
+                    new ResourceLocation(
+                            MODID,
+                            "aether"
+                    )
+            );
+
+
+    if(!level.dimension().equals(AETHER))
+        return;
+
+
+    int chunkX =
+            event.getChunk()
+                    .getPos()
+                    .x;
+
+
+    int chunkZ =
+            event.getChunk()
+                    .getPos()
+                    .z;
+
+
+    String id =
+            "aether_" + chunkX + "," + chunkZ;
+
+
+    if(generatedChunks.contains(id))
+        return;
+
+
+    if(RANDOM.nextInt(PORTAL_CHANCE) != 0)
+        return;
+
+
+    generatedChunks.add(id);
+
+
+    level.getServer()
+            .tell(
+                    new TickTask(
+                            1,
+                            () -> {
+
+
+                                BlockPos pos =
+                                        new BlockPos(
+                                                chunkX * 16 + 8,
+                                                0,
+                                                chunkZ * 16 + 8
+                                        );
+
+
+                                pos =
+                                        level.getHeightmapPos(
+                                                Heightmap.Types.WORLD_SURFACE,
+                                                pos
+                                        );
+
+
+                                buildPurgatoryPortal(
+                                        level,
+                                        pos
+                                );
+
+
+                                LOGGER.info(
+                                    "Natural Purgatory portal generated in Aether at X:{} Y:{} Z:{}",
+                                    pos.getX(),
+                                    pos.getY(),
+                                    pos.getZ()
+                                );
+
+                            }
+                    )
+            );
+        }
+// ==========================
+// OVERWORLD ENCOUNTER SYSTEM
+// ==========================
+
+@SubscribeEvent
+public void overworldEncounterTick(
+        TickEvent.PlayerTickEvent event
+) {
+
+    if(event.phase != TickEvent.Phase.END)
+        return;
+
+    if(!(event.player instanceof ServerPlayer player))
+        return;
+
+    if(player.level().isClientSide)
+        return;
+
+    if(!player.level()
+            .dimension()
+            .equals(Level.OVERWORLD)) {
+        return;
+    }
+
+    int timer =
+            encounterTimers.getOrDefault(
+                    player,
+                    0
+            );
+
+    timer++;
+
+    if(timer >= POORBOY_ENCOUNTER_TIME) {
+        spawnPoorBoyEncounter(player);
+        timer = 0;
+    }
+
+    encounterTimers.put(
+            player,
+            timer
+    );
+}
+
+private void spawnPoorBoyEncounter(
+        ServerPlayer player
+) {
+
+    ServerLevel level =
+            player.serverLevel();
+
+    Vec3 look =
+            player.getLookAngle();
+
+    BlockPos pos =
+            BlockPos.containing(
+                    player.position().add(
+                            look.x * 50,
+                            0,
+                            look.z * 50
+                    )
+            );
+
+    pos =
+            level.getHeightmapPos(
+                    Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    pos
+            );
+
+    PoorBoyEntity entity =
+            ModEntities.POORBOY.get().create(level);
+
+    if(entity != null) {
+
+        entity.moveTo(
+                pos,
+                player.getYRot(),
+                0
+        );
+
+        level.addFreshEntity(entity);
+
+        LOGGER.info(
+                "PoorBoy spawned near {} at X:{} Y:{} Z:{}",
+                player.getName().getString(),
+                pos.getX(),
+                pos.getY(),
+                pos.getZ()
+        );
+    }
 }
 }

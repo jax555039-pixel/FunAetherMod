@@ -28,6 +28,8 @@ import net.minecraftforge.common.util.ITeleporter;
 
 import java.util.function.Function;
 
+import com.jax.funaethermod.world.DimensionPortalHandler;
+
 
 public class PurgatoryPortalBlock extends Block {
 

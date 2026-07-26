@@ -30,6 +30,11 @@ public class ModEntityAttributes {
                 ModEntities.FAKE.get(),
                 FakeEntity.createAttributes().build()
         );
+
+        event.put(
+                ModEntities.POORBOY.get(),
+                PoorBoyEntity.createAttributes().build()
+        );
     }
 }
 
