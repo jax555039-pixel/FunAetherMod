@@ -1,5 +1,8 @@
 package com.jax.funaethermod.entity;
 
+import com.jax.funaethermod.registry.ModSounds;
+
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
@@ -47,6 +50,10 @@ public class Entity2020Entity extends PathfinderMob {
             return;
         }
 
+        if (this.tickCount == 1) {
+            this.playSound(this.getAmbientSound(), 1.0F, 1.0F);
+        }
+
         Player player = this.level().getNearestPlayer(this, STARE_RANGE);
 
         if (player == null) {
@@ -64,6 +71,16 @@ public class Entity2020Entity extends PathfinderMob {
             player.hurt(this.damageSources().magic(), 2.0F);
             damageCooldown = 20;
         }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.ENTITY2020_AMBIENT.get();
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        return 100;
     }
 
     @Override

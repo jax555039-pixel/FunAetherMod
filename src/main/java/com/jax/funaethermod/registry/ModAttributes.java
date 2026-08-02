@@ -21,5 +21,10 @@ public class ModAttributes {
                 Entity2020Entity.createAttributes().build()
         );
 
+        event.put(
+                ModEntities.ENTITY2020_ATTACK.get(),
+                com.jax.funaethermod.entity.Entity2020AttackEntity.createAttributes().build()
+        );
+
     }
 }

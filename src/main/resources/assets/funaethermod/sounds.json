@@ -17,6 +17,18 @@
     ]
   },
 
+  "entity2020_ambient": {
+    "sounds": [
+      "funaethermod:entity2020_ambient"
+    ]
+  },
+
+  "entity2020attack": {
+    "sounds": [
+      "funaethermod:entity2020attack"
+    ]
+  },
+
   "fake_ambient": {
     "sounds": [
       "funaethermod:fake_ambient"

@@ -32,21 +32,17 @@
 * [x] Texture
 * [x] Sounds
 * [x] AI
-* [ ] Spawn logic
+* [x] Spawn logic
 
-### coolboy_2012 Story
-
-* [ ] "coolboy_2012 joined the game"
-* [ ] Random chat messages
-* [ ] "coolboy_2012 left the game"
-* [ ] Spawn Poorboy later
 
 ---
 
-## Fake Player Chat System
+## BETA 0.0.3
 
-* [ ] Fake join messages
-* [ ] Fake leave messages
+## Player Chat System
+
+* [ ] player join messages
+* [ ] player leave messages
 * [ ] Random conversations
 
 Example names:
@@ -57,12 +53,7 @@ Example names:
 
 Example messages:
 
-* hello?
-* where are you?
-* i found something
-* WHAT THE FUCK IS THAT
-* WHY WHY WHY WHY WHY
-* DONT LEAVE ME HERE
+* refer to the recovered logs google doc
 
 ---
 
@@ -96,8 +87,11 @@ Example messages:
 ## 2020 Attack Mode
 
 * [ ] Create attack form
-* [ ] Teleport player to Subsequence
-* [ ] Custom sounds
+  * [X] entity create entity2020attackentity file in entity folder
+  * [X] renderer  create entity2020attackrenderer file in renderer folder
+  * [X] registry  register entity2020attackentity in modentites.java in registry folder
+  * [ ] Teleport player to Subsequence
+  * [ ] Custom sounds
 
 ---
 
@@ -137,3 +131,7 @@ Example messages:
 * [ ] More horror events
 * [ ] Story progression
 * [ ] Additional entities
+
+
+## FUN AETHER MOD 1.0.0
+

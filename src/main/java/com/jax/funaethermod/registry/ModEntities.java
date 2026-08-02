@@ -3,6 +3,7 @@ package com.jax.funaethermod.registry;
 import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.entity.RealEntity;
 import com.jax.funaethermod.entity.RealObserveEntity;
+import com.jax.funaethermod.entity.Entity2020AttackEntity;
 import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.FakeEntity;
 import com.jax.funaethermod.entity.PoorBoyEntity;
@@ -72,6 +73,16 @@ public class ModEntities {
                             .clientTrackingRange(8)
                             .build("poorboy")
             );
+
+            public static final RegistryObject<EntityType<Entity2020AttackEntity>> ENTITY2020_ATTACK =
+    ENTITY_TYPES.register(
+        "entity2020_attack",
+        () -> EntityType.Builder
+            .of(Entity2020AttackEntity::new, MobCategory.MONSTER)
+            .sized(2.0F, 6.0F)
+            .build("entity2020_attack")
+    );
+            
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
