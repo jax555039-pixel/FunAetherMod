@@ -14,6 +14,7 @@ import com.jax.funaethermod.world.DimensionPortalHandler;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
@@ -28,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -57,6 +59,17 @@ public class FunAetherMod {
 
     private static final Random RANDOM =
             new Random();
+
+    private static final String REALNESS_NAME = "realness_12321";
+    private static final String FAKESHADOW_NAME = "xxfakeshadowxx";
+    private static final String COOLBOY_NAME = "coolboy_2012";
+
+    private int fakePlayerConversationTimer = 0;
+    private int fakePlayerConversationStep = 0;
+    private String activeFakePlayerName = null;
+    private boolean realnessHasJoinedThisSession = false;
+    private boolean fakeShadowHasJoinedThisSession = false;
+    private boolean coolboyHasJoinedThisSession = false;
 
             private long getWorldDay(ServerLevel level) {
 
@@ -254,6 +267,134 @@ private static final int POORBOY_ENCOUNTER_TIME = 1200;
                 "Server starting!"
         );
 
+    }
+
+    @SubscribeEvent
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        String name = player.getName().getString();
+        player.serverLevel().getServer().getPlayerList().broadcastSystemMessage(
+                Component.literal(name + " joined the game"),
+                false
+        );
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        String name = player.getName().getString();
+        player.serverLevel().getServer().getPlayerList().broadcastSystemMessage(
+                Component.literal(name + " left the game"),
+                false
+        );
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+
+        if (event.getServer() == null) {
+            return;
+        }
+
+        ServerLevel level = event.getServer().getLevel(Level.OVERWORLD);
+        if (level == null) {
+            return;
+        }
+
+        long day = getWorldDay(level);
+        if (day < 2) {
+            return;
+        }
+
+        if (fakePlayerConversationTimer > 0) {
+            fakePlayerConversationTimer--;
+            return;
+        }
+
+        if (activeFakePlayerName == null) {
+            if (RANDOM.nextInt(3) != 0) {
+                return;
+            }
+
+            String candidate = null;
+            if (!realnessHasJoinedThisSession && RANDOM.nextBoolean()) {
+                candidate = REALNESS_NAME;
+            } else if (!fakeShadowHasJoinedThisSession && day >= 2 && RANDOM.nextBoolean()) {
+                candidate = FAKESHADOW_NAME;
+            } else if (!coolboyHasJoinedThisSession && day >= 2) {
+                candidate = COOLBOY_NAME;
+            }
+
+            if (candidate == null) {
+                return;
+            }
+
+            activeFakePlayerName = candidate;
+            fakePlayerConversationStep = 0;
+        }
+
+        switch (fakePlayerConversationStep) {
+            case 0 -> {
+                level.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal(activeFakePlayerName + " joined the game"),
+                        false
+                );
+                fakePlayerConversationStep = 1;
+                fakePlayerConversationTimer = 20 * 10;
+            }
+            case 1 -> {
+                String message = switch (activeFakePlayerName) {
+                    case REALNESS_NAME -> "my skin is gone";
+                    case FAKESHADOW_NAME -> "where's my friends";
+                    case COOLBOY_NAME -> "they're crawling in my face";
+                    default -> "i want to go home";
+                };
+
+                if (activeFakePlayerName.equals(COOLBOY_NAME)) {
+                    message = "they're crawling in my face";
+                }
+
+                if (activeFakePlayerName.equals(FAKESHADOW_NAME)) {
+                    message = "where's my friends";
+                }
+
+                if (activeFakePlayerName.equals(REALNESS_NAME)) {
+                    message = "my skin is gone";
+                }
+
+                level.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal(activeFakePlayerName + ": " + message),
+                        false
+                );
+                fakePlayerConversationStep = 2;
+                fakePlayerConversationTimer = 20 * 10;
+            }
+            case 2 -> {
+                level.getServer().getPlayerList().broadcastSystemMessage(
+                        Component.literal(activeFakePlayerName + " left the game"),
+                        false
+                );
+                if (activeFakePlayerName.equals(REALNESS_NAME)) {
+                    realnessHasJoinedThisSession = true;
+                } else if (activeFakePlayerName.equals(FAKESHADOW_NAME)) {
+                    fakeShadowHasJoinedThisSession = true;
+                } else if (activeFakePlayerName.equals(COOLBOY_NAME)) {
+                    coolboyHasJoinedThisSession = true;
+                }
+                activeFakePlayerName = null;
+                fakePlayerConversationStep = 0;
+                fakePlayerConversationTimer = 20 * 60 * 3;
+            }
+        }
     }
 
 

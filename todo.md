@@ -37,13 +37,18 @@
 
 ---
 
-## BETA 0.0.3
+## BETA 0.0.4
 
 ## Player Chat System
 
 * [ ] player join messages
+  * [ ] when a real player joins, the chat says: `<playername> joined the game`
+  * [ ] the message should not literally say "player" or use the placeholder name; it should use the actual player name
 * [ ] player leave messages
+  * [ ] when a real player leaves, the chat says: `<playername> left the game`
 * [ ] Random conversations
+  * [ ] fake players like `realness_12321` and `xxfakeshadowxx` can only join, talk, and leave on day 2
+  * [ ] fake players should not appear before day 2
 
 Example names:
 
@@ -84,9 +89,20 @@ Example messages:
 
 ---
 
+## consequence dimension
+
+* [ ] falling into the void in any dimesnion results in a teleport here
+* [ ] red sky
+* [ ] end terrain
+* [ ] heavy fog 
+* [ ] ambent music inspired by the end music that plays in the end
+* [ ] entites like 2020 attack mode and poorboy can spawn here 
+* [ ] layers are  bedrock bedrock and bedrock
+
+beta 0.0.3/4
 ## 2020 Attack Mode
 
-* [ ] Create attack form
+* [x] Create attack form
   * [X] entity create entity2020attackentity file in entity folder
   * [X] renderer  create entity2020attackrenderer file in renderer folder
   * [X] registry  register entity2020attackentity in modentites.java in registry folder
@@ -94,6 +110,8 @@ Example messages:
   * [ ] Custom sounds
 
 ---
+
+## 
 
 ## Polish
 
