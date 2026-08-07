@@ -28,6 +28,8 @@ import net.minecraftforge.common.util.ITeleporter;
 
 import java.util.function.Function;
 
+import com.jax.funaethermod.FunAetherMod;
+
 import com.jax.funaethermod.world.DimensionPortalHandler;
 
 
@@ -78,108 +80,139 @@ public class PurgatoryPortalBlock extends Block {
 
 
     @Override
-    public void entityInside(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            Entity entity
-    ) {
+public void entityInside(
+        BlockState state,
+        Level level,
+        BlockPos pos,
+        Entity entity
+) {
+
+    if (level.isClientSide)
+        return;
+
+    if (!(entity instanceof ServerPlayer player))
+        return;
+
+    if (player.isChangingDimension())
+        return;
+
+    if (!(level instanceof ServerLevel serverLevel))
+        return;
 
 
-        if (level.isClientSide) {
-            return;
-        }
+    ResourceKey<Level> destinationKey;
 
 
-        if (!(entity instanceof ServerPlayer player)) {
-            return;
-        }
+    // Overworld -> Purgatory
+    if (serverLevel.dimension().equals(Level.OVERWORLD)) {
+
+        destinationKey = ResourceKey.create(
+                Registries.DIMENSION,
+                new ResourceLocation(
+                        FunAetherMod.MODID,
+                        "purgatory"
+                )
+        );
+
+    }
+
+    // Purgatory -> Overworld
+    else {
+
+        destinationKey = Level.OVERWORLD;
+
+    }
 
 
-        if (player.isChangingDimension()) {
-            return;
-        }
+    ServerLevel destination =
+            serverLevel
+                    .getServer()
+                    .getLevel(destinationKey);
 
 
-        if (!(level instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        ResourceKey<Level> PURGATORY =
-                ResourceKey.create(
-                        Registries.DIMENSION,
-                        new ResourceLocation(
-                                "funaethermod",
-                                "purgatory"
-                        )
-                );
-
-
-        ServerLevel destination =
-                serverLevel
-                        .getServer()
-                        .getLevel(PURGATORY);
-
-
-        if (destination == null) {
-            return;
-        }
-
-
-
-        player.changeDimension(
-                destination,
-                new ITeleporter() {
-
-
-                    @Override
-                    public Entity placeEntity(
-                            Entity entity,
-                            ServerLevel currentLevel,
-                            ServerLevel destinationLevel,
-                            float yaw,
-                            Function<Boolean, Entity> repositionEntity
-                    ) {
-
-
-                        Entity movedEntity =
-                                repositionEntity.apply(false);
+    if (destination == null)
+        return;
 
 
 
-                        if (movedEntity instanceof ServerPlayer movedPlayer) {
+    player.changeDimension(
+            destination,
+            new ITeleporter() {
+
+                @Override
+                public Entity placeEntity(
+                        Entity entity,
+                        ServerLevel currentLevel,
+                        ServerLevel destinationLevel,
+                        float yaw,
+                        Function<Boolean, Entity> repositionEntity
+                ) {
 
 
-                            BlockPos safeSpawn =
+                    Entity movedEntity =
+                            repositionEntity.apply(false);
+
+
+
+                    if (movedEntity instanceof ServerPlayer movedPlayer) {
+
+
+                        BlockPos safeSpawn;
+
+
+                        // Going INTO Purgatory
+                        if (destinationLevel.dimension()
+                                .location()
+                                .toString()
+                                .equals("funaethermod:purgatory")) {
+
+
+                            safeSpawn =
                                     findSafepurgatorySpawn(
                                             destinationLevel
                                     );
 
 
+                        }
 
-                            movedPlayer.teleportTo(
-                                    destinationLevel,
-                                    safeSpawn.getX() + 0.5,
-                                    safeSpawn.getY(),
-                                    safeSpawn.getZ() + 0.5,
-                                    yaw,
-                                    movedPlayer.getXRot()
-                            );
+                        // Returning to Overworld
+                        else {
+
+
+                            safeSpawn =
+                                    destinationLevel
+                                            .getSharedSpawnPos()
+                                            .above();
+
+
                         }
 
 
 
-                        movedEntity.setDeltaMovement(
-                                0,
-                                0,
-                                0
+                        movedPlayer.teleportTo(
+                                destinationLevel,
+                                safeSpawn.getX() + 0.5,
+                                safeSpawn.getY(),
+                                safeSpawn.getZ() + 0.5,
+                                yaw,
+                                movedPlayer.getXRot()
                         );
-
-
-                        return movedEntity;
                     }
+
+
+
+                    movedEntity.setDeltaMovement(
+                            0,
+                            0,
+                            0
+                    );
+
+
+                    return movedEntity;
                 }
-        );
-    }
+            }
+    );
+}
 
 
 

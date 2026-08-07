@@ -28,7 +28,8 @@ import net.minecraftforge.common.util.ITeleporter;
 
 import java.util.function.Function;
 
-import com.jax.funaethermod.world.DimensionPortalHandler;
+import com.jax.funaethermod.FunAetherMod;
+
 
 
 public class AetherPortalBlock extends Block {
@@ -78,107 +79,113 @@ public class AetherPortalBlock extends Block {
 
 
     @Override
-    public void entityInside(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            Entity entity
-    ) {
+public void entityInside(
+        BlockState state,
+        Level level,
+        BlockPos pos,
+        Entity entity
+) {
 
+    if (level.isClientSide)
+        return;
 
-        if (level.isClientSide) {
-            return;
-        }
+    if (!(entity instanceof ServerPlayer player))
+        return;
 
+    if (player.isChangingDimension())
+        return;
 
-        if (!(entity instanceof ServerPlayer player)) {
-            return;
-        }
+    if (!(level instanceof ServerLevel serverLevel))
+        return;
 
+    ResourceKey<Level> destinationKey;
 
-        if (player.isChangingDimension()) {
-            return;
-        }
+    // Decide where to go
+    if (serverLevel.dimension().equals(Level.OVERWORLD)) {
 
+        destinationKey = ResourceKey.create(
+                Registries.DIMENSION,
+                new ResourceLocation(
+                        FunAetherMod.MODID,
+                        "aether"
+                )
+        );
 
-        if (!(level instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        ResourceKey<Level> AETHER =
-                ResourceKey.create(
-                        Registries.DIMENSION,
-                        new ResourceLocation(
-                                "funaethermod",
-                                "aether"
-                        )
-                );
+    } else {
 
+        destinationKey = Level.OVERWORLD;
 
-        ServerLevel destination =
-                serverLevel
-                        .getServer()
-                        .getLevel(AETHER);
+    }
 
+    ServerLevel destination =
+            serverLevel
+                    .getServer()
+                    .getLevel(destinationKey);
 
-        if (destination == null) {
-            return;
-        } 
-        
+    if (destination == null)
+        return;
 
-        player.changeDimension(
-                destination,
-                new ITeleporter() {
+    player.changeDimension(
+            destination,
+            new ITeleporter() {
 
+                @Override
+                public Entity placeEntity(
+                        Entity entity,
+                        ServerLevel currentLevel,
+                        ServerLevel destinationLevel,
+                        float yaw,
+                        Function<Boolean, Entity> repositionEntity
+                ) {
 
-                    @Override
-                    public Entity placeEntity(
-                            Entity entity,
-                            ServerLevel currentLevel,
-                            ServerLevel destinationLevel,
-                            float yaw,
-                            Function<Boolean, Entity> repositionEntity
-                    ) {
+                    Entity movedEntity =
+                            repositionEntity.apply(false);
 
+                    if (movedEntity instanceof ServerPlayer movedPlayer) {
 
-                        Entity movedEntity =
-                                repositionEntity.apply(false);
+                        BlockPos safeSpawn;
 
+                        // Going TO the Aether
+                        if (destinationLevel.dimension().location().toString()
+                                .equals("funaethermod:aether")) {
 
-
-                        if (movedEntity instanceof ServerPlayer movedPlayer) {
-
-
-                            BlockPos safeSpawn =
+                            safeSpawn =
                                     findSafeAetherSpawn(
                                             destinationLevel
                                     );
 
+                        }
+                        // Going BACK to the Overworld
+                        else {
 
+                            safeSpawn =
+                                    destinationLevel
+                                            .getSharedSpawnPos()
+                                            .above();
 
-                            movedPlayer.teleportTo(
-                                    destinationLevel,
-                                    safeSpawn.getX() + 0.5,
-                                    safeSpawn.getY(),
-                                    safeSpawn.getZ() + 0.5,
-                                    yaw,
-                                    movedPlayer.getXRot()
-                            );
                         }
 
-
-
-                        movedEntity.setDeltaMovement(
-                                0,
-                                0,
-                                0
+                        movedPlayer.teleportTo(
+                                destinationLevel,
+                                safeSpawn.getX() + 0.5,
+                                safeSpawn.getY(),
+                                safeSpawn.getZ() + 0.5,
+                                yaw,
+                                movedPlayer.getXRot()
                         );
-
-
-                        return movedEntity;
                     }
+
+                    movedEntity.setDeltaMovement(
+                            0,
+                            0,
+                            0
+                    );
+
+                    return movedEntity;
                 }
-        );
-    }
+            }
+    );
+}
 
 
 
