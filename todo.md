@@ -1,79 +1,10 @@
 # FunAetherMod - TODO
 
-## Beta 0.0.2
+
 
 ## x=done []=not done ?=waiting for playtester to play it
 
-### High Priority (Must Fix)
-
-* [x] Fix natural Portal spawn rates their should never be one in at minimum 20 chunks from spawn
-* [x] Add return portals in:
-
-  * [x] Aether
-  * [x] Purgatory
-  * [x] Verify teleportation works both directions
-* [x] Lower Fake spawn rate
-
-  * [x] Only one Fake can spawn at once
-* [x] Fix missing 2020 texture on other installations
-* [x] make purgatory portals spawn in aether
-* [ ] make purgatory have portals to every dimension including future ones
-* [?] make entites spawn natrualy in the overworld
- * [?] realobserve
- * [?] fake
----
-
-## New Features
-
-### Poorboy
-
-* [x] Create Poorboy entity
-* [x] Model
-* [x] Texture
-* [x] Sounds
-* [x] AI
-* [x] Spawn logic
-
-
----
-
-## BETA 0.0.4
-
-## Player Chat System
-
-* [ ] player join messages
-  * [ ] when a real player joins, the chat says: `<playername> joined the game`
-  * [ ] the message should not literally say "player" or use the placeholder name; it should use the actual player name
-* [ ] player leave messages
-  * [ ] when a real player leaves, the chat says: `<playername> left the game`
-* [ ] Random conversations
-  * [ ] fake players like `realness_12321` and `xxfakeshadowxx` can only join, talk, and leave on day 2
-  * [ ] fake players should not appear before day 2
-
-Example names:
-
-* realness_12321
-* xxfakeshadowxx
-* coolboy_2012
-
-Example messages:
-
-* refer to the recovered logs google doc
-
----
-
-## Haven Dimension
-
-* [ ] Create Haven dimension
-* [ ] Floating island
-* [ ] Small house
-* [ ] Wheat farm
-* [ ] Cow pen
-* [ ] Trees
-* [ ] Water source
-* [ ] Bed
-* [ ] Crafting table
-* [ ] No hostile mobs
+## ADD
 
 ---
 
@@ -93,25 +24,38 @@ Example messages:
 
 * [ ] falling into the void in any dimesnion results in a teleport here
 * [ ] red sky
-* [ ] end terrain
+* [ ] nether terrain
 * [ ] heavy fog 
 * [ ] ambent music inspired by the end music that plays in the end
 * [ ] entites like 2020 attack mode and poorboy can spawn here 
 * [ ] layers are  bedrock bedrock and bedrock
 
-beta 0.0.3/4
+
 ## 2020 Attack Mode
 
-* [x] Create attack form
-  * [X] entity create entity2020attackentity file in entity folder
-  * [X] renderer  create entity2020attackrenderer file in renderer folder
-  * [X] registry  register entity2020attackentity in modentites.java in registry folder
-  * [ ] Teleport player to Subsequence
-  * [ ] Custom sounds
+  * [ ] Teleport player to Subsequence after the player is hit
 
 ---
 
-## 
+## entity spawner
+* [ ] model (just do a basic cube named body inside a bone named body in blockbench)
+* [ ] follow insctructions in section 1 of checklists
+
+
+## FIXES 0.0.6
+
+* [ ] fix haven teleport logic back to 1 in 4 chance of teleport
+* [ ] fix return portal logic so that when in purgatory entering an aether portal tps you to aether and vice versa and entering either portal block in haven teleports you to the dimension the portal block correlates to eg aether portal in haven = aether teleport
+
+---
+
+## CHANGES 0.0.6
+
+* [ ] change portal spawning system so that when a portal spawns it has to keep going the next X blocks current -= chunk p = portal ----p-p we dont want that instead we want 5 - or p = 250 chunks ---p- we want it so that the portal cant genrate a minumum of 12 chunks from another portal while keeping the 20 chunks away from spawn rule
+* [ ] change the spawn system so that it uses the entity spawner entity and the events per 3 days config option to spawn entites based on the current enviorment eg night + aether + player(s) at medium-max health = entity 2020 attack mode
+
+---
+
 
 ## Polish
 
@@ -130,11 +74,13 @@ beta 0.0.3/4
 * [ ] All entity textures work
 * [ ] Portals work correctly
 * [ ] Natural portals generate correctly
+* [ ] 
 * [ ] Multiplayer tested
 * [ ] Changelog written
 * [ ] Version number updated
 * [ ] Build release JAR
-* [ ] Upload to Modrinth
+* [ ] git push the mod
+* [ ] Upload to Modrinth/curseforge
 
 ---
 
