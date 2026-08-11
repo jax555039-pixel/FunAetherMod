@@ -7,6 +7,7 @@ import com.jax.funaethermod.entity.Entity2020AttackEntity;
 import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.FakeEntity;
 import com.jax.funaethermod.entity.PoorBoyEntity;
+import com.jax.funaethermod.entity.EntitySpawnerEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -82,7 +83,18 @@ public class ModEntities {
             .sized(2.0F, 6.0F)
             .build("entity2020_attack")
     );
-            
+
+
+        public static final RegistryObject<EntityType<EntitySpawnerEntity>> ENTITY_SPAWNER =
+    ENTITY_TYPES.register(
+        "entity_spawner"
+        , () -> EntityType.Builder
+            .of(EntitySpawnerEntity::new, MobCategory.MISC)
+            .sized(0.6F, 1.8F)
+            .clientTrackingRange(8)
+            .build("entity_spawner")
+        );
+
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

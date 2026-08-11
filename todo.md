@@ -38,7 +38,7 @@
 ---
 
 ## entity spawner
-* [ ] model (just do a basic cube named body inside a bone named body in blockbench)
+* [x] model
 * [ ] follow insctructions in section 1 of checklists
 
 

@@ -6,12 +6,11 @@ Arms: 4×12×4
 Legs: 4×12×4
  Model file
  Texture file
- Entity class/file
+ Entity file
  Renderer file
  Register entity in ModEntities.java
  Register renderer in ClientModEvents.java
  Register attributes in ModAttributes.java if needed
- Spawn egg (if the entity should have one)
  Spawn rules (if it should naturally spawn)
  Loot table (if it drops items)
  Sounds (if it has custom sounds)
