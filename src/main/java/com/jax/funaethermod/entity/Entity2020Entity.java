@@ -16,6 +16,7 @@ public class Entity2020Entity extends PathfinderMob {
 
     private static final double STARE_RANGE = 128.0D;
     private static final double DAMAGE_RANGE = 10.0D;
+    private static final int LIFE_TIME = 20 * 30;
 
     private int damageCooldown = 0;
 
@@ -55,6 +56,7 @@ public class Entity2020Entity extends PathfinderMob {
         }
 
         Player player = this.level().getNearestPlayer(this, STARE_RANGE);
+        
 
         if (player == null) {
             return;
@@ -70,6 +72,11 @@ public class Entity2020Entity extends PathfinderMob {
         if (this.distanceTo(player) <= DAMAGE_RANGE && damageCooldown <= 0) {
             player.hurt(this.damageSources().magic(), 2.0F);
             damageCooldown = 20;
+        }
+
+        if (this.tickCount >= LIFE_TIME) {
+            this.discard();
+            return;
         }
     }
 
