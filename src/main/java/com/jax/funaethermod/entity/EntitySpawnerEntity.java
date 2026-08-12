@@ -1,114 +1,440 @@
 package com.jax.funaethermod.entity;
 
+import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.registry.ModEntities;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntitySpawnerEntity extends PathfinderMob {
 
+    /*
+     * 10 minutes in Minecraft ticks.
+     *
+     * 20 ticks = 1 second
+     * 60 seconds = 1 minute
+     * 10 minutes = 12,000 ticks
+     */
+    private static final int SPAWN_INTERVAL = 20; 
 
-public EntitySpawnerEntity(
-        EntityType<? extends PathfinderMob> type,
-        Level level
-) {
-    super(type, level);
-}
+    /*
+     * 30% chance to actually spawn an entity
+     * when the timer reaches 10 minutes.
+     */
+    private static final float SPAWN_CHANCE = 1.0F;
 
-public static AttributeSupplier.Builder createAttributes() {
-    return Mob.createMobAttributes()
-            .add(Attributes.MAX_HEALTH, 20.0D)
-            .add(Attributes.MOVEMENT_SPEED, 0.2D)
-            .add(Attributes.FOLLOW_RANGE, 64.0D);
-}
+    /*
+     * Player health threshold.
+     *
+     * 50% health or below = LOW HEALTH
+     * Above 50% = HIGH HEALTH
+     */
+    private static final float LOW_HEALTH_PERCENT = 0.50F;
 
-@Override
-protected void registerGoals() {
-    // No AI behavior.
-}
+    private int spawnTimer = 0;
 
-@Override
-public void tick() {
+    public EntitySpawnerEntity(
+            EntityType<? extends PathfinderMob> type,
+            Level level
+    ) {
+        super(type, level);
 
-    super.tick();
+        this.setPersistenceRequired();
+    }
 
-    // Server side only.
-    if (this.level().isClientSide)
-        return;
+    /*
+     * No AI behavior.
+     */
+    @Override
+    protected void registerGoals() {
+    }
 
-    EntityType<?> entityType =
-            getRandomEntityType();
+    /*
+     * Required because EntitySpawnerEntity extends PathfinderMob.
+     *
+     * The spawner itself does not need meaningful attributes,
+     * but PathfinderMob still requires an attribute supplier.
+     */
+    public static AttributeSupplier.Builder createAttributes() {
+        return PathfinderMob.createMobAttributes();
+    }
 
-    if (entityType == null)
-        return;
+    @Override
+    public void tick() {
 
-    Entity spawnedEntity =
-            entityType.create(
-                    this.level()
+        super.tick();
+
+        /*
+         * Server side only.
+         */
+        if (this.level().isClientSide) {
+            return;
+        }
+
+        spawnTimer++;
+
+        /*
+         * Wait exactly 10 minutes before making a spawn roll.
+         */
+        if (spawnTimer < SPAWN_INTERVAL) {
+            return;
+        }
+
+        /*
+         * Reset the timer.
+         *
+         * Even if the 30% roll fails, the next attempt
+         * will happen another 10 minutes later.
+         */
+        spawnTimer = 0;
+
+        /*
+         * 30% chance to spawn something.
+         */
+        if (this.random.nextFloat() > SPAWN_CHANCE) {
+            return;
+        }
+
+        Player player = this.level().getNearestPlayer(
+                this,
+                128.0D
+        );
+
+        if (player == null) {
+            return;
+        }
+
+        /*
+         * Determine the environment around the player.
+         */
+        boolean isCave = isPlayerInCave(player);
+
+        boolean raining = this.level().isRaining();
+
+        boolean clearWeather = !raining;
+
+        boolean night = this.level().isNight();
+
+        boolean lowHealth = isLowHealth(player);
+
+        /*
+         * Dimension checks.
+         */
+        ResourceLocation dimension =
+                this.level().dimension().location();
+
+        boolean overworld =
+                dimension.equals(Level.OVERWORLD.location());
+
+        boolean aether =
+                dimension.equals(
+                        new ResourceLocation(
+                                FunAetherMod.MODID,
+                                "aether"
+                        )
+                );
+
+        boolean purgatory =
+                dimension.equals(
+                        new ResourceLocation(
+                                FunAetherMod.MODID,
+                                "purgatory"
+                        )
+                );
+
+        /*
+         * Find an entity that is valid for the
+         * current environment.
+         */
+        EntityType<?> entityType = getValidEntityType(
+                isCave,
+                raining,
+                clearWeather,
+                night,
+                lowHealth,
+                overworld,
+                aether,
+                purgatory
+        );
+
+        /*
+         * No entity matched the current environment.
+         */
+        if (entityType == null) {
+            return;
+        }
+
+        /*
+         * Create the entity.
+         */
+        Entity spawnedEntity =
+                entityType.create(this.level());
+
+        if (spawnedEntity == null) {
+            return;
+        }
+
+        /*
+         * Spawn it at the EntitySpawner's location.
+         */
+        spawnedEntity.moveTo(
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                this.getYRot(),
+                this.getXRot()
+        );
+
+        /*
+         * Copy movement.
+         */
+        spawnedEntity.setDeltaMovement(
+                this.getDeltaMovement()
+        );
+
+        /*
+         * Add the entity to the world.
+         */
+        this.level().addFreshEntity(spawnedEntity);
+
+        /*
+         * Remove the EntitySpawner after
+         * successfully spawning an entity.
+         */
+        this.discard();
+    }
+
+    /*
+     * Determines whether the nearest player is inside a cave.
+     *
+     * A player is considered to be in a cave when they
+     * cannot see the sky.
+     *
+     * This means:
+     *
+     * - Underground = cave
+     * - Inside a closed structure = cave
+     * - Under a solid ceiling = cave
+     * - Normal outdoor surface = land
+     */
+    private boolean isPlayerInCave(Player player) {
+
+        return !player.level().canSeeSky(
+                player.blockPosition()
+        );
+    }
+
+    /*
+     * Determines whether the player has low health.
+     *
+     * Low health = 50% or less.
+     */
+    private boolean isLowHealth(Player player) {
+
+        float maxHealth = player.getMaxHealth();
+
+        if (maxHealth <= 0.0F) {
+            return false;
+        }
+
+        return player.getHealth()
+                <= maxHealth * LOW_HEALTH_PERCENT;
+    }
+
+    /*
+     * Selects a valid entity based on the
+     * environment rules.
+     */
+    private EntityType<?> getValidEntityType(
+            boolean isCave,
+            boolean raining,
+            boolean clearWeather,
+            boolean night,
+            boolean lowHealth,
+            boolean overworld,
+            boolean aether,
+            boolean purgatory
+    ) {
+
+        List<EntityType<?>> possibleEntities =
+                new ArrayList<>();
+
+
+        /*
+         * =========================================================
+         * POORBOY
+         * =========================================================
+         *
+         * Requirements:
+         *
+         * Rain
+         * Any dimension
+         * Any time
+         * Any player health
+         *
+         * Works both inside caves and on land.
+         */
+        if (raining) {
+
+            possibleEntities.add(
+                    ModEntities.POORBOY.get()
             );
+        }
 
-    if (spawnedEntity == null)
-        return;
 
-    // Spawn at this entity's location.
-    spawnedEntity.moveTo(
-            this.getX(),
-            this.getY(),
-            this.getZ(),
-            this.getYRot(),
-            this.getXRot()
-    );
+        /*
+         * =========================================================
+         * REAL OBSERVE
+         * =========================================================
+         *
+         * Requirements:
+         *
+         * Clear weather
+         * Overworld
+         * Night
+         * Low player health
+         *
+         * Can spawn in caves or on land.
+         */
+        if (
+                clearWeather
+                        && overworld
+                        && night
+                        && lowHealth
+        ) {
 
-    // Copy current movement.
-    spawnedEntity.setDeltaMovement(
-            this.getDeltaMovement()
-    );
-
-    this.level().addFreshEntity(
-            spawnedEntity
-    );
-
-    // Remove the EntitySpawner.
-    this.discard();
-}
-
-/**
- * Temporary random entity selection.
- *
- * This will later be replaced with environment-based
- * selection using things such as:
- *
- * - Dimension
- * - Time of day
- * - Weather
- * - Player health
- * - Surrounding blocks
- * - Other environmental conditions
- */
-private EntityType<?> getRandomEntityType() {
-    List<EntityType<?>> possibleEntities =
-            List.of(
-                    ModEntities.ENTITY2020.get(),
-                    ModEntities.ENTITY2020_ATTACK.get(),
-                    ModEntities.FAKE.get(),
-                    ModEntities.POORBOY.get(),
+            possibleEntities.add(
                     ModEntities.REAL_OBSERVE.get()
             );
+        }
 
-    return possibleEntities.get(
-            this.random.nextInt(
-                    possibleEntities.size()
-            )
-    );
 
-    
+        /*
+         * =========================================================
+         * FAKE
+         * =========================================================
+         *
+         * Requirements:
+         *
+         * Any weather
+         * Overworld OR Purgatory
+         * Any time
+         * Any player health
+         *
+         * Can spawn in caves or on land.
+         */
+        if (
+                overworld
+                        || purgatory
+        ) {
+
+            possibleEntities.add(
+                    ModEntities.FAKE.get()
+            );
+        }
+
+
+        /*
+         * =========================================================
+         * CAVE RULE
+         * =========================================================
+         *
+         * If the player is underground, ONLY:
+         *
+         * - PoorBoy
+         * - RealObserve
+         * - Fake
+         *
+         * are allowed.
+         *
+         * Therefore stop here.
+         */
+        if (isCave) {
+
+            return getRandomEntity(
+                    possibleEntities
+            );
+        }
+
+
+        /*
+         * =========================================================
+         * ENTITY 2020
+         * =========================================================
+         *
+         * Requirements:
+         *
+         * Any weather
+         * Night
+         * Any player health
+         * Overworld OR Aether
+         * Land only
+         */
+        if (
+                night
+                        && (overworld || aether)
+        ) {
+
+            possibleEntities.add(
+                    ModEntities.ENTITY2020.get()
+            );
+        }
+
+
+        /*
+         * =========================================================
+         * ENTITY 2020 ATTACK
+         * =========================================================
+         *
+         * Requirements:
+         *
+         * Same as Entity2020
+         * BUT player must have HIGH health.
+         */
+        if (
+                night
+                        && (overworld || aether)
+                        && !lowHealth
+        ) {
+
+            possibleEntities.add(
+                    ModEntities.ENTITY2020_ATTACK.get()
+            );
+        }
+
+
+        /*
+         * Choose randomly from every entity that
+         * passed its environmental requirements.
+         */
+        return getRandomEntity(
+                possibleEntities
+        );
+    }
+
+    /*
+     * Picks one entity from the valid list.
+     */
+    private EntityType<?> getRandomEntity(
+            List<EntityType<?>> entities
+    ) {
+
+        if (entities.isEmpty()) {
+            return null;
+        }
+
+        return entities.get(
+                this.random.nextInt(
+                        entities.size()
+                )
+        );
 }
 }
-
