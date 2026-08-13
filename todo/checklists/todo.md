@@ -10,7 +10,7 @@
 
 ## Subsequence Dimension
 
-* [ ] Floating grass islands
+* [ ] Floating grass/no texture islands
 * [ ] Large void gaps
 * [ ] Trees
 * [ ] Structures
@@ -20,26 +20,34 @@
 
 ---
 
-## consequence dimension
+## SUB DIMENSION ONE – CORRUPTED AETHER
 
-* [ ] falling into the void in any dimesnion results in a teleport here
-* [ ] red sky
-* [ ] nether terrain
-* [ ] heavy fog 
-* [ ] ambent music inspired by the end music that plays in the end
-* [ ] entites like 2020 attack mode and poorboy can spawn here 
-* [ ] layers are  bedrock bedrock and bedrock
+* [ ] reuse aether terrain but change blocks so that its all no texture blocks
+* [ ] heavy purple fog
+* [ ] lore entry
+* [ ] section 2 of checklists followed 
 
 
 ## 2020 Attack Mode
 
-  * [ ] Teleport player to Subsequence after the player is hit
+  * [ ] Teleport player to Subsequence after the player is hit 1/4 times
 
 ---
 
+## Trick entity
+* [X] model
+* [X] section one of checklist fowllowed
+* [X] sounds
+* [X] lore
+* [ ] register in the fake player chat with the name xxtrickyxx
+
 ## entity spawner
 * [x] model
-* [ ] follow insctructions in section 1 of checklists
+* [x] follow insctructions in section 1 of checklists
+
+## log video link
+* [ ] video
+
 
 
 ## FIXES 0.0.6
@@ -51,20 +59,13 @@
 
 ## CHANGES 0.0.6
 
-* [ ] change portal spawning system so that when a portal spawns it has to keep going the next X blocks current -= chunk p = portal ----p-p we dont want that instead we want 5 - or p = 250 chunks ---p- we want it so that the portal cant genrate a minumum of 12 chunks from another portal while keeping the 20 chunks away from spawn rule
-* [ ] change the spawn system so that it uses the entity spawner entity and the events per 3 days config option to spawn entites based on the current enviorment eg night + aether + player(s) at medium-max health = entity 2020 attack mode
+* [x] change portal spawning system so that when a portal spawns it has to keep going the next X blocks current -= chunk p = portal ----p-p we dont want that instead we want 5 - or p = 250 chunks ---p- we want it so that the portal cant genrate a minumum of 12 chunks from another portal while keeping the 20 chunks away from spawn rule
+* [x] change the spawn system so that it uses the entity spawner entity and the events per 3 days config option to spawn entites based on the current enviorment eg night + aether + player(s) at medium-max health = entity 2020 attack mode
 
 ---
 
 
-## Polish
-
-* [ ] Better ambience
-* [ ] More sounds
-* [ ] Better portal effects
-* [ ] Better fog
-* [ ] add structures
-* [ ] More lore
+* [x] More lore
 
 ---
 
@@ -74,7 +75,6 @@
 * [ ] All entity textures work
 * [ ] Portals work correctly
 * [ ] Natural portals generate correctly
-* [ ] 
 * [ ] Multiplayer tested
 * [ ] Changelog written
 * [ ] Version number updated

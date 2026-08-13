@@ -8,7 +8,7 @@ import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.FakeEntity;
 import com.jax.funaethermod.entity.PoorBoyEntity;
 import com.jax.funaethermod.entity.EntitySpawnerEntity;
-
+import com.jax.funaethermod.entity.TrickEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -93,6 +93,16 @@ public class ModEntities {
             .sized(0.6F, 1.8F)
             .clientTrackingRange(8)
             .build("entity_spawner")
+        );
+
+       public static final RegistryObject<EntityType<TrickEntity>> TRICK =
+        ENTITY_TYPES.register(
+                "trick",
+                () -> EntityType.Builder
+                        .of(TrickEntity::new, MobCategory.MONSTER)
+                        .sized(0.8F, 2.6F)
+                        .clientTrackingRange(8)
+                        .build("trick")
         );
 
 

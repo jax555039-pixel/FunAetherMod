@@ -7,6 +7,7 @@ import com.jax.funaethermod.client.model.RealEntityModel;
 import com.jax.funaethermod.client.model.FakeEntityModel;
 import com.jax.funaethermod.client.model.PoorBoyModel;
 import com.jax.funaethermod.client.model.EntitySpawnerModel;
+import com.jax.funaethermod.client.model.TrickModel;
 
 import com.jax.funaethermod.registry.ModEntities;
 
@@ -17,6 +18,7 @@ import com.jax.funaethermod.renderer.RealObserveEntityRenderer;
 import com.jax.funaethermod.renderer.FakeEntityRenderer;
 import com.jax.funaethermod.renderer.PoorBoyRenderer;
 import com.jax.funaethermod.renderer.EntitySpawnerRenderer;
+import com.jax.funaethermod.renderer.TrickRenderer;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -68,6 +70,11 @@ public class ClientModEvents {
                 ModEntities.ENTITY_SPAWNER.get(),
                 EntitySpawnerRenderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.TRICK.get(),
+                TrickRenderer::new
+        );
     }
 
     @SubscribeEvent
@@ -96,6 +103,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 EntitySpawnerModel.LAYER_LOCATION,
                 EntitySpawnerModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                TrickModel.LAYER_LOCATION,
+                TrickModel::createBodyLayer
         );
     }
 }

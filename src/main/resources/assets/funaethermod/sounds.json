@@ -42,5 +42,12 @@
         "stream": false
       }
     ]
+  },
+
+  "trick_ambient": {
+    "sounds": [
+      "funaethermod:trick_ambient"
+    ]
   }
+
 }

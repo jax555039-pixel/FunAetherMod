@@ -1,0 +1,35 @@
+## SECTION 1 — Entity Making
+ Model design
+Head: 8×8×8
+Body: 8×12×4
+Arms: 4×12×4
+Legs: 4×12×4
+ Model file
+ Texture file
+ Entity file
+ Renderer file
+ Register entity in ModEntities.java
+ Register renderer in ClientModEvents.java
+ Register attributes in ModAttributes.java if needed
+ Spawn rules (if it should naturally spawn)
+ Loot table (if it drops items)
+ Sounds (if it has custom sounds)
+ Animations/AI (if the entity needs custom behavior)
+
+
+ ---
+
+ ## SECTIOM 2 - DIMENSION CREATION
+ dimension file
+ dimension_type file
+ biome file
+ noise_settings file
+ structures (if needed)
+ ambient sounds
+
+ ## SECTION 3 - SPAWN LOGIC
+ add entity into entityspawnerentity.java
+
+ ## SECTION 4 - STRUCTURE CREATION
+ structure block in save mode with a name that starts with funaethermod:(structure_name)
+ saved structure .nbt and put into resources/assests/funaethermod/structures

@@ -26,6 +26,11 @@ import org.slf4j.Logger;
 
 import java.util.Random;
 
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+
 @Mod(FunAetherMod.MODID)
 public class FunAetherMod {
 
@@ -482,4 +487,56 @@ public class FunAetherMod {
 
         return level.getDayTime() / 24000L;
     }
+
+    // ========================================================
+    // SUBSEQUENCE SLOW FALLING
+    // ========================================================
+
+   @SubscribeEvent
+public void onPlayerChangedDimension(
+        PlayerEvent.PlayerChangedDimensionEvent event
+) {
+
+    if (!(event.getEntity() instanceof ServerPlayer player)) {
+        return;
+    }
+
+    /*
+     * Only activate when the player enters
+     * the Subsequence dimension.
+     */
+    if (!player.level().dimension().location().equals(
+            new ResourceLocation(
+                    FunAetherMod.MODID,
+                    "subsequence"
+            )
+    )) {
+        return;
+    }
+
+    /*
+     * 20 seconds = 400 Minecraft ticks.
+     */
+    int duration = 20 * 20;
+
+    /*
+     * Slow Falling.
+     */
+    player.addEffect(
+            new MobEffectInstance(
+                    MobEffects.SLOW_FALLING,
+                    duration,
+                    0,
+                    false,
+                    true
+            )
+    );
+
+    
+
+    LOGGER.info(
+            "[FunAetherMod] {} entered Subsequence - applying 20 second air effects.",
+            player.getName().getString()
+    );
+}
 }

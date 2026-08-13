@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -340,6 +341,29 @@ public class EntitySpawnerEntity extends PathfinderMob {
                     ModEntities.FAKE.get()
             );
         }
+        
+
+        /*
+ * =========================================================
+ * TRICK
+ * =========================================================
+ *
+ * Requirements:
+ *
+ * Any weather
+ * Any player health
+ * Purgatory
+ * Day or night
+ *
+ * Therefore:
+ * Purgatory is the only required condition.
+ */
+if (purgatory) {
+
+    possibleEntities.add(
+            ModEntities.TRICK.get()
+    );
+}
 
 
         /*
@@ -438,3 +462,4 @@ public class EntitySpawnerEntity extends PathfinderMob {
         );
 }
 }
+

@@ -2,8 +2,9 @@ package com.jax.funaethermod.registry;
 
 import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.entity.Entity2020Entity;
-
 import com.jax.funaethermod.entity.EntitySpawnerEntity;
+import com.jax.funaethermod.entity.TrickEntity;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -30,6 +31,11 @@ public class ModAttributes {
         ModEntities.ENTITY_SPAWNER.get(),
         EntitySpawnerEntity.createAttributes().build()
         );
+
+        event.put(
+        ModEntities.TRICK.get(),
+        TrickEntity.createAttributes().build()
+);
 
     }
 }

@@ -1,0 +1,11 @@
+{
+  "type": "funaethermod:subsequence",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "funaethermod:haven",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "funaethermod:subsequence"
+    }
+  }
+}

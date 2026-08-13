@@ -1,7 +1,7 @@
 package com.jax.funaethermod.events;
 
 import com.jax.funaethermod.FunAetherMod;
-import com.jax.funaethermod.world.HavenManager;
+import com.jax.funaethermod.world.StructureManager;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.TickEvent;
@@ -25,7 +25,7 @@ public class ModEvents {
                 .toString()
                 .equals("funaethermod:haven")) {
 
-            HavenManager.onLoad(level);
+            StructureManager.onLoad(level);
         }
     }
 }
