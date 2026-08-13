@@ -35,6 +35,8 @@ public class TrickEntity extends PathfinderMob {
 
     private static final int BLINDNESS_DURATION = 40;
 
+    private static final int LIFE_TIME = 20 * 30;
+
     private int blindnessCooldown = 0;
 
     /*
@@ -122,6 +124,20 @@ public class TrickEntity extends PathfinderMob {
         if (this.level().isClientSide) {
             return;
         }
+
+         /*
+     * =====================================================
+     * LIFE TIMER
+     * =====================================================
+     *
+     * Trick exists for 30 seconds.
+     * 20 ticks = 1 second.
+     * 20 * 30 = 600 ticks.
+     */
+    if (this.tickCount >= LIFE_TIME) {
+        this.discard();
+        return;
+    }
 
         /*
          * Teleport cooldown.

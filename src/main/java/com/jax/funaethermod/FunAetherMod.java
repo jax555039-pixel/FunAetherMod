@@ -49,7 +49,7 @@ public class FunAetherMod {
     private static final String REALNESS_NAME = "realness_12321";
     private static final String FAKESHADOW_NAME = "xXfakeshadowXx";
     private static final String COOLBOY_NAME = "coolboy_2012";
-
+    private static final String TRICKY_NAME = "xXtrickyXx";
 
     /*
      * =========================================================
@@ -66,7 +66,7 @@ public class FunAetherMod {
     private boolean realnessHasJoinedThisSession = false;
     private boolean fakeShadowHasJoinedThisSession = false;
     private boolean coolboyHasJoinedThisSession = false;
-
+    private boolean trickyHasJoinedThisSession = false;
 
     /*
      * =========================================================
@@ -316,6 +316,17 @@ public class FunAetherMod {
                 candidate = COOLBOY_NAME;
             }
 
+            /*
+            * Tricky.
+            */
+
+            else if (
+                    !trickyHasJoinedThisSession
+                            && day >= 2
+            ) {
+
+                candidate = TRICKY_NAME;
+            }
 
             /*
              * No available candidate.
@@ -381,10 +392,13 @@ public class FunAetherMod {
                                     "my skin is gone";
 
                             case FAKESHADOW_NAME ->
-                                    "where's my friends";
+                                    "its so dark in here";
 
                             case COOLBOY_NAME ->
                                     "they're crawling in my face";
+
+                            case TRICKY_NAME ->
+                                    "i am not your puppet 2020";
 
                             default ->
                                     "i want to go home";
@@ -453,8 +467,13 @@ public class FunAetherMod {
                 ) {
 
                     coolboyHasJoinedThisSession = true;
-                }
+                } else if (
+                        activeFakePlayerName
+                                .equals(TRICKY_NAME)
+                ) {
 
+                    trickyHasJoinedThisSession = true;
+                }
 
                 /*
                  * Reset conversation.
