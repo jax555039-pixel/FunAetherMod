@@ -6,6 +6,7 @@ import com.jax.funaethermod.registry.ModItems;
 import com.jax.funaethermod.registry.ModSounds;
 import com.jax.funaethermod.world.DimensionPortalHandler;
 
+
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class FunAetherMod {
 
     public static final String MODID = "funaethermod";
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
     private static final Random RANDOM = new Random();
 
     /*
@@ -97,7 +98,7 @@ public class FunAetherMod {
          * Register Forge events.
          */
 
-        MinecraftForge.EVENT_BUS.register(this);
+        
 
 
         /*
@@ -487,56 +488,4 @@ public class FunAetherMod {
 
         return level.getDayTime() / 24000L;
     }
-
-    // ========================================================
-    // SUBSEQUENCE SLOW FALLING
-    // ========================================================
-
-   @SubscribeEvent
-public void onPlayerChangedDimension(
-        PlayerEvent.PlayerChangedDimensionEvent event
-) {
-
-    if (!(event.getEntity() instanceof ServerPlayer player)) {
-        return;
-    }
-
-    /*
-     * Only activate when the player enters
-     * the Subsequence dimension.
-     */
-    if (!player.level().dimension().location().equals(
-            new ResourceLocation(
-                    FunAetherMod.MODID,
-                    "subsequence"
-            )
-    )) {
-        return;
-    }
-
-    /*
-     * 20 seconds = 400 Minecraft ticks.
-     */
-    int duration = 20 * 20;
-
-    /*
-     * Slow Falling.
-     */
-    player.addEffect(
-            new MobEffectInstance(
-                    MobEffects.SLOW_FALLING,
-                    duration,
-                    0,
-                    false,
-                    true
-            )
-    );
-
-    
-
-    LOGGER.info(
-            "[FunAetherMod] {} entered Subsequence - applying 20 second air effects.",
-            player.getName().getString()
-    );
-}
 }

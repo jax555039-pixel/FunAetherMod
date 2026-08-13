@@ -10,12 +10,12 @@
 
 ## Subsequence Dimension
 
-* [ ] Floating grass/no texture islands
-* [ ] Large void gaps
-* [ ] Trees
-* [ ] Structures
-* [ ] Atmospheric lighting
-* [ ] Custom ambience
+* [x] Floating grass/no texture islands
+* [x] Large void gaps
+* [x] Trees
+* [x] Structures
+* [x] Atmospheric lighting
+* [x] Custom ambience
 * [ ] enter after 2020 attack
 
 ---
@@ -30,7 +30,7 @@
 
 ## 2020 Attack Mode
 
-  * [ ] Teleport player to Subsequence after the player is hit 1/4 times
+  * [ ] Teleport player to Subsequence after the player is hit. 1/4 chance to be teleported
 
 ---
 
@@ -41,9 +41,20 @@
 * [X] lore
 * [ ] register in the fake player chat with the name xxtrickyxx
 
+---
+
 ## entity spawner
 * [x] model
 * [x] follow insctructions in section 1 of checklists
+
+---
+
+## ANOMALY_#221
+* [ ] model
+* [ ] sounds
+* [x] lore
+* [ ] added to entity spawner
+
 
 ## log video link
 * [ ] video
@@ -94,7 +105,7 @@
 * [ ] Dynamic music
 * [ ] More horror events
 * [ ] Story progression
-* [ ] Additional entities
+
 
 
 ## FUN AETHER MOD 1.0.0

@@ -17,6 +17,12 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = FunAetherMod.MODID)
 public class HavenSleepHandler {
 
+    /*
+     * Haven dimension.
+     *
+     * IMPORTANT:
+     * This is Haven, NOT Subsequence.
+     */
     private static final ResourceKey<Level> HAVEN_DIMENSION =
             ResourceKey.create(
                     Registries.DIMENSION,
@@ -27,34 +33,68 @@ public class HavenSleepHandler {
             );
 
     @SubscribeEvent
-    public static void onWakeUp(PlayerWakeUpEvent event) {
+    public static void onWakeUp(
+            PlayerWakeUpEvent event
+    ) {
 
-        if (!(event.getEntity() instanceof ServerPlayer player))
-            return;
-
-        // 1 in 4 chance
-        if (player.getRandom().nextInt(4) != 0)
-            return;
-
-        ServerLevel haven =
-                player.server.getLevel(HAVEN_DIMENSION);
-
-        if (haven == null) {
-            System.out.println("[FunAetherMod] Haven dimension not found.");
+        /*
+         * Server players only.
+         */
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
 
-        BlockPos spawn = new BlockPos(0, 112, 0);
+        /*
+         * 1 in 4 chance to teleport.
+         *
+         * 0 = teleport
+         * 1, 2, 3 = nothing happens
+         */
+        if (player.getRandom().nextInt(4) != 0) {
+            return;
+        }
 
+        /*
+         * Get the Haven dimension.
+         */
+        ServerLevel haven =
+                player.server.getLevel(
+                        HAVEN_DIMENSION
+                );
+
+        if (haven == null) {
+
+            System.out.println(
+                    "[FunAetherMod] Haven dimension not found."
+            );
+
+            return;
+        }
+
+        /*
+         * Haven teleport location.
+         */
+        BlockPos spawn =
+                new BlockPos(
+                        0,
+                        112,
+                        0
+                );
+
+        /*
+         * Teleport the player to Haven.
+         */
         player.teleportTo(
                 haven,
-                spawn.getX() + 0.5,
+                spawn.getX() + 0.5D,
                 spawn.getY(),
-                spawn.getZ() + 0.5,
+                spawn.getZ() + 0.5D,
                 player.getYRot(),
                 player.getXRot()
         );
 
-        System.out.println("[FunAetherMod] Player woke up in Haven.");
+        System.out.println(
+                "[FunAetherMod] Player woke up in Haven."
+        );
     }
 }

@@ -1,7 +1,14 @@
 package com.jax.funaethermod.entity;
 
+import com.jax.funaethermod.FunAetherMod;
 import com.jax.funaethermod.registry.ModSounds;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,37 +27,44 @@ public class TrickEntity extends PathfinderMob {
 
     private static final double FOLLOW_RANGE = 64.0D;
 
-    /*
-     * Slightly slower than a normal player.
-     *
-     * Player speed is roughly 0.10 blocks/tick while walking.
-     * 0.085 gives Trick a noticeable but not painfully slow pace.
-     */
     private static final double MOVEMENT_SPEED = 0.085D;
 
-    /*
-     * Trick only starts floating when the player is
-     * noticeably higher than Trick.
-     */
     private static final double FLOAT_HEIGHT_THRESHOLD = 1.0D;
 
-    /*
-     * How quickly Trick rises toward the player's height.
-     */
     private static final double FLOAT_SPEED = 0.08D;
 
-    /*
-     * Blindness duration.
-     *
-     * 20 ticks = 1 second.
-     */
     private static final int BLINDNESS_DURATION = 40;
 
-    /*
-     * Prevents Trick from constantly refreshing blindness
-     * every single tick.
-     */
     private int blindnessCooldown = 0;
+
+    /*
+     * Subsequence dimension.
+     */
+    private static final ResourceKey<Level> SUBSEQUENCE_DIMENSION =
+            ResourceKey.create(
+                    Registries.DIMENSION,
+                    new ResourceLocation(
+                            FunAetherMod.MODID,
+                            "subsequence"
+                    )
+            );
+
+    /*
+     * Prevents Trick from teleporting the same player
+     * repeatedly every tick.
+     */
+    private int teleportCooldown = 0;
+
+    /*
+     * Distance at which Trick teleports the player.
+     */
+    private static final double TELEPORT_DISTANCE = 2.0D;
+
+    /*
+     * Location inside Subsequence where the player arrives.
+     */
+    private static final BlockPos SUBSEQUENCE_SPAWN =
+            new BlockPos(0, 100, 0);
 
     public TrickEntity(
             EntityType<? extends PathfinderMob> type,
@@ -90,9 +104,6 @@ public class TrickEntity extends PathfinderMob {
     @Override
     protected void registerGoals() {
 
-        /*
-         * Look at nearby players.
-         */
         this.goalSelector.addGoal(
                 0,
                 new LookAtPlayerGoal(
@@ -108,15 +119,19 @@ public class TrickEntity extends PathfinderMob {
 
         super.tick();
 
-        /*
-         * Server side only.
-         */
         if (this.level().isClientSide) {
             return;
         }
 
         /*
-         * Find the nearest player.
+         * Teleport cooldown.
+         */
+        if (teleportCooldown > 0) {
+            teleportCooldown--;
+        }
+
+        /*
+         * Find nearest player.
          */
         Player player = this.level().getNearestPlayer(
                 this,
@@ -129,7 +144,7 @@ public class TrickEntity extends PathfinderMob {
         }
 
         /*
-         * Look toward the player.
+         * Look toward player.
          */
         this.getLookControl().setLookAt(
                 player,
@@ -143,18 +158,29 @@ public class TrickEntity extends PathfinderMob {
 
         /*
          * =====================================================
+         * TELEPORT PLAYER TO SUBSEQUENCE
+         * =====================================================
+         */
+
+        if (
+                teleportCooldown <= 0
+                        && this.distanceTo(player) <= TELEPORT_DISTANCE
+        ) {
+
+            teleportPlayerToSubsequence(player);
+
+            return;
+        }
+
+        /*
+         * =====================================================
          * NORMAL FOLLOWING
          * =====================================================
-         *
-         * Trick normally walks toward the player.
          */
+
         double verticalDifference =
                 player.getY() - this.getY();
 
-        /*
-         * If the player is NOT significantly above Trick,
-         * use normal pathfinding.
-         */
         if (verticalDifference <= FLOAT_HEIGHT_THRESHOLD) {
 
             this.getNavigation().moveTo(
@@ -168,19 +194,12 @@ public class TrickEntity extends PathfinderMob {
          * =====================================================
          * FLOATING
          * =====================================================
-         *
-         * Only activate when the player is higher than Trick.
          */
+
         else {
 
-            /*
-             * Stop normal pathfinding while floating.
-             */
             this.getNavigation().stop();
 
-            /*
-             * Still move horizontally toward the player.
-             */
             Vec3 horizontalTarget =
                     new Vec3(
                             player.getX(),
@@ -200,11 +219,10 @@ public class TrickEntity extends PathfinderMob {
                                 movement.x,
                                 0.0D,
                                 movement.z
-                        ).normalize().scale(0.035D);
+                        )
+                        .normalize()
+                        .scale(0.035D);
 
-                /*
-                 * Rise toward the player's height.
-                 */
                 double verticalMovement =
                         Math.min(
                                 FLOAT_SPEED,
@@ -231,9 +249,6 @@ public class TrickEntity extends PathfinderMob {
             blindnessCooldown--;
         }
 
-        /*
-         * Apply blindness when Trick is near the player.
-         */
         if (
                 this.distanceTo(player) <= 10.0D
                         && blindnessCooldown <= 0
@@ -252,6 +267,65 @@ public class TrickEntity extends PathfinderMob {
 
             blindnessCooldown = 20;
         }
+    }
+
+    /*
+     * =========================================================
+     * TELEPORT METHOD
+     * =========================================================
+     */
+
+    private void teleportPlayerToSubsequence(
+            Player player
+    ) {
+
+        /*
+         * Only server players can be teleported
+         * between dimensions.
+         */
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+
+        ServerLevel subsequence =
+                serverPlayer.server.getLevel(
+                        SUBSEQUENCE_DIMENSION
+                );
+
+        /*
+         * Dimension doesn't exist.
+         */
+        if (subsequence == null) {
+
+            System.out.println(
+                    "[FunAetherMod] Subsequence dimension not found."
+            );
+
+            return;
+        }
+
+        /*
+         * Teleport the player.
+         */
+        serverPlayer.teleportTo(
+                subsequence,
+                SUBSEQUENCE_SPAWN.getX() + 0.5D,
+                SUBSEQUENCE_SPAWN.getY(),
+                SUBSEQUENCE_SPAWN.getZ() + 0.5D,
+                serverPlayer.getYRot(),
+                serverPlayer.getXRot()
+        );
+
+        /*
+         * Cooldown prevents repeated teleporting.
+         */
+        teleportCooldown = 100;
+
+        System.out.println(
+                "[FunAetherMod] Trick teleported "
+                        + serverPlayer.getName().getString()
+                        + " to Subsequence."
+        );
     }
 
     @Override
@@ -283,6 +357,6 @@ public class TrickEntity extends PathfinderMob {
 
     @Override
     public int getAmbientSoundInterval() {
-        return 300;
+        return 600;
     }
 }
