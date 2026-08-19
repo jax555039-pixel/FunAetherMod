@@ -1,0 +1,11 @@
+{
+  "type": "funaethermod:sd1-ca",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "funaethermod:sd1-ca",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "funaethermod:sd1-ca"
+    }
+  }
+}

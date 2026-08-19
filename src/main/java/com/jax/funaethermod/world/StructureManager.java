@@ -26,6 +26,9 @@ public class StructureManager {
     private static final String CORRUPTED_ISLAND =
             "subsequence_corrupted_island";
 
+        private static final String PORTAL_ISLAND =
+                "subsequence_portal_island";
+
 
     /*
      * Dimension IDs.
@@ -169,6 +172,10 @@ public class StructureManager {
         }
 
 
+
+        boolean portalIsland = 
+                cellX > 0 && cellX % 20 == 0;
+
         /*
          * Corrupted whenever ANY axis reaches
          * the fifth position in its repeating pattern.
@@ -196,10 +203,15 @@ public class StructureManager {
                 ) == 4;
 
 
-        String structureName =
-                corrupted
-                        ? CORRUPTED_ISLAND
-                        : NORMAL_ISLAND;
+        String structureName;
+                
+        if (portalIsland) {
+                structureName = PORTAL_ISLAND;
+        } else if (corrupted) {
+                structureName = CORRUPTED_ISLAND; 
+        } else {
+                structureName = NORMAL_ISLAND;
+        }
 
 
         /*

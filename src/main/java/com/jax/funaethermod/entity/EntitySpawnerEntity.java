@@ -151,6 +151,14 @@ public class EntitySpawnerEntity extends PathfinderMob {
                         )
                 );
 
+                boolean subsequence = 
+                dimension.equals(
+                        new ResourceLocation(
+                                FunAetherMod.MODID,
+                                "subsequence"
+                        )
+                );
+
         /*
          * Find an entity that is valid for the
          * current environment.
@@ -163,7 +171,8 @@ public class EntitySpawnerEntity extends PathfinderMob {
                 lowHealth,
                 overworld,
                 aether,
-                purgatory
+                purgatory,
+                subsequence
         );
 
         /*
@@ -262,11 +271,34 @@ public class EntitySpawnerEntity extends PathfinderMob {
             boolean lowHealth,
             boolean overworld,
             boolean aether,
-            boolean purgatory
+            boolean purgatory,
+            boolean subsequence
     ) {
 
         List<EntityType<?>> possibleEntities =
                 new ArrayList<>();
+
+
+                /*
+                *=====================================
+                *Subsequence
+                *=====================================
+                */
+
+                if (subsequence) {
+
+                    possibleEntities.add(
+                            ModEntities.ENTITY2020.get()
+                    );
+
+                    possibleEntities.add(
+                            ModEntities.ENTITY2020_ATTACK.get()
+                    );
+
+                    return getRandomEntity(
+                            possibleEntities
+                    );
+                }
 
 
         /*
@@ -462,4 +494,3 @@ if (purgatory) {
         );
 }
 }
-

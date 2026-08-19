@@ -76,7 +76,7 @@ public class SsIslandGenerator {
          * around the player.
          */
         for (
-                int cellX = centerCellX - X_RADIUS;
+                int cellX = Math.max(0, centerCellX - X_RADIUS);
                 cellX <= centerCellX + X_RADIUS;
                 cellX++
         ) {
