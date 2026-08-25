@@ -159,6 +159,14 @@ public class EntitySpawnerEntity extends PathfinderMob {
                         )
                 );
 
+        boolean sd1Ca = 
+            dimension.equals(
+                new ResourceLocation(
+                   FunAetherMod.MODID,
+                    "sd1-ca"
+                )
+            );
+
         /*
          * Find an entity that is valid for the
          * current environment.
@@ -172,7 +180,8 @@ public class EntitySpawnerEntity extends PathfinderMob {
                 overworld,
                 aether,
                 purgatory,
-                subsequence
+                subsequence,
+                sd1Ca
         );
 
         /*
@@ -272,7 +281,8 @@ public class EntitySpawnerEntity extends PathfinderMob {
             boolean overworld,
             boolean aether,
             boolean purgatory,
-            boolean subsequence
+            boolean subsequence,
+            boolean sd1Ca
     ) {
 
         List<EntityType<?>> possibleEntities =
@@ -299,6 +309,25 @@ public class EntitySpawnerEntity extends PathfinderMob {
                             possibleEntities
                     );
                 }
+
+        /*
+        * =========================================================
+        * SD1-CA
+        * =========================================================
+        */
+
+        if (sd1Ca) {
+
+        possibleEntities.add(
+            ModEntities.FAKE.get()
+        );
+
+
+            possibleEntities.add(
+            ModEntities.FAKE_AGGRO.get()
+        );
+            
+}
 
 
         /*
@@ -331,17 +360,13 @@ public class EntitySpawnerEntity extends PathfinderMob {
          * Requirements:
          *
          * Clear weather
-         * Overworld
-         * Night
-         * Low player health
-         *
+         * Overworld and aether
          * Can spawn in caves or on land.
          */
         if (
                 clearWeather
-                        && overworld
-                        && night
-                        && lowHealth
+                        && (overworld || aether)
+                        
         ) {
 
             possibleEntities.add(
@@ -367,12 +392,33 @@ public class EntitySpawnerEntity extends PathfinderMob {
         if (
                 overworld
                         || purgatory
+                                    || sd1Ca
         ) {
 
             possibleEntities.add(
                     ModEntities.FAKE.get()
             );
         }
+
+
+
+
+/*
+* ==========================================================
+* FAKE AGGRO
+* ==========================================================
+*/
+
+if (
+        overworld 
+                || sd1Ca
+            
+    ) {
+
+        possibleEntities.add(
+            ModEntities.FAKE_AGGRO.get()
+        );
+}
         
 
         /*
@@ -474,7 +520,9 @@ if (purgatory) {
         return getRandomEntity(
                 possibleEntities
         );
-    }
+
+      }
+    
 
     /*
      * Picks one entity from the valid list.
