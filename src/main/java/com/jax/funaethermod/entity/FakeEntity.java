@@ -9,52 +9,66 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-
 
 public class FakeEntity extends PathfinderMob {
 
+    /*
+     * How far Fake can detect players.
+     */
+    private static final double OBSERVE_RANGE = 128.0D;
 
-    private static final double OBSERVE_RANGE = 64.0D;
+    /*
+     * 20 ticks = 1 second.
+     * 600 ticks = 30 seconds.
+     */
+    private static final int LIFE_TIME = 600;
 
-    // Distance from player
-    private static final double FLOAT_DISTANCE = 5.0D;
-
-    // How high above the player it floats
-    private static final double FLOAT_HEIGHT = 2.0D;
-
-    // Floating speed
-    private static final double FLOAT_SPEED = 0.05D;
-
-
-    // How long Fake exists
+    /*
+     * Lifetime counter.
+     */
     private int lifeTimer = 0;
 
 
-
-    public FakeEntity(EntityType<? extends PathfinderMob> type, Level level) {
-
+    public FakeEntity(
+            EntityType<? extends PathfinderMob> type,
+            Level level
+    ) {
         super(type, level);
 
-        this.setPersistenceRequired();
+        /*
+         * Fake cannot be damaged.
+         */
         this.setInvulnerable(true);
 
+        /*
+         * Prevent Minecraft from removing Fake
+         * because it is far away.
+         */
+        this.setPersistenceRequired();
     }
 
 
-
+    /*
+     * ENTITY ATTRIBUTES
+     */
     public static AttributeSupplier.Builder createAttributes() {
 
         return Mob.createMobAttributes()
 
-                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(
+                        Attributes.MAX_HEALTH,
+                        20.0D
+                )
 
+                /*
+                 * Zero movement speed.
+                 * Fake does not walk.
+                 */
                 .add(
                         Attributes.MOVEMENT_SPEED,
-                        0.18D
+                        0.0D
                 )
 
                 .add(
@@ -66,322 +80,133 @@ public class FakeEntity extends PathfinderMob {
                         Attributes.KNOCKBACK_RESISTANCE,
                         1.0D
                 );
-
     }
 
 
-
+    /*
+     * No AI goals.
+     *
+     * Fake does not chase or move.
+     */
     @Override
     protected void registerGoals() {
-
-        this.goalSelector.addGoal(
-                0,
-                new LookAtPlayerGoal(
-                        this,
-                        Player.class,
-                        (float) OBSERVE_RANGE
-                )
-        );
-
     }
 
 
-
-
-
+    /*
+     * Runs every game tick.
+     */
     @Override
     public void tick() {
 
         super.tick();
 
-
-
-        if(this.level().isClientSide) {
+        /*
+         * Only run the custom behavior
+         * on the server.
+         */
+        if (this.level().isClientSide) {
             return;
         }
 
 
-
+        /*
+         * Find the nearest player.
+         */
         Player player =
-                this.level()
-                        .getNearestPlayer(
-                                this,
-                                OBSERVE_RANGE
-                        );
+                this.level().getNearestPlayer(
+                        this,
+                        OBSERVE_RANGE
+                );
 
 
+        /*
+         * If there is a player nearby,
+         * look directly at them.
+         */
+        if (player != null) {
 
-        if(player == null) {
-            return;
+            this.getLookControl().setLookAt(
+                    player,
+                    180.0F,
+                    180.0F
+            );
+
+            this.setYRot(
+                    this.getYHeadRot()
+            );
         }
 
 
-
-
-        // Look directly at player
-        this.getLookControl()
-                .setLookAt(
-                        player,
-                        180.0F,
-                        180.0F
-                );
-
-
-        this.setYRot(
-                this.getYHeadRot()
-        );
-
-
-
-
-
-        // Position 5 blocks in front of player
-        Vec3 targetPos =
-                player.position()
-
-                .add(
-                        player.getLookAngle()
-                                .scale(FLOAT_DISTANCE)
-                )
-
-                .add(
-                        0.0D,
-                        FLOAT_HEIGHT,
-                        0.0D
-                );
-
-
-
-
-        // Move toward target position
-        Vec3 movement =
-                targetPos.subtract(
-                        this.position()
-                );
-
-
-
-        if(movement.length() > 0.25D) {
-
-            this.setDeltaMovement(
-                    movement.normalize()
-                            .scale(FLOAT_SPEED)
-            );
-
-        } else {
-
-            this.setDeltaMovement(
-                    Vec3.ZERO
-            );
-
-        }
-
-
-
-        this.hasImpulse = true;
-
-
-
-
-
-        // Lifetime counter
-
+        /*
+         * Increase lifetime.
+         */
         lifeTimer++;
 
 
-        if(lifeTimer >= getLifeTime()) {
+        /*
+         * Despawn after 30 seconds.
+         */
+        if (lifeTimer >= LIFE_TIME) {
 
             this.discard();
 
+            return;
         }
-
     }
 
 
-
-
-
-
-    private int getLifeTime() {
-
-
-        long day =
-                this.level()
-                        .getDayTime()
-                        / 24000;
-
-
-
-        // First day: 10 seconds
-        if(day <= 0) {
-
-            return 200;
-
-        }
-
-
-
-        // Later days: 1 minute
-        return 1200;
-
-    }
-
-
-
-
-
-
+    /*
+     * Fake cannot take damage.
+     */
     @Override
     public boolean hurt(
             DamageSource source,
             float amount
     ) {
-
         return false;
-
     }
 
 
-
-
-
+    /*
+     * Fake is completely invulnerable.
+     */
     @Override
     public boolean isInvulnerableTo(
             DamageSource source
     ) {
-
         return true;
-
     }
 
 
-
-
-
+    /*
+     * Prevent Minecraft from removing Fake
+     * because it is far away.
+     */
     @Override
     public boolean removeWhenFarAway(
             double distanceToClosestPlayer
     ) {
-
         return false;
-
     }
 
 
-
-
-
-
-
+    /*
+     * Fake's ambient sound.
+     */
     @Override
     protected SoundEvent getAmbientSound() {
 
         return ModSounds.FAKE_AMBIENT.get();
-
     }
 
 
-
+    /*
+     * 300 ticks = 15 seconds.
+     */
     @Override
     public int getAmbientSoundInterval() {
 
         return 300;
-
     }
-
 }
-
-
-
-/*
-=========================================================
-                 LEARNING CORNER
-=========================================================
-
-
-Constructor
------------
-Runs when FakeEntity is created.
-
-Makes Fake:
-- Persistent
-- Invulnerable
-
-
-createAttributes()
-------------------
-Defines Fake's stats.
-
-Controls:
-- Health
-- Speed
-- Detection range
-- Knockback resistance
-
-
-registerGoals()
----------------
-Adds normal Minecraft AI.
-
-Currently Fake only has:
-- Looking at nearby players
-
-
-tick()
-------
-Runs 20 times every second.
-
-Fake does:
-
-1. Finds the closest player.
-
-2. Turns its head toward them.
-
-3. Calculates a position:
-   
-   Player looking direction
-            +
-       5 blocks forward
-            +
-        2 blocks upward
-
-4. Slowly floats toward that location.
-
-5. Counts how long it has existed.
-
-6. Removes itself after its lifetime.
-
-
-getLifeTime()
--------------
-Controls Fake's appearance duration.
-
-Day 1:
-200 ticks = 10 seconds
-
-Later days:
-1200 ticks = 60 seconds
-
-
-hurt()
-------
-Prevents Fake from taking damage.
-
-
-isInvulnerableTo()
-------------------
-Blocks all damage sources.
-
-
-removeWhenFarAway()
--------------------
-Stops Minecraft from deleting Fake
-when the player leaves.
-
-
-getAmbientSound()
------------------
-Plays Fake's custom sound.
-
-=========================================================
-*/

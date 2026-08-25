@@ -92,7 +92,7 @@ public class FakeAggroEntity extends PathfinderMob {
                 )
                 .add(
                         Attributes.MOVEMENT_SPEED,
-                        0.18D
+                        0.40D
                 )
                 .add(
                         Attributes.FOLLOW_RANGE,

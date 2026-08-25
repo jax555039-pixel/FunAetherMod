@@ -51,7 +51,7 @@ public class RealEntity extends PathfinderMob {
 
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 700.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.42D)
+                .add(Attributes.MOVEMENT_SPEED, 0.37D)
                 .add(Attributes.FOLLOW_RANGE, 160.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D);
     }

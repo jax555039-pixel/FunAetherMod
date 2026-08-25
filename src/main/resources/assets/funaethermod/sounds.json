@@ -50,9 +50,9 @@
     ]
   },
 
-  "fake_aggro": {
+  "fake_chase": {
     "sounds" : [
-      "funaethermod:fake_aggro"
+      "funaethermod:fake_chase"
     ]
   }
 
