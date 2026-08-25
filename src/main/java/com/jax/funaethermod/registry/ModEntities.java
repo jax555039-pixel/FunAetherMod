@@ -9,6 +9,7 @@ import com.jax.funaethermod.entity.FakeEntity;
 import com.jax.funaethermod.entity.PoorBoyEntity;
 import com.jax.funaethermod.entity.EntitySpawnerEntity;
 import com.jax.funaethermod.entity.TrickEntity;
+import com.jax.funaethermod.entity.FakeAggroEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -95,7 +96,8 @@ public class ModEntities {
             .build("entity_spawner")
         );
 
-       public static final RegistryObject<EntityType<TrickEntity>> TRICK =
+       
+        public static final RegistryObject<EntityType<TrickEntity>> TRICK =
         ENTITY_TYPES.register(
                 "trick",
                 () -> EntityType.Builder
@@ -103,6 +105,17 @@ public class ModEntities {
                         .sized(0.8F, 2.6F)
                         .clientTrackingRange(8)
                         .build("trick")
+        );
+
+
+        public static final RegistryObject<EntityType<FakeAggroEntity>> FAKE_AGGRO =
+        ENTITY_TYPES.register(
+                "fake_aggro",
+                () -> EntityType.Builder
+                        .of(FakeAggroEntity::new, MobCategory.MONSTER)
+                        .sized(0.8F, 2.6F)
+                        .clientTrackingRange(8)
+                        .build("fake_aggro")
         );
 
 

@@ -13,7 +13,7 @@ public class FakeEntityRenderer extends MobRenderer<FakeEntity, FakeEntityModel<
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(
                     FunAetherMod.MODID,
-                    "textures/entity/fake_entity.png"
+                    "textures/entity/fake.png"
             );
 
     public FakeEntityRenderer(EntityRendererProvider.Context context) {
@@ -29,36 +29,3 @@ public class FakeEntityRenderer extends MobRenderer<FakeEntity, FakeEntityModel<
         return TEXTURE;
     }
 }
-
-/*
-=========================================================
-                 LEARNING CORNER
-=========================================================
-
-This class tells Minecraft how to draw the FakeEntity.
-
-TEXTURE
--------
-Points to the texture file inside:
-
-assets/funaethermod/textures/entity/fake_entity.png
-
-Constructor
------------
-Creates the renderer.
-
-context.bakeLayer(...)
-loads the model that Blockbench exported.
-
-0.5F
-----
-This is the entity's shadow size.
-
-getTextureLocation()
---------------------
-Whenever Minecraft renders the Fake, it asks:
-
-"What texture should I use?"
-
-We return fake_entity.png.
-*/

@@ -7,26 +7,23 @@
 ## ADD
 
 
-## SUB DIMENSION ONE – CORRUPTED AETHER
-
-* [x] reuse aether terrain but change blocks so that its all no texture blocks
-* [x] heavy purple fog
-* [x] lore entry
-* [x] section 2 of checklists followed 
-
----
-
-## SUBSEQUENCE
-*[ ] exit via island with purgatory portal block
-
- ---
-
 ## ANOMALY_#221
 * [ ] model
 * [ ] sounds
 * [x] lore
 * [ ] added to entity spawner
 
+
+---
+
+
+## FAKE AGGRO
+
+* [x] section one of checlists followed
+* [x] lore
+
+
+---
 
 ## log video link
 * [ ] video
@@ -35,7 +32,7 @@
 
 ## FIXES 0.0.6
 
-* [ ] fix return portal logic so that when in purgatory entering an aether portal tps you to aether and vice versa and entering either portal block in haven teleports you to the dimension the portal block correlates to eg aether portal in haven = aether teleport
+* [ ] fix the portals so that they teleport to their dimension unless their in the same dimension. ex: purgatory portal in aether sends player to the purgatory and not to the overworld but aether portal in aether sends player to overworld and same with purgatory portals.
 * [ ] entity 2020 attack not chasing players
 * [ ] remove purgatory spawnlogic from FakeEntity.java
 

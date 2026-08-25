@@ -48,6 +48,12 @@
     "sounds": [
       "funaethermod:trick_ambient"
     ]
+  },
+
+  "fake_aggro": {
+    "sounds" : [
+      "funaethermod:fake_aggro"
+    ]
   }
 
 }

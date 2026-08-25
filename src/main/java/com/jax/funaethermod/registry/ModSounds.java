@@ -48,6 +48,9 @@ public class ModSounds {
             public static final RegistryObject<SoundEvent> TRICK_AMBIENT =
                 registerSound("trick_ambient");
 
+    public static final RegistryObject<SoundEvent> FAKE_CHASE =
+            registerSound("fake_chase");
+
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
 
