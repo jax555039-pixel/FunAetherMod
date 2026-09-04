@@ -31,7 +31,7 @@
 
 ## FIXES 0.0.6
 
-* [ ] fix the portals so that they teleport to their dimension unless their in the same dimension. ex: purgatory portal in aether sends player to the purgatory and not to the overworld but aether portal in aether sends player to overworld and same with purgatory portals.
+* [x] fix the portals so that they teleport to their dimension unless their in the same dimension. ex: purgatory portal in aether sends player to the purgatory and not to the overworld but aether portal in aether sends player to overworld and same with purgatory portals.
 * [x] entity 2020 attack not chasing players
 * [x] remove purgatory spawnlogic from biome/purgatory.json
 
@@ -59,6 +59,8 @@
 
 ## FUN AETHER MOD 0.0.7 BETA
 
+fixes
+* [ ]
 
 
 
