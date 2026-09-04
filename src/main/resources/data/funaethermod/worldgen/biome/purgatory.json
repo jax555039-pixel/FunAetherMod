@@ -30,8 +30,8 @@
     [],
     [],
     [
-      "minecraft:trees_old_growth_spruce_taiga",
-      "minecraft:patch_grass_taiga",
+      "minecraft:trees_plains",
+      "minecraft:patch_grass_plain",
       "minecraft:patch_dead_bush"
     ],
     [],
@@ -40,20 +40,7 @@
   ],
 
   "spawners": {
-    "creature": [
-      {
-        "type": "funaethermod:",
-        "weight": 20,
-        "minCount": 1,
-        "maxCount": 1
-      },
-      {
-        "type": "funaethermod:fake",
-        "weight": 10,
-        "minCount": 1,
-        "maxCount": 1
-      }
-    ],
+    "creature": [],
 
     "monster": [],
     "ambient": [],

@@ -102,11 +102,8 @@ public void entityInside(
 
     ResourceKey<Level> destinationKey;
 
-
-    // Overworld -> Purgatory
-    if (serverLevel.dimension().equals(Level.OVERWORLD)) {
-
-        destinationKey = ResourceKey.create(
+ResourceKey<Level> purgatoryKey =
+        ResourceKey.create(
                 Registries.DIMENSION,
                 new ResourceLocation(
                         FunAetherMod.MODID,
@@ -114,14 +111,18 @@ public void entityInside(
                 )
         );
 
-    }
+// Already in Purgatory -> Overworld
+if (serverLevel.dimension().equals(purgatoryKey)) {
 
-    // Purgatory -> Overworld
-    else {
+    destinationKey = Level.OVERWORLD;
 
-        destinationKey = Level.OVERWORLD;
+}
+// Anywhere else -> Purgatory
+else {
 
-    }
+    destinationKey = purgatoryKey;
+
+}
 
 
     ServerLevel destination =
@@ -161,10 +162,7 @@ public void entityInside(
 
 
                         // Going INTO Purgatory
-                        if (destinationLevel.dimension()
-                                .location()
-                                .toString()
-                                .equals("funaethermod:purgatory")) {
+                        if (destinationLevel.dimension().equals(purgatoryKey)) {
 
 
                             safeSpawn =

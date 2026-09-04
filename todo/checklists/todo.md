@@ -25,16 +25,15 @@
 
 ---
 
-## log video link
-* [ ] video
+
 
 
 
 ## FIXES 0.0.6
 
 * [ ] fix the portals so that they teleport to their dimension unless their in the same dimension. ex: purgatory portal in aether sends player to the purgatory and not to the overworld but aether portal in aether sends player to overworld and same with purgatory portals.
-* [ ] entity 2020 attack not chasing players
-* [ ] remove purgatory spawnlogic from FakeEntity.java
+* [x] entity 2020 attack not chasing players
+* [x] remove purgatory spawnlogic from biome/purgatory.json
 
 ---
 
@@ -58,18 +57,12 @@
 
 ---
 
-## Ideas (Future)
+## FUN AETHER MOD 0.0.7 BETA
 
-* [ ] 12+ More entites
-* [ ] 7+ More dimensions
-* [ ] Secret endings
-* [ ] Rare structures
-* [ ] Hidden achievements
-* [ ] Dynamic music
-* [ ] More horror events
-* [ ] Story progression
-* [ ] fake model change???
+
 
 
 ## FUN AETHER MOD 1.0.0
 
+## log video link
+* [ ] video

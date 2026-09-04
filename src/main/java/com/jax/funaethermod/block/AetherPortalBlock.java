@@ -100,10 +100,8 @@ public void entityInside(
 
     ResourceKey<Level> destinationKey;
 
-    // Decide where to go
-    if (serverLevel.dimension().equals(Level.OVERWORLD)) {
-
-        destinationKey = ResourceKey.create(
+ResourceKey<Level> aetherKey =
+        ResourceKey.create(
                 Registries.DIMENSION,
                 new ResourceLocation(
                         FunAetherMod.MODID,
@@ -111,11 +109,15 @@ public void entityInside(
                 )
         );
 
-    } else {
+if (serverLevel.dimension().equals(aetherKey)) {
 
-        destinationKey = Level.OVERWORLD;
+    destinationKey = Level.OVERWORLD;
 
-    }
+} else {
+
+    destinationKey = aetherKey;
+
+}
 
     ServerLevel destination =
             serverLevel
