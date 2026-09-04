@@ -326,6 +326,12 @@ public class EntitySpawnerEntity extends PathfinderMob {
             possibleEntities.add(
             ModEntities.FAKE_AGGRO.get()
         );
+
+        return getRandomEntity(
+            possibleEntities
+        );
+        }
+    
             
 
 
@@ -410,7 +416,7 @@ public class EntitySpawnerEntity extends PathfinderMob {
 
 if (
         (overworld || sd1Ca)
-            && !lowhealth
+            && !lowHealth
     ) {
 
         possibleEntities.add(
@@ -520,7 +526,7 @@ if (purgatory) {
         );
 
       }
-    }
+    
 
     /*
      * Picks one entity from the valid list.
