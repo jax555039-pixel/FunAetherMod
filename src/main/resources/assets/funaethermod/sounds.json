@@ -54,6 +54,12 @@
     "sounds" : [
       "funaethermod:fake_chase"
     ]
+  },
+
+  "aether_ambient": {
+    "sounds": [
+      "funaethermod:aether_ambient"
+    ]
   }
 
 }

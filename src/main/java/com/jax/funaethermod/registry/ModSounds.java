@@ -51,6 +51,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> FAKE_CHASE =
             registerSound("fake_chase");
 
+    public static final RegistryObject<SoundEvent> AETHER_AMBIENT =
+            registerSound("aether_ambient");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
 

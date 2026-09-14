@@ -9,6 +9,7 @@ import com.jax.funaethermod.client.model.PoorBoyModel;
 import com.jax.funaethermod.client.model.EntitySpawnerModel;
 import com.jax.funaethermod.client.model.TrickModel;
 import com.jax.funaethermod.client.model.FakeAggroModel;
+import com.jax.funaethermod.client.model.Anomaly221Model;
 
 import com.jax.funaethermod.registry.ModEntities;
 
@@ -21,6 +22,7 @@ import com.jax.funaethermod.renderer.PoorBoyRenderer;
 import com.jax.funaethermod.renderer.EntitySpawnerRenderer;
 import com.jax.funaethermod.renderer.TrickRenderer;
 import com.jax.funaethermod.renderer.FakeAggroRenderer;
+import com.jax.funaethermod.renderer.Anomaly221Renderer;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -82,6 +84,11 @@ public class ClientModEvents {
                 ModEntities.FAKE_AGGRO.get(),
                 FakeAggroRenderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.ANOMALY_221.get(),
+                Anomaly221Renderer::new
+        );
     }
 
     @SubscribeEvent
@@ -119,7 +126,12 @@ public class ClientModEvents {
 
         event.registerLayerDefinition(
                 FakeAggroModel.LAYER_LOCATION,
-                TrickModel::createBodyLayer
+                FakeAggroModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                Anomaly221Model.LAYER_LOCATION,
+                Anomaly221Model::createBodyLayer
         );
 
     }

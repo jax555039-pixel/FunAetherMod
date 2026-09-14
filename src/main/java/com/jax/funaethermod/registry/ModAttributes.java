@@ -5,6 +5,7 @@ import com.jax.funaethermod.entity.Entity2020Entity;
 import com.jax.funaethermod.entity.EntitySpawnerEntity;
 import com.jax.funaethermod.entity.TrickEntity;
 import com.jax.funaethermod.entity.FakeAggroEntity;
+import com.jax.funaethermod.entity.Anomaly221Entity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -41,6 +42,11 @@ public class ModAttributes {
         event.put(
         ModEntities.FAKE_AGGRO.get(),
         FakeAggroEntity.createAttributes().build()
+        );
+
+        event.put(
+        ModEntities.ANOMALY_221.get(),
+        Anomaly221Entity.createAttributes().build()
         );
 
     }

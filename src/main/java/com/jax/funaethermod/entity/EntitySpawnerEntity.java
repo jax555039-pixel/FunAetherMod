@@ -445,6 +445,29 @@ if (purgatory) {
     possibleEntities.add(
             ModEntities.TRICK.get()
     );
+
+
+
+    /*
+    =========================================================
+    ANOMALY 221
+    =========================================================
+
+    requirements:
+
+        - Any weather
+        - Any player health
+        - overworld
+        - day or night
+        - cave 
+    */
+
+        if (overworld && isCave) {
+        
+                possibleEntities.add(
+                        ModEntities.ANOMALY_221.get()
+                );
+        }
 }
 
 
@@ -458,6 +481,9 @@ if (purgatory) {
          * - PoorBoy
          * - RealObserve
          * - Fake
+         * - FakeAggro
+         * - Trick
+         * - Anomaly221
          *
          * are allowed.
          *

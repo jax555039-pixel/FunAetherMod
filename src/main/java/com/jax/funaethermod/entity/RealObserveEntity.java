@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import com.jax.funaethermod.registry.ModEntities;
 
 public class RealObserveEntity extends PathfinderMob {
 
@@ -30,7 +31,7 @@ public class RealObserveEntity extends PathfinderMob {
     public RealObserveEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
         this.setInvulnerable(true);
-        this.setPersistenceRequired();
+        
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -115,6 +116,21 @@ public class RealObserveEntity extends PathfinderMob {
         }
 
         transforming = true;
+        
+        RealEntity realEntity = new RealEntity(ModEntities.REAL.get(), this.level());
+
+        if (realEntity != null) {
+            realEntity.moveTo(
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                this.getYRot(),
+                this.getXRot()
+            );
+
+            this.level().addFreshEntity(realEntity);
+        }
+
         this.discard();
     }
 

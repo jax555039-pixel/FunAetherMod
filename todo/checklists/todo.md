@@ -1,46 +1,35 @@
 # FunAetherMod - TODO
 
+---
+---
 
+## FUN AETHER MOD 0.0.7 BETA
 
-## x=done []=not done ?=waiting for playtester to play it
+fixes
+* [ ] head rendering issue (garentee this is in the entity model files)
+* [x] fix real aggro not spawning when i get close to it
+* [ ] add a way out of sd1-ca (return portal???)
+* [ ] fix fake player names not showing on day 2
+* [x] real observe not despawning
+ 
+---
+
+## REDO/REWORK
+* [x] redo audio
+* [x] redo haven
+* [ ] add lore structure in the aether 
+* [x] add lore structures
+* [ ] make return portals randomly generate
+* [x] make haven look more like alpha minecraft
+
+---
 
 ## ADD
 
+* [ ] make a random dimension block (this will spawn in sd1-ca)
+ 
 
-## ANOMALY_#221
-* [ ] model
-* [ ] sounds
-* [x] lore
-* [ ] added to entity spawner
-
-
----
-
-
-## FAKE AGGRO
-
-* [x] section one of checlists followed
-* [x] lore
-
-
----
-
-
-
-
-
-## FIXES 0.0.6
-
-* [x] fix the portals so that they teleport to their dimension unless their in the same dimension. ex: purgatory portal in aether sends player to the purgatory and not to the overworld but aether portal in aether sends player to overworld and same with purgatory portals.
-* [x] entity 2020 attack not chasing players
-* [x] remove purgatory spawnlogic from biome/purgatory.json
-
----
-
-
-
-
----
+ ---
 
 ## Release Checklist
 
@@ -54,13 +43,6 @@
 * [ ] Build release JAR
 * [ ] git push the mod
 * [ ] Upload to Modrinth/curseforge
-
----
-
-## FUN AETHER MOD 0.0.7 BETA
-
-fixes
-* [ ]
 
 
 

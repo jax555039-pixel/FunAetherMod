@@ -10,6 +10,7 @@ import com.jax.funaethermod.entity.PoorBoyEntity;
 import com.jax.funaethermod.entity.EntitySpawnerEntity;
 import com.jax.funaethermod.entity.TrickEntity;
 import com.jax.funaethermod.entity.FakeAggroEntity;
+import com.jax.funaethermod.entity.Anomaly221Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -116,6 +117,16 @@ public class ModEntities {
                         .sized(0.8F, 2.6F)
                         .clientTrackingRange(8)
                         .build("fake_aggro")
+        );
+
+        public static final RegistryObject<EntityType<Anomaly221Entity>> ANOMALY_221 =
+        ENTITY_TYPES.register(
+                "anomaly_221",
+                () -> EntityType.Builder
+                        .of(Anomaly221Entity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("anomaly_221")
         );
 
 
