@@ -467,8 +467,7 @@ if (purgatory) {
                 possibleEntities.add(
                         ModEntities.ANOMALY_221.get()
                 );
-        }
-}
+
 
 
         /*
