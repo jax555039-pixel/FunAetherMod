@@ -38,14 +38,14 @@ public class EntitySpawnerSpawnHandler {
     //
     // Normal:
     // 20 * 60 * 5 = 5 minutes
-    private static final int MIN_SPAWN_INTERVAL = 20 * 60 * 5;
+    private static final int MIN_SPAWN_INTERVAL = 20 * 60 * 10;
 
     // Testing:
     // 20 * 30 = 600 ticks = 30 seconds
     //
     // Normal:
     // 20 * 60 * 15 = 15 minutes
-    private static final int MAX_SPAWN_INTERVAL = 20 * 60 * 15;
+    private static final int MAX_SPAWN_INTERVAL = 20 * 60 * 45;
 
     // 30% chance normally.
     // Testing is 100%.
