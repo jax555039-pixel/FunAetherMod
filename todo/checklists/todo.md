@@ -6,7 +6,7 @@
 ## FUN AETHER MOD 0.0.7 BETA
 
 fixes
-* [ ] entity head moving back when im close to it
+* [x] entity head moving back when im close to it
 * [x] fix real aggro not spawning when i get close to it
 * [ ] add the return portals in sd1-ca
 * [kinda i want to alter it a bit] fix fake player names not showing on day 2
@@ -87,8 +87,10 @@ fixes
 
 ## DIMENSIONS
 
-* [ ] sd2-FALSE
-* [ ] sd3-HELL
+* [ ] sd2-FALSE [true but EVIL]
+* [ ] sd3-HELL (haven but EVIL)
+* [ ] sd4-past (wasteland version of purgatory)
+* [ ] true
 * [ ] if only we were their
 * [ ] 202020202020202020202020
 * [ ] chapel
@@ -108,7 +110,7 @@ fixes
 * [ ] realize
 * [ ] thehollow
 * [ ] creator
-* [ ] chicken
+* [ ] GLUTTONY
 * [ ] nova
 * [ ] cognitive
 

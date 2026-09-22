@@ -69,13 +69,9 @@ public class FakeAggroModel<T extends Entity> extends EntityModel<T> {
                                 8.0F,
                                 8.0F
                         ),
-                PartPose.offset(
-                        0.0F,
-                        0.0F,
-                        0.0F
-                )
-        );
-
+                PartPose.ZERO
+                );
+        
         /*
          * BODY
          */

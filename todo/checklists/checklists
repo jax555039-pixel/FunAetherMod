@@ -1,11 +1,11 @@
 ## SECTION 1 — Entity Making
- Model design
-Head: 8×8×8
-Body: 8×12×4
-Arms: 4×12×4
-Legs: 4×12×4
- Model file
- Texture file
+ PLAYER Model design (note: apply pivot points (PP) to the FOLDER not the part)
+Head: 8×8×8 PP = 0x24x0
+Body: 8×12×4 PP = 0x24x0
+Arms: 4×12×4 PP = left 5x22x0 right -5x22x0
+Legs: 4×12×4 PP = left 2x12x0 right -2x12x0
+ Model file 
+ Texture file 
  Entity file
  Renderer file
  Register entity in ModEntities.java
