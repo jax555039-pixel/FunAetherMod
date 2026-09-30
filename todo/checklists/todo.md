@@ -3,30 +3,22 @@
 ---
 ---
 
-## FUN AETHER MOD 0.0.7 BETA
+## FUN AETHER MOD 1.0.0
 
 fixes
-* [x] entity head moving back when im close to it
-* [x] fix real aggro not spawning when i get close to it
 * [ ] add the return portals in sd1-ca
 * [kinda i want to alter it a bit] fix fake player names not showing on day 2
-* [x] real observe not despawning
  
 ---
 
 ## REDO/REWORK
-* [x] redo audio
-* [x] redo haven
 * [ ] add lore structure in the aether 
-* [x] add lore structures
 * [ ] make return portals randomly generate
-* [x] make haven look more like alpha minecraft
 
 ---
 
 ## ADD
 
-* [ ] make a random dimension block (this will spawn in sd1-ca)
 * [ ] add the new house/tower/spawn structures to the structure system (rules are one and only one of each structure must generate within 150 chunks from spawn in all directions but they must not generate within )
 * [ ] add new aether structures to the scructure spawning system (rules are same as the house/tower/spawn rules but in the aether)
 
@@ -85,8 +77,8 @@ fixes
 ## technical
 
 * [ ] chunk remover entity
-* [ ] structure spawner entity
-* [ ] portal spawner entity
+* [ ] soundevent entity
+* [ ] file creation event (this will create .txt files with hidden links to arg episodes, images and just general videos)
 
 ## DIMENSIONS
 
@@ -95,7 +87,7 @@ fixes
 * [ ] sd4-past (wasteland version of purgatory)
 * [ ] true
 * [ ] if only we were their
-* [ ] 202020202020202020202020
+* [ ] column
 * [ ] chapel
 * [ ] Falsesafehouse
 * [ ] i wish he was here
@@ -130,7 +122,7 @@ fixes
 * [ ] false
 * [ ] corrupt
 * [ ] spore
-* [ ] sub anomaly thecore (technicaly a structure but its kind of like entity 2020's heart so its still considered a sub anomaly)
+* [ ] sub anomaly thecore (technicaly a structure but its kind of like entity 2020's heart so its still considered a sub anomaly) (this will have a dedicated dimension where this structure/entity will spawn (most likely the column dimension))
 
 ## LORE
 
