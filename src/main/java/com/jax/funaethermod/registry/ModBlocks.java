@@ -5,6 +5,7 @@ import com.jax.funaethermod.block.AetherPortalBlock;
 import com.jax.funaethermod.block.AetherPortalFrameBlock;
 import com.jax.funaethermod.block.PurgatoryGrassBlock;
 import com.jax.funaethermod.block.PurgatoryPortalBlock;
+import com.jax.funaethermod.block.RandomReturnPortalBlock;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -55,6 +56,15 @@ public class ModBlocks {
                         "purgatory_portal",
                         () -> new PurgatoryPortalBlock(
                                 BlockBehaviour.Properties.copy(Blocks.GRAY_CONCRETE)
+                        )
+                );
+
+           // Random Portal Block
+           public static final RegistryObject<Block> RANDOM_RETURN_PORTAL =
+                BLOCKS.register(
+                        "random_portal",
+                        () -> new RandomReturnPortalBlock(
+                                BlockBehaviour.Properties.copy(Blocks.BLACK_WOOL)
                         )
                 );
         

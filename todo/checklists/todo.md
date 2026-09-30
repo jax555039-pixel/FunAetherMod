@@ -27,8 +27,8 @@ fixes
 ## ADD
 
 * [ ] make a random dimension block (this will spawn in sd1-ca)
-* [ ] add the new structures to the structure system
- 
+* [ ] add the new house/tower/spawn structures to the structure system (rules are one and only one of each structure must generate within 150 chunks from spawn in all directions but they must not generate within )
+* [ ] add new aether structures to the scructure spawning system (rules are same as the house/tower/spawn rules but in the aether)
 
  ---
 
@@ -48,12 +48,15 @@ fixes
 
 ## FUN AETHER MOD 1.0.0 (FINALLY WE MADE IT)
 
+## gameplay
+
+* [ ] old 1.4.2 interface, textures, sounds and "version in the corner" thingy
+
 
 ## REWORK
 
-* [ ] 
-* [ ] 
-* [ ] 
+* [ ] sounds
+* [ ] a few entity textures
 * [ ] 
 * [ ] 
 * [ ] 
@@ -113,6 +116,7 @@ fixes
 * [ ] GLUTTONY
 * [ ] nova
 * [ ] cognitive
+* [ ] real stalk varient
 
 
 ## ANOMALYS
@@ -126,7 +130,7 @@ fixes
 * [ ] false
 * [ ] corrupt
 * [ ] spore
-* [ ] thecore
+* [ ] sub anomaly thecore (technicaly a structure but its kind of like entity 2020's heart so its still considered a sub anomaly)
 
 ## LORE
 
@@ -147,9 +151,11 @@ fixes
 * [ ] false
 * [ ] corrupt
 * [ ] spore
-* [ ] thecore
-* [ ] sd2-FALSE
-* [ ] sd3-HELL
+* [ ] sub anomaly thecore
+* [ ] sd2-FALSE [true but EVIL]
+* [ ] sd3-HELL (haven but EVIL)
+* [ ] sd4-past (wasteland version of purgatory)
+* [ ] true
 * [ ] if only we were their
 * [ ] 202020202020202020202020
 * [ ] chapel
@@ -169,14 +175,14 @@ fixes
 * [ ] xXfakeshadowXx
 * [ ] myhome
 * [ ] xXxHO11OWxXx
-* [ ]xXrealization
+* [ ] xXrealizationXx
 * [ ] xXchickeneaterXx
 * [ ] xXtrixxXx
 * [ ] x_xcogntiox_x
 * [ ] logcenter
 * [ ] findmeinhim_1
 * [ ] aether_1
-* [ ] 2020_2020
+* [ ] 20_20
 
 ## EASTER EGSS
 * [ ] herobrine
@@ -185,14 +191,7 @@ fixes
 * [ ] giant alex
 
 
-## REDO
-
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
-* [ ] 
+---
 
 ## ARG ACT I
 

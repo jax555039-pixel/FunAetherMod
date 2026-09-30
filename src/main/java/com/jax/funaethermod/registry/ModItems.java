@@ -57,6 +57,15 @@ public class ModItems {
                     )
             );
 
+            public static final RegistryObject<Item> RANDOM_RETURN_PORTAL =
+            ITEMS.register(
+                    "random_return_portal",
+                    () -> new BlockItem(
+                            ModBlocks.RANDOM_RETURN_PORTAL.get(),
+                            new Item.Properties()
+                    )
+            );
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
