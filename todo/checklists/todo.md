@@ -43,6 +43,7 @@ fixes
 ## gameplay
 
 * [ ] old 1.4.2 interface, textures, sounds and "version in the corner" thingy
+* [ ] make reasons to go to dimensions more than once
 
 
 ## REWORK
@@ -103,9 +104,9 @@ fixes
 * [ ] unkown
 * [ ] remember
 * [ ] realize
-* [ ] hollow
+* [x] hollow
 * [ ] creator
-* [ ] GLUTTONY
+* [x] GLUTTONY
 * [ ] nova
 * [ ] cognitive
 * [ ] real stalk varient
@@ -131,9 +132,9 @@ fixes
 * [ ] unkown
 * [ ] remember
 * [ ] realize
-* [ ] thehollow
+* [x] hollow
 * [ ] creator
-* [ ] chicken
+* [x] gluttony
 * [ ] nova
 * [ ] cognitive
 * [ ] ifhewashere
@@ -144,7 +145,7 @@ fixes
 * [ ] he
 * [ ] false
 * [ ] corrupt
-* [ ] spore
+* [x] spore
 * [ ] sub anomaly thecore
 * [ ] sd2-FALSE [true but EVIL]
 * [ ] sd3-HELL (haven but EVIL)

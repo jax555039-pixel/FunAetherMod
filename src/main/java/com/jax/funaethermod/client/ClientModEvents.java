@@ -29,6 +29,7 @@ import com.jax.funaethermod.renderer.FakeAggroRenderer;
 import com.jax.funaethermod.renderer.Anomaly221Renderer;
 import com.jax.funaethermod.renderer.SporeEntityRenderer;
 import com.jax.funaethermod.renderer.GluttonyEntityRenderer;
+import com.jax.funaethermod.renderer.HollowEntityRenderer;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -105,6 +106,11 @@ public class ClientModEvents {
                 ModEntities.GLUTTONY.get(),
                 GluttonyEntityRenderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.HOLLOW.get(),
+                HollowEntityRenderer::new
+        );
     }
 
     @SubscribeEvent
@@ -150,10 +156,10 @@ public class ClientModEvents {
                 Anomaly221Model::createBodyLayer
         );
 
-        /*event.registerLayerDefinition(
+        event.registerLayerDefinition(
                 HollowEntityModel.LAYER_LOCATION,
                 HollowEntityModel::createBodyLayer
-        );*/
+        );
 
         event.registerLayerDefinition(
                 SporeEntityModel.LAYER_LOCATION,

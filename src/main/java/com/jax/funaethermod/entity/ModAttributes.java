@@ -12,6 +12,7 @@ import com.jax.funaethermod.entity.RealObserveEntity;
 import com.jax.funaethermod.entity.RealEntity;
 import com.jax.funaethermod.entity.SporeEntity;
 import com.jax.funaethermod.entity.GluttonyEntity;
+import com.jax.funaethermod.entity.HollowEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -84,6 +85,11 @@ public class ModAttributes {
         event.put(
                 ModEntities.GLUTTONY.get(),
                 GluttonyEntity.createAttributes().build()
+        );
+
+        event.put(
+                ModEntities.HOLLOW.get(),
+                HollowEntity.createAttributes().build()
         );
 
     }

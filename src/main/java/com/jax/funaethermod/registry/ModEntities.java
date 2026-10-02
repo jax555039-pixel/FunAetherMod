@@ -13,6 +13,7 @@ import com.jax.funaethermod.entity.FakeAggroEntity;
 import com.jax.funaethermod.entity.Anomaly221Entity;
 import com.jax.funaethermod.entity.SporeEntity;
 import com.jax.funaethermod.entity.GluttonyEntity;
+import com.jax.funaethermod.entity.HollowEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -149,6 +150,16 @@ public class ModEntities {
                         .sized(0.6F, 1.8F)
                         .clientTrackingRange(8)
                         .build("gluttony")
+        );
+
+        public static final RegistryObject<EntityType<HollowEntity>> HOLLOW =
+        ENTITY_TYPES.register(
+                "hollow",
+                () -> EntityType.Builder
+                        .of(HollowEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("hollow")
         );
 
 
