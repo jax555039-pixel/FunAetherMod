@@ -11,6 +11,8 @@ import com.jax.funaethermod.entity.EntitySpawnerEntity;
 import com.jax.funaethermod.entity.TrickEntity;
 import com.jax.funaethermod.entity.FakeAggroEntity;
 import com.jax.funaethermod.entity.Anomaly221Entity;
+import com.jax.funaethermod.entity.SporeEntity;
+import com.jax.funaethermod.entity.GluttonyEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -128,6 +130,27 @@ public class ModEntities {
                         .clientTrackingRange(8)
                         .build("anomaly_221")
         );
+
+         public static final RegistryObject<EntityType<SporeEntity>> SPORE =
+        ENTITY_TYPES.register(
+                "spore",
+                () -> EntityType.Builder
+                        .of(SporeEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("spore")
+        );
+
+        public static final RegistryObject<EntityType<GluttonyEntity>> GLUTTONY =
+        ENTITY_TYPES.register(
+                "gluttony",
+                () -> EntityType.Builder
+                        .of(GluttonyEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("gluttony")
+        );
+
 
 
     public static void register(IEventBus eventBus) {

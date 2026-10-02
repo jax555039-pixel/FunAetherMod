@@ -10,6 +10,8 @@ import com.jax.funaethermod.entity.PoorBoyEntity;
 import com.jax.funaethermod.entity.FakeEntity;
 import com.jax.funaethermod.entity.RealObserveEntity;
 import com.jax.funaethermod.entity.RealEntity;
+import com.jax.funaethermod.entity.SporeEntity;
+import com.jax.funaethermod.entity.GluttonyEntity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -72,6 +74,16 @@ public class ModAttributes {
         event.put(
                 ModEntities.POORBOY.get(),
                 PoorBoyEntity.createAttributes().build()
+        );
+
+        event.put(
+                ModEntities.SPORE.get(),
+                SporeEntity.createAttributes().build()
+        );
+
+        event.put(
+                ModEntities.GLUTTONY.get(),
+                GluttonyEntity.createAttributes().build()
         );
 
     }

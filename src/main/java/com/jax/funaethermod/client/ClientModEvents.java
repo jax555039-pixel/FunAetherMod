@@ -10,6 +10,9 @@ import com.jax.funaethermod.client.model.EntitySpawnerModel;
 import com.jax.funaethermod.client.model.TrickModel;
 import com.jax.funaethermod.client.model.FakeAggroModel;
 import com.jax.funaethermod.client.model.Anomaly221Model;
+import com.jax.funaethermod.client.model.HollowEntityModel;
+import com.jax.funaethermod.client.model.GluttonyEntityModel;
+import com.jax.funaethermod.client.model.SporeEntityModel;
 
 import com.jax.funaethermod.registry.ModEntities;
 
@@ -18,11 +21,14 @@ import com.jax.funaethermod.renderer.Entity2020AttackRenderer;
 import com.jax.funaethermod.renderer.RealEntityRenderer;
 import com.jax.funaethermod.renderer.RealObserveEntityRenderer;
 import com.jax.funaethermod.renderer.FakeEntityRenderer;
+import com.jax.funaethermod.renderer.GluttonyEntityRenderer;
 import com.jax.funaethermod.renderer.PoorBoyRenderer;
 import com.jax.funaethermod.renderer.EntitySpawnerRenderer;
 import com.jax.funaethermod.renderer.TrickRenderer;
 import com.jax.funaethermod.renderer.FakeAggroRenderer;
 import com.jax.funaethermod.renderer.Anomaly221Renderer;
+import com.jax.funaethermod.renderer.SporeEntityRenderer;
+import com.jax.funaethermod.renderer.GluttonyEntityRenderer;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -89,6 +95,16 @@ public class ClientModEvents {
                 ModEntities.ANOMALY_221.get(),
                 Anomaly221Renderer::new
         );
+
+        event.registerEntityRenderer(
+                ModEntities.SPORE.get(),
+                SporeEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                ModEntities.GLUTTONY.get(),
+                GluttonyEntityRenderer::new
+        );
     }
 
     @SubscribeEvent
@@ -132,6 +148,21 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 Anomaly221Model.LAYER_LOCATION,
                 Anomaly221Model::createBodyLayer
+        );
+
+        /*event.registerLayerDefinition(
+                HollowEntityModel.LAYER_LOCATION,
+                HollowEntityModel::createBodyLayer
+        );*/
+
+        event.registerLayerDefinition(
+                SporeEntityModel.LAYER_LOCATION,
+                SporeEntityModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                GluttonyEntityModel.LAYER_LOCATION,
+                GluttonyEntityModel::createBodyLayer
         );
 
     }

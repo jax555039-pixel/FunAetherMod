@@ -103,12 +103,13 @@ fixes
 * [ ] unkown
 * [ ] remember
 * [ ] realize
-* [ ] thehollow
+* [ ] hollow
 * [ ] creator
 * [ ] GLUTTONY
 * [ ] nova
 * [ ] cognitive
 * [ ] real stalk varient
+* [ ] entity 2020 phase 1 2 and 3
 
 
 ## ANOMALYS
@@ -121,7 +122,8 @@ fixes
 * [ ] he
 * [ ] false
 * [ ] corrupt
-* [ ] spore
+* [x] spore
+   * [ ] attack varient
 * [ ] sub anomaly thecore (technicaly a structure but its kind of like entity 2020's heart so its still considered a sub anomaly) (this will have a dedicated dimension where this structure/entity will spawn (most likely the column dimension))
 
 ## LORE
@@ -175,6 +177,26 @@ fixes
 * [ ] findmeinhim_1
 * [ ] aether_1
 * [ ] 20_20
+
+---
+
+# BIIIIIIIG things
+
+* [ ] entity 2020 bossfight 
+phase one will spawn spores around it and occasinaly trap you in obsidian
+phase two will be spawns more spores while also attacking you via trying to suffocate you when you look at it too much
+phase three will be despawns all entitys around it and will start to attack you dealing 15 hearts of damge everythime you get hit
+
+---
+
+## small things
+
+* [ ] random kicks with the following err messages
+err.kicked.2020
+err.kicked.impure
+err.kicked.youmustnotbehere
+
+---
 
 ## EASTER EGSS
 * [ ] herobrine
