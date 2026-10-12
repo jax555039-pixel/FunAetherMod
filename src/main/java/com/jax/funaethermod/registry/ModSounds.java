@@ -54,6 +54,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> AETHER_AMBIENT =
             registerSound("aether_ambient");
 
+    public static final RegistryObject<SoundEvent> HOLLOW_AMBIENT =
+            registerSound("hollow_ambient");
+
+    public static final RegistryObject<SoundEvent> RANDOM_ENTITY2020_COUNTDOWN =
+            registerSound("random_entity2020_countdown");
+
+    public static final RegistryObject<SoundEvent> GLUTTONY_AMBIENT =
+            registerSound("gluttony_ambient");
+
+    public static final RegistryObject<SoundEvent> SPORE_AMBIENT =
+            registerSound("spore_ambient");
+
     private static RegistryObject<SoundEvent> registerSound(String name) {
 
         return SOUNDS.register(

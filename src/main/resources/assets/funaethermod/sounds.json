@@ -60,6 +60,30 @@
     "sounds": [
       "funaethermod:aether_ambient"
     ]
+  },
+
+  "hollow_ambient": {
+    "sounds": [
+      "funaethermod:hollow_ambient"
+    ]
+  },
+
+  "random_entity2020_countdown": {
+    "sounds": [
+      "funaethermod:random_entity2020_countdown"
+    ]
+  },
+
+  "gluttony_ambient": {
+    "sounds": [
+      "funaethermod:gluttony_ambient"
+    ]
+  },
+
+  "spore_ambient": {
+    "sounds": [
+      "funaethermod:spore_ambient"
+    ]
   }
 
 }

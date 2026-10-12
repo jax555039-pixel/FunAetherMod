@@ -1,7 +1,7 @@
 package com.jax.funaethermod.entity;
 
 // Extra:
-// import com.jax.(mod name).registry.ModSounds;
+import com.jax.funaethermod.registry.ModSounds;
 // import net.minecraft.core.BlockPos;
 // import net.minecraft.tags.BlockTags;
 
@@ -29,7 +29,7 @@ public class GluttonyEntity extends PathfinderMob {
     // Extra:
     // private static final double FOLLOW_RANGE = 160.0D;
     // private static final Random RANDOM = new Random();
-    // private int screamTimer = 60;
+private int screamTimer = 60;
     private int lifeTimer = 0;
     // private int attackCount = 0;
     // private int aggressionLevel = 0;
@@ -285,14 +285,13 @@ public class GluttonyEntity extends PathfinderMob {
         }
         */
 
-
         /*
          * ============================================================
          * OPTIONAL: JITTER
          * ============================================================
-         */
+         
 
-        /*
+        
         int jitterChance = 6;
 
         if (aggressionLevel == 1) {
@@ -313,8 +312,8 @@ public class GluttonyEntity extends PathfinderMob {
                     this.getDeltaMovement().y,
                     (this.random.nextDouble() - 0.5D) * power
             );
-        }
-        */
+        }*/
+        
 
 
         /*
@@ -357,7 +356,7 @@ public class GluttonyEntity extends PathfinderMob {
          * ============================================================
          */
 
-        /*
+        
         screamTimer++;
 
         int screamDelay = 400;
@@ -367,12 +366,12 @@ public class GluttonyEntity extends PathfinderMob {
             screamTimer = 0;
 
             this.playSound(
-                    ModSounds.(entity name)_GLITCH.get(),
+                    ModSounds.GLUTTONY_AMBIENT.get(),
                     1.0F,
                     1.0F
             );
         }
-        */
+        
     }
 
 

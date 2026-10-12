@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import com.jax.funaethermod.registry.ModEntities;
+import com.jax.funaethermod.registry.ModSounds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceKey;
@@ -52,6 +53,7 @@ public class HollowEntity extends PathfinderMob {
     }
 
     private int stareTimer = 0;
+    private int ambientTimer = 40;
 
     @Override
     public void tick() {
@@ -153,7 +155,7 @@ public class HollowEntity extends PathfinderMob {
          * private int ambientTimer = 40;
          */
 
-        /*
+        
         ambientTimer++;
 
         if (ambientTimer >= 120) {
@@ -165,7 +167,7 @@ public class HollowEntity extends PathfinderMob {
                     1.0F
             );
         }
-        */
+        
 
 
         /*

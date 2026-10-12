@@ -1,3 +1,4 @@
+
 package com.jax.funaethermod.world;
 
 import com.jax.funaethermod.FunAetherMod;
@@ -20,15 +21,17 @@ public class StructureManager {
     private static final String HAVEN_ISLAND =
             "haven_island";
 
+    private static final String CHAPEL_STRUCTURE =
+            "chapel";
+
     private static final String NORMAL_ISLAND =
             "subsequence_island";
 
     private static final String CORRUPTED_ISLAND =
             "subsequence_corrupted_island";
 
-        private static final String PORTAL_ISLAND =
-                "subsequence_portal_island";
-
+    private static final String PORTAL_ISLAND =
+            "subsequence_portal_island";
 
     /*
      * Dimension IDs.
@@ -39,21 +42,30 @@ public class StructureManager {
                     "haven"
             );
 
+    private static final ResourceLocation CHAPEL_DIMENSION =
+            new ResourceLocation(
+                    FunAetherMod.MODID,
+                    "chapel"
+            );
+
     private static final ResourceLocation SUBSEQUENCE_DIMENSION =
             new ResourceLocation(
                     FunAetherMod.MODID,
                     "subsequence"
             );
 
-
     /*
      * Called when a ServerLevel loads.
      */
     public static void onLoad(ServerLevel level) {
 
+        System.out.println(
+        "[FunAetherMod] StructureManager received dimension: "
+                + level.dimension().location()
+);
+
         ResourceLocation dimension =
                 level.dimension().location();
-
 
         /*
          * Haven dimension.
@@ -65,12 +77,23 @@ public class StructureManager {
             return;
         }
 
+        /*
+         * Chapel dimension.
+         */
+        if (dimension.equals(CHAPEL_DIMENSION)) {
+
+            generateChapel(level);
+
+            return;
+        }
+
+        
 
         /*
          * Subsequence dimension.
          *
-         * The actual infinite grid should be
-         * generated as the player explores.
+         * The infinite grid is generated as
+         * the player explores.
          */
         if (dimension.equals(SUBSEQUENCE_DIMENSION)) {
 
@@ -78,12 +101,11 @@ public class StructureManager {
         }
     }
 
-
     /*
      * Haven island.
      *
-     * This remains completely separate from
-     * the Subsequence grid.
+     * This remains separate from
+     * the Subsequence grid and Chapel.
      */
     private static void generateHavenIsland(
             ServerLevel level
@@ -91,7 +113,6 @@ public class StructureManager {
 
         StructureSavedData data =
                 StructureSavedData.get(level);
-
 
         /*
          * Reserved coordinates for Haven.
@@ -105,7 +126,6 @@ public class StructureManager {
             return;
         }
 
-
         boolean success =
                 StructureLoader.loadStructure(
                         level,
@@ -116,7 +136,6 @@ public class StructureManager {
                                 0
                         )
                 );
-
 
         if (success) {
 
@@ -132,6 +151,58 @@ public class StructureManager {
         }
     }
 
+    /*
+     * Chapel structure.
+     *
+     * Generates once at (0, 100, 0)
+     * in the Chapel dimension.
+     */
+    private static void generateChapel(
+            ServerLevel level
+    ) {
+
+        StructureSavedData data =
+                StructureSavedData.get(level);
+
+        /*
+         * Reserved coordinates for Chapel.
+         *
+         * These differ from Haven's key so
+         * the two structures are tracked separately.
+         */
+        if (data.isGenerated(
+                Integer.MIN_VALUE,
+                Integer.MIN_VALUE,
+                Integer.MIN_VALUE + 1
+        )) {
+
+            return;
+        }
+
+        boolean success =
+                StructureLoader.loadStructure(
+                        level,
+                        CHAPEL_STRUCTURE,
+                        new BlockPos(
+                                0,
+                                START_Y,
+                                0
+                        )
+                );
+
+        if (success) {
+
+            data.setGenerated(
+                    Integer.MIN_VALUE,
+                    Integer.MIN_VALUE,
+                    Integer.MIN_VALUE + 1
+            );
+
+            System.out.println(
+                    "[FunAetherMod] Chapel generated."
+            );
+        }
+    }
 
     /*
      * Generates one Subsequence cell.
@@ -154,10 +225,8 @@ public class StructureManager {
             return;
         }
 
-
         StructureSavedData data =
                 StructureSavedData.get(level);
-
 
         /*
          * Don't generate the same cell twice.
@@ -171,9 +240,7 @@ public class StructureManager {
             return;
         }
 
-
-
-        boolean portalIsland = 
+        boolean portalIsland =
                 cellX > 0 && cellX % 20 == 0;
 
         /*
@@ -202,17 +269,20 @@ public class StructureManager {
                         PATTERN_SIZE
                 ) == 4;
 
-
         String structureName;
-                
-        if (portalIsland) {
-                structureName = PORTAL_ISLAND;
-        } else if (corrupted) {
-                structureName = CORRUPTED_ISLAND; 
-        } else {
-                structureName = NORMAL_ISLAND;
-        }
 
+        if (portalIsland) {
+
+            structureName = PORTAL_ISLAND;
+
+        } else if (corrupted) {
+
+            structureName = CORRUPTED_ISLAND;
+
+        } else {
+
+            structureName = NORMAL_ISLAND;
+        }
 
         /*
          * Convert grid coordinates
@@ -228,14 +298,12 @@ public class StructureManager {
         int worldZ =
                 cellZ * Z_SPACING;
 
-
         BlockPos position =
                 new BlockPos(
                         worldX,
                         worldY,
                         worldZ
                 );
-
 
         /*
          * Load the NBT structure.
@@ -246,7 +314,6 @@ public class StructureManager {
                         structureName,
                         position
                 );
-
 
         /*
          * Only mark it generated after

@@ -43,6 +43,9 @@ public class SporeEntity extends PathfinderMob {
     }
 
     private int despawnTimer = 0;
+    private int ambientTimer = 40;
+
+    
 
     @Override
     public void tick() {
@@ -77,6 +80,15 @@ public class SporeEntity extends PathfinderMob {
             return;
         }
 
+        if (ambientTimer >= 120) {
+            ambientTimer = 0;
+
+            this.playSound(
+                    ModSounds.SPORE_AMBIENT.get(),
+                    1.0F,
+                    1.0F
+            );
+        }
 
         Player player = this.level().getNearestPlayer(this, 128.0D);
 
@@ -103,37 +115,10 @@ public class SporeEntity extends PathfinderMob {
                 );
 
         boolean lookingAtEntity = dot > 0.95D;
-    }
-
-    
-
-
-        /*
-         * ============================================================
-         * OPTIONAL: AMBIENT SOUNDS
-         * ============================================================
-         *
-         * Add this field to the class:
-         
-         private int ambientTimer = 40;
-        
-
-        
-        ambientTimer++;
-
-        if (ambientTimer >= 120) {
-            ambientTimer = 0;
-
-            this.playSound(
-                    ModSounds.(entity name)_AMBIENT.get(),
-                    1.0F,
-                    1.0F
-            );
-        }
-        
+    }        
     
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;
-    }*/
+    }
 }

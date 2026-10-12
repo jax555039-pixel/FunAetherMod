@@ -11,21 +11,30 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = FunAetherMod.MODID)
 public class ModEvents {
 
-    @SubscribeEvent
-    public static void levelTick(TickEvent.LevelTickEvent event) {
+   
+@SubscribeEvent
+public static void levelTick(TickEvent.LevelTickEvent event) {
 
-        if (event.phase != TickEvent.Phase.END)
-            return;
+    if (event.phase != TickEvent.Phase.END)
+        return;
 
-        if (!(event.level instanceof ServerLevel level))
-            return;
+    if (!(event.level instanceof ServerLevel level))
+        return;
 
-        if (level.dimension()
-                .location()
-                .toString()
-                .equals("funaethermod:haven")) {
+    if (level.dimension()
+            .location()
+            .toString()
+            .equals("funaethermod:haven")) {
 
-            StructureManager.onLoad(level);
-        }
+        StructureManager.onLoad(level);
     }
+
+    if (level.dimension()
+            .location()
+            .toString()
+            .equals("funaethermod:chapel")) {
+
+        StructureManager.onLoad(level);
+    }
+}
 }
