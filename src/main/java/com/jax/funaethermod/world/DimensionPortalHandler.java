@@ -40,6 +40,9 @@ public class DimensionPortalHandler {
     private static final Set<UUID> purgatoryGenerated =
             new HashSet<>();
 
+    private static final Set<UUID> SD1CAGenerated =
+            new HashSet<>();
+
    
 
     public DimensionPortalHandler() {
@@ -121,6 +124,15 @@ public class DimensionPortalHandler {
 
         }
 
+        if(!SD1CAGenerated.contains(player.getUUID())) {
+
+            generateSD1CAReturnPortal(
+                    player.serverLevel(),
+                    player.getUUID(),
+                    player.blockPosition()
+            );
+
+        }
     }
 
 
@@ -369,6 +381,92 @@ portalPos.getZ()
 
     }
 
+    /*
+    * =====================================================
+    * SD1CA RETURN PORTAL GENERATION
+    * =====================================================
+    */
+
+    private void generateSD1CAReturnPortal(
+            ServerLevel level,
+            UUID playerID,
+            BlockPos spawn
+    ) {
+
+
+        if(SD1CAGenerated.contains(playerID))
+            return;
+
+
+
+        int direction =
+                level.random.nextInt(4);
+
+
+
+        BlockPos portalPos;
+
+
+
+        switch(direction) {
+
+
+            case 0 -> portalPos =
+                    findLand(
+                            level,
+                            spawn,
+                            1600,
+                            0
+                    );
+
+
+            case 1 -> portalPos =
+                    findLand(
+                            level,
+                            spawn,
+                            -1600,
+                            0
+                    );
+
+
+            case 2 -> portalPos =
+                    findLand(
+                            level,
+                            spawn,
+                            0,
+                            1600
+                    );
+
+
+            default -> portalPos =
+                    findLand(
+                            level,
+                            spawn,
+                            0,
+                            -1600
+                    );
+
+        }
+
+
+
+        DimensionPortalManager.generateSD1CAReturnPortal(
+                level,
+                portalPos
+        );
+
+        LOGGER.info(
+"SD1-CA return portal generated at X:{} Y:{} Z:{}",
+portalPos.getX(),
+portalPos.getY(),
+portalPos.getZ()
+);
+
+        SD1CAGenerated.add(playerID);
+
+
+    }
+
 
 
 
@@ -546,10 +644,14 @@ portalPos.getZ()
         ||
         state.is(
                 ModBlocks.AETHER_PORTAL.get()
+        )
+        ||
+        state.is(
+                ModBlocks.RANDOM_RETURN_PORTAL.get()
         );
 
 
-    }
+        }
 }
 
 

@@ -92,5 +92,15 @@ public class ModAttributes {
                 HollowEntity.createAttributes().build()
         );
 
+        event.put(
+                ModEntities.REAL_STALK.get(),
+                RealStalkEntity.createAttributes().build()
+        );
+
+        event.put(
+                ModEntities.CORRUPT.get(),
+                CorruptEntity.createAttributes().build()
+        );
+
     }
 }

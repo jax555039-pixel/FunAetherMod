@@ -78,6 +78,13 @@ public class SsIslandEvents {
         /*
          * Generate the 3D grid around the player.
          */
+
+        System.out.println(
+                "[FunAetherMod DEBUG] Subsequence generator triggered for "
+                        + player.blockPosition()
+        );
+
+
         SsIslandGenerator.generateAroundPlayer(
                 (net.minecraft.server.level.ServerLevel)
                         player.level(),

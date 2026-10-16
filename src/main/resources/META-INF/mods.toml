@@ -4,12 +4,33 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="funaethermod"
-version="0.0.7-beta"
+version="1.0.0-sneakpeak"
 displayName="Fun Aether Mod"
 authors="BLLEEACH, MirrorImage"
 
 description='''
 d2UgYXJlIHN0aWxsIGhlcmU=
+
+links
+ARG https://www.youtube.com/@realness-l9b
+
+DISCORD https://discord.gg/y83WFQFm2U
+
+YOUTUBE https://www.youtube.com/@FunAetherMod
+
+YOUTUBE 2 https://www.youtube.com/@mothafriggalikeboithatstuff
+
+SOURCE CODE https://github.com/jax555039-pixel/FunAetherMod
+
+CURSEFORGE PAGE https://www.curseforge.com/minecraft/mc-mods/e2020202020202020
+
+MODRINTH PAGE https://modrinth.com/mod/fun-aether-mod
+
+this mod is open source and licensed ARR. 
+
+a forge 1.20.1 project made with love
+
+your childhood dream with a dark twist 
 '''
 
 [[dependencies.funaethermod]]

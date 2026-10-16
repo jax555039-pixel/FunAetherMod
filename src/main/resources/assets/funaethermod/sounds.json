@@ -84,6 +84,35 @@
     "sounds": [
       "funaethermod:spore_ambient"
     ]
-  }
+  },
 
+  "entity_player_breath": {
+    "sounds": [
+      "funaethermod:entity_player_breath"
+    ]
+  },
+
+  "real_flesh_settel": {
+    "sounds": [
+      "funaethermod:real_flesh_settel"
+    ]
+  },
+
+  "fake_breath_try": {
+    "sounds": [
+      "funaethermod:fake_breath_try"
+    ]
+  },
+
+  "corrupt_chase": {
+    "sounds": [
+      "funaethermod:corrupt_chase"
+    ]
+  },
+
+  "corrupt_screen_flash": {
+    "sounds": [
+      "funaethermod:corrupt_screen_flash"
+    ]
+  }
 }

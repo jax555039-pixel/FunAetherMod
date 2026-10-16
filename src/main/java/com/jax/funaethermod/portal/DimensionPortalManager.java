@@ -17,6 +17,8 @@ public class DimensionPortalManager {
     private static final Set<String> GENERATED_PURGATORY =
             new HashSet<>();
 
+    private static final Set<String> GENERATED_SD1CA =
+            new HashSet<>();
 
     // ==========================
     // AETHER RETURN PORTAL
@@ -90,5 +92,42 @@ public class DimensionPortalManager {
         }
 
     }
+
+    // ==========================
+    // SD1-CA RETURN PORTAL
+    // ==========================
+
+    public static void generateSD1CAReturnPortal(
+            ServerLevel level,
+            BlockPos pos
+    ) {
+
+        String id =
+                pos.getX()
+                + ","
+                + pos.getZ();
+
+        if (GENERATED_SD1CA.contains(id))
+            return;
+
+        GENERATED_SD1CA.add(id);
+
+        BlockState portal =
+                ModBlocks.RANDOM_RETURN_PORTAL
+                        .get()
+                        .defaultBlockState();
+
+        for (int y = 0; y < 50; y++) {
+
+            level.setBlock(
+                    pos.above(y),
+                    portal,
+                    3
+            );
+
+        }
+
+    }
+
 
 }

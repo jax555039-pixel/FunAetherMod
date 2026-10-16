@@ -46,7 +46,7 @@ public class NaturalPortalGenerationHandler {
      * Set this to 1 while testing if you want a portal
      * generated almost immediately.
      */
-    private static final int PORTAL_CHANCE = 20;
+    private static final int PORTAL_CHANCE = 1;
 
     /*
      * Natural portals cannot generate within 20 chunks
@@ -92,21 +92,10 @@ public class NaturalPortalGenerationHandler {
             return;
         }
 
-        /*
-         * Diagnostic message.
-         *
-         * This confirms that the Forge chunk-load event
-         * is reaching this handler.
-         */
-        LOGGER.info(
-                "NATURAL PORTAL HANDLER FIRED: dimension={}, chunk=({}, {})",
-                level.dimension().location(),
-                event.getChunk().getPos().x,
-                event.getChunk().getPos().z
-        );
+        
 
         /*
-         * Only handle the Overworld, Aether, and Purgatory.
+         * Only handle the Overworld, Aether, sd1Ca, and Purgatory.
          */
         if (!isValidDimension(level)) {
             return;
@@ -129,11 +118,7 @@ public class NaturalPortalGenerationHandler {
                 MIN_SPAWN_DISTANCE_CHUNKS
         )) {
 
-            LOGGER.info(
-                    "Natural portal blocked: chunk ({}, {}) is too close to spawn.",
-                    chunkX,
-                    chunkZ
-            );
+            
 
             return;
         }
@@ -152,11 +137,7 @@ public class NaturalPortalGenerationHandler {
                 MIN_PORTAL_DISTANCE_CHUNKS
         )) {
 
-            LOGGER.info(
-                    "Natural portal blocked: chunk ({}, {}) is too close to another portal.",
-                    chunkX,
-                    chunkZ
-            );
+            
 
             return;
         }
@@ -192,12 +173,7 @@ public class NaturalPortalGenerationHandler {
         );
 
 
-        LOGGER.info(
-                "Natural portal generation accepted at chunk ({}, {}) in {}",
-                chunkX,
-                chunkZ,
-                level.dimension().location()
-        );
+        
 
 
         /*
@@ -282,15 +258,33 @@ public class NaturalPortalGenerationHandler {
 
             buildAetherPortal(level, pos);
 
-            LOGGER.info(
-                    "Natural Aether portal generated in Purgatory at X:{} Y:{} Z:{}",
-                    pos.getX(),
-                    pos.getY(),
-                    pos.getZ()
-            );
-
             return;
         }
+
+        /*
+        * =====================================================
+         * SD1-CA
+         * =====================================================
+         *
+         * SD1-CA naturally generates a random dimension portal.
+         */
+        if (issd1Ca(level)) {
+        
+                buildsd1CaPortal(level, pos);
+
+                LOGGER.info(
+                        "Natural SD1-CA portal generated in SD1-CA at X:{} Y:{} Z:{}",
+                        pos.getX(),
+                        pos.getY(),
+                        pos.getZ()
+                );
+
+                return;
+        
+        }
+        
+
+        
 
 
         /*
@@ -307,23 +301,11 @@ public class NaturalPortalGenerationHandler {
 
                 buildAetherPortal(level, pos);
 
-                LOGGER.info(
-                        "Natural Aether portal generated in Overworld at X:{} Y:{} Z:{}",
-                        pos.getX(),
-                        pos.getY(),
-                        pos.getZ()
-                );
-
             } else {
 
                 buildPurgatoryPortal(level, pos);
 
-                LOGGER.info(
-                        "Natural Purgatory portal generated in Overworld at X:{} Y:{} Z:{}",
-                        pos.getX(),
-                        pos.getY(),
-                        pos.getZ()
-                );
+                
             }
         }
     }
@@ -339,7 +321,8 @@ public class NaturalPortalGenerationHandler {
 
         return isOverworld(level)
                 || isAether(level)
-                || isPurgatory(level);
+                || isPurgatory(level)
+                || issd1Ca(level);
     }
 
 
@@ -376,6 +359,20 @@ public class NaturalPortalGenerationHandler {
                 );
 
         return level.dimension().equals(purgatory);
+    }
+
+    private static boolean issd1Ca(ServerLevel level) {
+
+        ResourceKey<Level> sd1Ca =
+                ResourceKey.create(
+                        Registries.DIMENSION,
+                        new ResourceLocation(
+                                FunAetherMod.MODID,
+                                "sd1-ca"
+                        )
+                );
+
+        return level.dimension().equals(sd1Ca);
     }
 
 
@@ -547,6 +544,36 @@ public class NaturalPortalGenerationHandler {
 
         BlockState portal =
                 ModBlocks.PURGATORY_PORTAL
+                        .get()
+                        .defaultBlockState();
+
+
+        for (int y = 0; y < 50; y++) {
+
+            BlockPos place =
+                    pos.above(y);
+
+            level.setBlock(
+                    place,
+                    portal,
+                    3
+            );
+        }
+    }
+
+    /*
+    * =========================================================
+    * SD1CA random PORTAL
+    * =========================================================
+    */
+
+    private static void buildsd1CaPortal(
+            ServerLevel level,
+            BlockPos pos
+    ) {
+
+        BlockState portal =
+                ModBlocks.RANDOM_RETURN_PORTAL
                         .get()
                         .defaultBlockState();
 

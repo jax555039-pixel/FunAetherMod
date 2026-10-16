@@ -13,6 +13,7 @@ import com.jax.funaethermod.client.model.Anomaly221Model;
 import com.jax.funaethermod.client.model.HollowEntityModel;
 import com.jax.funaethermod.client.model.GluttonyEntityModel;
 import com.jax.funaethermod.client.model.SporeEntityModel;
+import com.jax.funaethermod.client.model.CorruptEntityModel;
 
 import com.jax.funaethermod.registry.ModEntities;
 
@@ -29,7 +30,9 @@ import com.jax.funaethermod.renderer.FakeAggroRenderer;
 import com.jax.funaethermod.renderer.Anomaly221Renderer;
 import com.jax.funaethermod.renderer.SporeEntityRenderer;
 import com.jax.funaethermod.renderer.GluttonyEntityRenderer;
+import com.jax.funaethermod.renderer.CorruptEntityRenderer;
 import com.jax.funaethermod.renderer.HollowEntityRenderer;
+import com.jax.funaethermod.renderer.RealStalkEntityRenderer;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -108,6 +111,16 @@ public class ClientModEvents {
         );
 
         event.registerEntityRenderer(
+                ModEntities.CORRUPT.get(),
+                CorruptEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
+                ModEntities.REAL_STALK.get(),
+                RealStalkEntityRenderer::new
+        );
+
+        event.registerEntityRenderer(
                 ModEntities.HOLLOW.get(),
                 HollowEntityRenderer::new
         );
@@ -169,6 +182,11 @@ public class ClientModEvents {
         event.registerLayerDefinition(
                 GluttonyEntityModel.LAYER_LOCATION,
                 GluttonyEntityModel::createBodyLayer
+        );
+
+        event.registerLayerDefinition(
+                CorruptEntityModel.LAYER_LOCATION,
+                CorruptEntityModel::createBodyLayer
         );
 
     }

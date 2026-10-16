@@ -65,6 +65,21 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> SPORE_AMBIENT =
             registerSound("spore_ambient");
+ 
+    public static final RegistryObject<SoundEvent> ENTITY_PLAYER_BREATH =
+                registerSound("entity_player_breath");
+
+    public static final RegistryObject<SoundEvent> REAL_FLESH_SETTEL =
+                registerSound("real_flesh_settel");
+
+    public static final RegistryObject<SoundEvent> FAKE_BREATH_TRY =
+                registerSound("fake_breath_try");
+
+    public static final RegistryObject<SoundEvent> CORRUPT_CHASE =
+                registerSound("corrupt_chase");
+
+    public static final RegistryObject<SoundEvent> CORRUPT_SCREEN_FLASH =
+                registerSound("corrupt_screen_flash");
 
     private static RegistryObject<SoundEvent> registerSound(String name) {
 

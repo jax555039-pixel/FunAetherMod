@@ -14,6 +14,8 @@ import com.jax.funaethermod.entity.Anomaly221Entity;
 import com.jax.funaethermod.entity.SporeEntity;
 import com.jax.funaethermod.entity.GluttonyEntity;
 import com.jax.funaethermod.entity.HollowEntity;
+import com.jax.funaethermod.entity.RealStalkEntity;
+import com.jax.funaethermod.entity.CorruptEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -160,6 +162,26 @@ public class ModEntities {
                         .sized(0.6F, 1.8F)
                         .clientTrackingRange(8)
                         .build("hollow")
+        );
+
+        public static final RegistryObject<EntityType<RealStalkEntity>> REAL_STALK =
+        ENTITY_TYPES.register(
+                "real_stalk",
+                () -> EntityType.Builder
+                        .of(RealStalkEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("real_stalk")
+        );
+
+        public static final RegistryObject<EntityType<CorruptEntity>> CORRUPT =
+        ENTITY_TYPES.register(
+                "corrupt",
+                () -> EntityType.Builder
+                        .of(CorruptEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(8)
+                        .build("corrupt")
         );
 
 

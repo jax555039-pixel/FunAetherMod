@@ -4,6 +4,7 @@ import com.jax.funaethermod.registry.ModBlocks;
 import com.jax.funaethermod.registry.ModEntities;
 import com.jax.funaethermod.registry.ModItems;
 import com.jax.funaethermod.registry.ModSounds;
+import com.jax.funaethermod.network.ModNetwork;
 import com.jax.funaethermod.world.DimensionPortalHandler;
 
 import com.mojang.logging.LogUtils;
@@ -49,7 +50,8 @@ public class FunAetherMod {
         ModEntities.register(modEventBus);
 
         ModSounds.register(modEventBus);
-
+        
+        ModNetwork.register(); 
 
         /*
          * =====================================================
