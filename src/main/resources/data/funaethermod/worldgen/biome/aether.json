@@ -4,6 +4,12 @@
   "downfall": 0.0,
 
   "effects": {
+    "music": {
+      "sound": "funaethermod:aether_ambient",
+      "min_delay": 8400,
+      "max_delay": 9400,
+      "replace_current_music": false
+    },
     "sky_color": 7907327,
     "fog_color": 12638463,
     "water_color": 4159204,

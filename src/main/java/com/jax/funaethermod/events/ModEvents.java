@@ -56,5 +56,14 @@ public class ModEvents {
 
             StructureManager.onLoad(level);
         }
+
+        /*
+         * Hell dimension.
+         */
+        if (level.dimension().location().toString()
+                .equals("funaethermod:hell")) {
+
+            StructureManager.onLoad(level);
+        }
     }
 }

@@ -27,12 +27,21 @@ public class StructureManager {
     private static final int MIN_STRUCTURE_DISTANCE_CHUNKS = 12;
     private static final int MAX_PLACEMENT_ATTEMPTS = 5000;
 
+    // HAVEN
     private static final String HAVEN_ISLAND = "haven_island";
+
+    // CHAPEL
     private static final String CHAPEL_STRUCTURE = "chapel";
+
+    // SD3-HELL
+    private static final String HELL_STRCUTURE = "hell";
+
+    // SUBSEQUENCE
     private static final String NORMAL_ISLAND = "subsequence_island";
     private static final String CORRUPTED_ISLAND = "subsequence_corrupted_island";
     private static final String PORTAL_ISLAND = "subsequence_portal_island";
 
+    // OVERWORLD
     private static final String SPAWN_STRUCTURE = "spawn";
     private static final String COOLBOY_HOUSE = "coolboy_house";
     private static final String REALNESS_TOWER = "realness_tower";
@@ -42,7 +51,9 @@ public class StructureManager {
             new ResourceLocation(FunAetherMod.MODID, "haven");
 
     private static final ResourceLocation CHAPEL_DIMENSION =
-            new ResourceLocation(FunAetherMod.MODID, "chapel");
+            new ResourceLocation(FunAetherMod.MODID, "chapel"); 
+    private static final ResourceLocation HELL_DIMENSION =
+            new ResourceLocation(FunAetherMod.MODID, "sd3-hell");
 
     private static final ResourceLocation SUBSEQUENCE_DIMENSION =
             new ResourceLocation(FunAetherMod.MODID, "subsequence");
@@ -82,6 +93,14 @@ public class StructureManager {
          */
         if (dimension.equals(CHAPEL_DIMENSION)) {
             generateChapel(level);
+            return;
+        }
+
+        /*
+         * Hell dimension.
+         */
+        if (dimension.equals(HELL_DIMENSION)) {
+            generateHell(level);
             return;
         }
 
@@ -348,6 +367,42 @@ public class StructureManager {
             );
         }
     }
+
+    /*
+    * Hell structure.
+    */
+
+        private static void generateHell(ServerLevel level) {
+        
+                StructureSavedData data = StructureSavedData.get(level);
+        
+                if (data.isGenerated(
+                        Integer.MIN_VALUE,
+                        Integer.MIN_VALUE,
+                        Integer.MIN_VALUE + 2
+                )) {
+                return;
+                }
+        
+                boolean success = StructureLoader.loadStructure(
+                        level,
+                        HELL_STRCUTURE,
+                        new BlockPos(0, START_Y, 0)
+                );
+        
+                if (success) {
+        
+                data.setGenerated(
+                        Integer.MIN_VALUE,
+                        Integer.MIN_VALUE,
+                        Integer.MIN_VALUE + 2
+                );
+        
+                System.out.println(
+                        "[FunAetherMod] Hell structure generated."
+                );
+                }
+        }
 
     /*
      * Generates one Subsequence cell.

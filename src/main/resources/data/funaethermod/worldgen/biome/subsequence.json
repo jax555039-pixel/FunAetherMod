@@ -11,11 +11,11 @@
     "grass_color": 0,
     "foliage_color": 0,
 
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 600,
-      "block_search_extent": 8,
-      "offset": 2.0
+    "music": {
+      "sound": "funaethermod:subsequence_ambient",
+      "min_delay": 360,
+      "max_delay": 360,
+      "replace_current_music": false
     }
   },
 

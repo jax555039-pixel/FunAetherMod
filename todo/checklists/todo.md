@@ -1,6 +1,6 @@
-# Fun Aether Mod — Master TODO
+# Fun Aether Mod TODO
 **Version:** 1.0.0  
-**Last Updated:** October 15, 2026
+**Last Updated:** October 16, 2026
 
 ---
 
@@ -8,12 +8,12 @@
 
 - None
 
-## Recent Tasks — October 15, 2026
+10/16/26
 
-- [ ] ALTER — Structure
-- [ ] SD3-HELL — Dimension
-- [ ] corrupt — Anomaly
-- [ ] Fix Fake
+- [ ]
+- [ ]
+- [ ]
+- [ ]
 
 ---
 
@@ -27,7 +27,7 @@
 
 ## Entity Reworks
 
-- [ ] Rework selected sounds.
+- [x] Rework selected sounds.
 - real_ambient
 - real_glitch
 
@@ -43,6 +43,29 @@
 
 - [ ] Restore the old 1.4.2 interface, textures, sounds, and version display in the corner.
 - [ ] Give players reasons to revisit dimensions.
+- [ ] make back ground music for these dimensions
+    - [x] aether
+    - [ ] purgatory
+    - [ ] haven
+    - [x] subsequence
+    - [x] sd1-ca
+    - [ ] SD2-FALSE — True, but evil.
+    - [ ] SD3-HELL — Haven, but evil.
+    - [ ] SD4-PAST — Wasteland version of Purgatory.
+    - [ ] True.
+    - [ ] If Only We Were There.
+    - [ ] 202020202020202020202020.
+    - [x] space.column.
+    - [x] space.jupiter.
+    - [x] space.EHXR1.
+    - [ ] Chapel.
+    - [ ] Falsesafehouse.
+    - [ ] I Wish He Was Here.
+    - [ ] Reality.
+    - [ ] him_1.
+    - [ ] him_2.
+    - [ ] him_3.
+
 
 ---
 
@@ -65,7 +88,7 @@
 - [ ] xXtrixxXx.
 - [ ] Xeno1231232.
 - [ ] xXfakeshadowXx.
-- [ ] myhome.
+- [x] myhome.
 - [ ] xXxHO11OWxXx.
 - [ ] xXrealizationXx.
 - [ ] xXchickeneaterXx.
@@ -75,6 +98,7 @@
 - [ ] aether_1.
 - [ ] 20_20.
 - [ ] ALTER — Chapel entrance.
+- [x] HELL — island for HELL dimension
 
 ---
 
@@ -122,7 +146,7 @@
 - [ ] anomaly_126.
 - [ ] he.
 - [ ] false.
-- [ ] corrupt.
+- [x] corrupt.
 - [x] sub_anomaly_spore.
 - [x] Sub-anomaly TheCore.
   - Technically a structure, but considered a sub-anomaly because it acts as Entity 2020's heart.
